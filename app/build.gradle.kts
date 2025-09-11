@@ -45,6 +45,6 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
-    implementation(libs.preference)
+    implementation("androidx.preference:preference:1.2.1")
 
 }
