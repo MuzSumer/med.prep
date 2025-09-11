@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:divider="@drawable/app_rbox">
+
+
+    <PreferenceCategory android:title="@string/app_prefs">
+
+        <EditTextPreference
+            android:key="FirstName"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="FirstName"
+            app:defaultValue="FirstName" />
+        <EditTextPreference
+            android:key="LastName"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="LastName"
+            app:defaultValue="LastName" />
+        <EditTextPreference
+            android:key="BirthDate"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="BirthDate"
+            app:defaultValue="BirthDate" />
+
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
