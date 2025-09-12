@@ -112,7 +112,7 @@ public class AppAnalyzer extends Fragment {
 
                     Toast.makeText(getContext(), "loading...", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getContext(), WebPage.class);
+                    Intent intent = new Intent(getContext(), AppAnalyzerReport.class);
                     intent.putExtra("namespace", namespace);
 
                     view.getContext().startActivity(intent);

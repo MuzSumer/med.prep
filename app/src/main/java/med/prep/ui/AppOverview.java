@@ -2,6 +2,7 @@ package med.prep.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -109,10 +110,12 @@ public class AppOverview extends Fragment {
         view.findViewById(R.id.record_search).setOnClickListener(
                 v -> {
 
-                    // TODO create report
+                    Toast.makeText(getContext(), "loading...", Toast.LENGTH_SHORT).show();
 
-                    Toast.makeText(getContext(), "search", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getContext(), AppOverviewReport.class);
+                    intent.putExtra("namespace", namespace);
 
+                    view.getContext().startActivity(intent);
                 }
         );
     }

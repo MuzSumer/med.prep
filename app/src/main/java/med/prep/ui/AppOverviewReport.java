@@ -1,6 +1,7 @@
 package med.prep.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
@@ -9,19 +10,24 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuCompat;
 
+import med.prep.AppAbout;
+import med.prep.AppSettings;
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
 import med.prep.model.meta.UniversalModel;
 
-public class WebPage extends AppCompatActivity {
+public class AppOverviewReport extends AppReport {
 
 
     WebView web;
@@ -31,19 +37,18 @@ public class WebPage extends AppCompatActivity {
     String namespace;
 
     DiagramExpose expo;
-    DiagramExpose expo() { return expo; }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.ui_preview);
+        setContentView(R.layout.app_report);
 
 
         namespace = getIntent().getStringExtra("namespace");
 
-        DiagramExpose expo = new DiagramExpose(getApplication(), null, null);
+        expo = new DiagramExpose(getApplicationContext(), null, null);
 
         Store store = new DiagramStore(expo, namespace);
         expo.createStore(store, namespace, "");
@@ -53,7 +58,7 @@ public class WebPage extends AppCompatActivity {
         if (actionBar != null) {
             //actionBar.setDisplayHomeAsUpEnabled(true);
 
-            actionBar.setTitle("Analyse");
+            actionBar.setTitle("Report");
         }
 
 
@@ -89,22 +94,13 @@ public class WebPage extends AppCompatActivity {
 
 
 
-        //TextView shtml = this.findViewById(R.id.display_html);
-        //shtml.setText(html);
-
-
         web.loadDataWithBaseURL(base, html, "text/html", "UTF-8", null);
 
         if (directPrint) createPrintJob();
     }
 
 
-    private String createHeader() {
-        // >>> header
-        String html = "<head><center>" + "branding" + " - " + "name" + " Report</center></head><body>";
 
-        return html;
-    }
 
     private String ltrPage() {
 
@@ -112,36 +108,10 @@ public class WebPage extends AppCompatActivity {
         String html = createHeader();
 
 
-        // >>> subject
-        html += "<br>";
-        html += "<H0 style='color:darkblue'; 'ul'><center><u>" + "Report" + "</u></center></H0>";
-        html += "<br>";
-
-
-        html += "<table width='100%' border='0'>";
-
-
-
-        // *** name ***
-
-
-        html += "<tr>";
-        html += "<th colspan='1' style='text-align:left;font-size:9'>" + "FirstName LastName" + "</th>";
-        html += "<th colspan='2' style='text-align:right;font-size:9'>" + "05.12.1937" + "</th>";
-        html += "</tr>";
-
-        // *** birth ***
-
-
 
         // >>> model
-        int size = expo.getStore().size();
-
-        for (int i = 0; i < size; i++) {
-            UniversalModel model = expo.getStore().getModelAt(i);
-
+        for (UniversalModel model : expo.getStore().getModels()) {
             html = append(html, ltrModel(model));
-
         }// model
 
 
@@ -308,4 +278,54 @@ public class WebPage extends AppCompatActivity {
         }
 
     }
+
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_html, menu);
+
+        MenuCompat.setGroupDividerEnabled(menu, true);
+        /*
+
+        MenuItem mode = menu.findItem(R.id.mode_switch);
+        if (mode != null) {
+
+            mode.setChecked(true);
+            if (mode.isChecked()) message("on");
+            else message("off");
+        }
+
+        mode.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(@NonNull MenuItem item) {
+                beep();
+                return false;
+            }
+        });
+         */
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+
+        // show settings
+        if (id == R.id.action_print) {
+
+            createPrintJob();
+
+            return true;
+        }
+
+
+
+
+        return super.onOptionsItemSelected(item);
+    }//menu
+
 }
