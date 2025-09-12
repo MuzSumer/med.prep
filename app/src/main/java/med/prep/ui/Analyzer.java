@@ -316,7 +316,7 @@ public class Analyzer extends Fragment {
             {
                 mv.getDate().setText(model.getDate());
                 mv.getDate().setContentDescription(id);
-                mv.getDate().setOnClickListener(editCell());
+                //mv.getDate().setOnClickListener(editCell());
 
 
                 try {
@@ -331,8 +331,8 @@ public class Analyzer extends Fragment {
                 mv.getType().setContentDescription(id);
                 mv.getState().setContentDescription(id);
 
-                mv.getType().setOnClickListener(editCell());
-                mv.getState().setOnClickListener(editCell());
+                //mv.getType().setOnClickListener(editCell());
+                //mv.getState().setOnClickListener(editCell());
 
             }// date, type, state
 
@@ -399,53 +399,7 @@ public class Analyzer extends Fragment {
                 mv.getLocation().setContentDescription(id);
 
 
-                /*
-                String l = model.getLocation();
-                if (!l.isEmpty()) {
-                    String words[] = model.getLocation().split(",");
-                    for (int p=0; p<6; p++) {
-                        if (p < words.length) {
-                            if (l == "") {
-                                l = words[p];
-                            } else {
-                                    l = "," + words[p];
-                                }
-                            }
-                        }
-                    }
-
-                }
-                 */
-
-                /*
-                String location = model.getLocation();
-
-                // shor location
-                if (!location.isEmpty()) {
-
-                    int max = 64;
-
-                    String l = "";
-
-                    String[] words = location.split(",");
-                    for (String w : words) {
-                        if (l.isEmpty()) {
-                            l = w;
-                        } else {
-                            if ((l.length() + w.length() + 1) < max) {
-                                l = l + "," + w;
-                            }
-                        }
-                    }
-
-                    location = l;
-                }
-                mv.getLocation().setText(location);
-                 */
-
-
-
-                // TODO layout
+                // TODO analyze
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
 
@@ -542,7 +496,7 @@ public class Analyzer extends Fragment {
 
             {
                 mv.getImage().setContentDescription(id);
-                mv.getImage().setOnClickListener(openCell());
+                //mv.getImage().setOnClickListener(editCell());
 
 
                 expo().setImage(mv.getImage(), model.getSymbol(), getResources().getInteger(R.integer.cell_size_small));

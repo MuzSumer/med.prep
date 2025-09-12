@@ -40,7 +40,7 @@
     <!-- diagram -->
     <string name="diagram_notice1">text > select</string>
 
-    <string name="diagram_notice2">date > edit</string>
+    <string name="diagram_notice2">image > edit</string>
 
     <string name="diagram_notice_error">Das ist hier nicht möglich.</string>
     <!--

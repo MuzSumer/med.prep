@@ -312,7 +312,7 @@ public class Maintain extends Fragment {
             {
                 mv.getDate().setText(model.getDate());
                 mv.getDate().setContentDescription(id);
-                mv.getDate().setOnClickListener(editCell());
+                //mv.getDate().setOnClickListener(editCell());
 
 
                 try {
@@ -327,9 +327,10 @@ public class Maintain extends Fragment {
                 mv.getType().setContentDescription(id);
                 mv.getState().setContentDescription(id);
 
-                mv.getType().setOnClickListener(editCell());
-                mv.getState().setOnClickListener(editCell());
+                //mv.getType().setOnClickListener(editCell());
+                //mv.getState().setOnClickListener(editCell());
 
+                // TODO stock up
                 mv.getAction().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -344,20 +345,6 @@ public class Maintain extends Fragment {
                         StockUp dialog = new StockUp(expo(), model);
                         dialog.show(getChildFragmentManager(), "");
 
-                        /*
-                        bestand += 100;
-
-                        model.setCoordinates(Integer.toString(bestand));
-                        model.setDate(expo().getStore().today());
-
-                        expo().getStore().saveLocalModel(expo(), expo().getFolder());
-
-                        String location = model.getLocation();
-
-                        location = bestand + " vorhanden";
-
-                        mv.getLocation().setText(location);
-                         */
                     }
                 });
 
@@ -442,7 +429,7 @@ public class Maintain extends Fragment {
 
             {
                 mv.getImage().setContentDescription(id);
-                mv.getImage().setOnClickListener(openCell());
+                //mv.getImage().setOnClickListener(editCell());
 
 
                 expo().setImage(mv.getImage(), model.getSymbol(), getResources().getInteger(R.integer.cell_size_small));
