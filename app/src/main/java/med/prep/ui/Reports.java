@@ -5,12 +5,14 @@ import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
-public class AppReport extends AppCompatActivity {
+public class Reports extends AppCompatActivity {
 
 
     public String createHeader() {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+
         String firstname = preferences.getString("FirstName", "FirstName");
         String lastname = preferences.getString("LastName", "LastName");
         String birthdate = preferences.getString("BirthDate", "BirthDate");

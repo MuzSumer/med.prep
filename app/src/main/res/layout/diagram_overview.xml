@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:accessibilityHeading="false"
-    tools:context=".ui.AppOverview">
+    tools:context=".ui.Overview">
 
 
     <androidx.core.widget.NestedScrollView

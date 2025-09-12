@@ -20,35 +20,33 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import med.prep.R;
 import med.prep.model.DiagramUtil;
 import med.prep.model.dialog.EditorProperties;
+import med.prep.model.dialog.RemoveMany;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
 import med.prep.model.meta.UniversalModel;
 
-public class AppAnalyzer extends Fragment {
+public class Overview extends Fragment {
 
-    //final static String namespace = "planung.xml";
+
     final static String namespace = "medprep.xml";
-
 
     DiagramExpose expo;
     public DiagramExpose expo() { return expo; }
 
 
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.diagram_analyzer, container, false);
+
+        View view = inflater.inflate(R.layout.diagram_overview, container, false);
 
 
         expo = new DiagramExpose(getContext(), view.findViewById(R.id.diagram), view.findViewById(R.id.scroll));
@@ -77,16 +75,34 @@ public class AppAnalyzer extends Fragment {
     }
 
 
+
     private void registerActions(View view) {
         view.findViewById(R.id.record_add).setOnClickListener(
                 v -> {
-                    Toast.makeText(getContext(), R.string.diagram_notice_error, Toast.LENGTH_SHORT).show();
+
+                    Toast.makeText(getContext(), "neu", Toast.LENGTH_SHORT).show();
+
+                    UniversalModel model = null;
+
+                    Resources res = getContext().getResources();
+
+                    String[] array_type = res.getStringArray(R.array.type);
+                    ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
+
+
+                    String[] array_state = res.getStringArray(R.array.state);
+                    ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+
+
+                    EditorProperties editor = new EditorProperties(expo(), types, states, model);
+                    editor.show(getChildFragmentManager(), "");
                 }
         );
 
         view.findViewById(R.id.record_remove).setOnClickListener(
                 v -> {
-                    Toast.makeText(getContext(), R.string.diagram_notice_error, Toast.LENGTH_SHORT).show();
+                    RemoveMany editor = new RemoveMany(expo());
+                    editor.show(getChildFragmentManager(), "remove");
                 }
         );
 
@@ -94,7 +110,13 @@ public class AppAnalyzer extends Fragment {
         view.findViewById(R.id.record_share).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), "share", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "loading...", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getContext(), AnalyzerReport.class);
+                    intent.putExtra("namespace", namespace);
+
+                    view.getContext().startActivity(intent);
+
                 }
         );
 
@@ -102,12 +124,8 @@ public class AppAnalyzer extends Fragment {
         view.findViewById(R.id.record_search).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), "loading...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "coming soon...", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getContext(), AppAnalyzerReport.class);
-                    intent.putExtra("namespace", namespace);
-
-                    view.getContext().startActivity(intent);
                 }
         );
     }
@@ -126,13 +144,11 @@ public class AppAnalyzer extends Fragment {
 
 
     private final View.OnClickListener cellSelect = view -> {
-        String modelId = view.getContentDescription().toString();
+        String id = view.getContentDescription().toString();
 
-        //getDiagram().setSelected(modelId);
+        expo().setFocus(id, false);
 
-        expo().setFocus(modelId, false);
-
-        UniversalModel m = expo().getStore().findModel(modelId);
+        UniversalModel m = expo().getStore().findModel(id);
 
     };
 
@@ -163,7 +179,7 @@ public class AppAnalyzer extends Fragment {
         String id = view.getContentDescription().toString();
 
         if (!expo().getSelected().equals(id)) {
-            //getDiagram().setSelected(id);
+
             expo().setFocus(id, false);
 
             UniversalModel model = expo().getStore().findModel(id);
@@ -415,7 +431,6 @@ public class AppAnalyzer extends Fragment {
                 }
                  */
 
-                /*
                 String location = model.getLocation();
 
                 // shor location
@@ -439,92 +454,6 @@ public class AppAnalyzer extends Fragment {
                     location = l;
                 }
                 mv.getLocation().setText(location);
-                 */
-
-
-
-                // TODO layout
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
-
-
-                    Date model_day = sdf.parse(model.getDate());
-                    Date today = sdf.parse(expo().getStore().today());
-
-
-                    long diffInMillies = Math.abs(today.getTime() - model_day.getTime());
-                    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
-
-
-                    int type = Integer.parseInt(model.getType());
-                    int tagesdosis = 0;
-
-                    switch (type) {
-
-                        case 0:
-                            tagesdosis = 1;
-                            break;
-
-                        case 1:
-                            tagesdosis = 2;
-                            break;
-
-                        case 2:
-                            tagesdosis = 3;
-                            break;
-
-                        case 3:
-                            tagesdosis = 3;
-                            break;
-
-                        case 4:
-                            tagesdosis = 5;
-                            break;
-
-
-                        case 5:
-                            tagesdosis = 1;
-                            break;
-
-                        case 6:
-                            tagesdosis = 1;
-                            break;
-
-                        case 7:
-                            tagesdosis = 2;
-                            break;
-
-                        default:
-                            tagesdosis = 0;
-                    }
-
-                    long bedarf = diff * tagesdosis;
-
-
-
-                    int vorrat = 0;
-
-                    if (!model.getCoordinates().isEmpty()) {
-
-                        vorrat = Integer.parseInt(model.getCoordinates());
-                    }
-
-
-
-
-                    mv.getLocation().setText(diff + " Tage   " + bedarf + "/" + vorrat + " Tabletten");
-
-
-
-
-                } catch (Exception e) {
-                    mv.getLocation().setText(model.getDate());
-                }
-
-
-
-
 
                 //mv.getLocation().setOnClickListener(wrongLocation());
             }// location
@@ -555,7 +484,7 @@ public class AppAnalyzer extends Fragment {
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.app_analyzer, parent, false));
+            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.app_overview, parent, false));
         }
 
         @Override
@@ -565,4 +494,6 @@ public class AppAnalyzer extends Fragment {
 
 
     }//ModelAdapter
+
+
 }

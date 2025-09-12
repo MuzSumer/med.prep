@@ -15,7 +15,6 @@ import android.webkit.WebView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuCompat;
 
 
@@ -25,7 +24,7 @@ import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
 import med.prep.model.meta.UniversalModel;
 
-public class AppAnalyzerReport extends AppReport {
+public class AnalyzerReport extends Reports {
 
 
     WebView web;
@@ -279,7 +278,7 @@ public class AppAnalyzerReport extends AppReport {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_html, menu);
+        getMenuInflater().inflate(R.menu.menu_report, menu);
 
         MenuCompat.setGroupDividerEnabled(menu, true);
         /*

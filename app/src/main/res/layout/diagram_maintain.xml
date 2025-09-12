@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:accessibilityHeading="false"
-    tools:context=".ui.AppOverview">
+    tools:context=".ui.Overview">
 
 
     <androidx.core.widget.NestedScrollView
@@ -111,7 +111,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/diagram_notice2"
+            android:text="@string/diagram_notice1"
             android:textColor="@color/lightblue"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/app_overview"
-        android:name="med.prep.ui.AppOverview"
+        android:name="med.prep.ui.Overview"
         android:label="@string/title_overview"
         tools:layout="@layout/diagram_overview" />
 
     <fragment
         android:id="@+id/app_analyzer"
-        android:name="med.prep.ui.AppAnalyzer"
+        android:name="med.prep.ui.Analyzer"
         android:label="@string/title_analyzer"
         tools:layout="@layout/diagram_overview" />
 
     <fragment
         android:id="@+id/app_maintain"
-        android:name="med.prep.ui.AppMaintain"
+        android:name="med.prep.ui.Maintain"
         android:label="@string/title_maintain"
         tools:layout="@layout/diagram_overview" />
 </navigation>

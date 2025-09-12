@@ -38,7 +38,7 @@
     <string name="action_print">print</string>
 
     <!-- diagram -->
-    <string name="diagram_notice1">date > edit</string>
+    <string name="diagram_notice1">text > select</string>
 
     <string name="diagram_notice2">date > edit</string>
 

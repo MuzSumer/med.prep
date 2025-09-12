@@ -32,7 +32,7 @@ import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
 import med.prep.model.meta.UniversalModel;
 
-public class AppMaintain extends Fragment {
+public class Maintain extends Fragment {
 
     final static String namespace = "medprep.xml";
 
@@ -90,7 +90,12 @@ public class AppMaintain extends Fragment {
         view.findViewById(R.id.record_share).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), "share", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "loading...", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(getContext(), AnalyzerReport.class);
+                    intent.putExtra("namespace", namespace);
+
+                    view.getContext().startActivity(intent);
                 }
         );
 
@@ -98,12 +103,8 @@ public class AppMaintain extends Fragment {
         view.findViewById(R.id.record_search).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), "loading...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "coming soon...", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getContext(), AppMaintainReport.class);
-                    intent.putExtra("namespace", namespace);
-
-                    view.getContext().startActivity(intent);
                 }
         );
     }

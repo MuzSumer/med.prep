@@ -38,7 +38,7 @@ public class AppWelcome extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu, menu);
+        getMenuInflater().inflate(R.menu.menu_app, menu);
 
         MenuCompat.setGroupDividerEnabled(menu, true);
         /*

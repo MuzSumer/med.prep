@@ -11,19 +11,19 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="FirstName"
-            app:defaultValue="FirstName" />
+            app:summary="Vorname" />
         <EditTextPreference
             android:key="LastName"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="LastName"
-            app:defaultValue="LastName" />
+            app:summary="Zuname" />
         <EditTextPreference
             android:key="BirthDate"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="BirthDate"
-            app:defaultValue="BirthDate" />
+            app:summary="Geburtsdatum" />
 
 
     </PreferenceCategory>

@@ -18,9 +18,9 @@
         <activity android:name="med.prep.AppSettings" />
 
 
-        <activity android:name="med.prep.ui.AppOverviewReport" />
-        <activity android:name="med.prep.ui.AppAnalyzerReport" />
-        <activity android:name="med.prep.ui.AppMaintainReport" />
+        <activity android:name="med.prep.ui.OverviewReport" />
+        <activity android:name="med.prep.ui.AnalyzerReport" />
+        <activity android:name="med.prep.ui.MaintainReport" />
 
         <activity
             android:name=".AppWelcome"

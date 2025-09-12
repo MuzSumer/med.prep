@@ -42,7 +42,7 @@ public class AppSettings extends AppCompatActivity {
     public static class PreferenceFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
 
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.main_prefs, rootKey);
+            setPreferencesFromResource(R.xml.app_preferences, rootKey);
 
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
             onSharedPreferenceChanged(sharedPreferences, "");
@@ -56,13 +56,26 @@ public class AppSettings extends AppCompatActivity {
             Preference first = findPreference("FirstName");
             String vfirst = sharedPreferences.getString("FirstName", "");
 
+            first.setTitle(vfirst);
 
+
+            Preference last = findPreference("LastName");
+            String vlast = sharedPreferences.getString("LastName", "");
+
+            last.setTitle(vlast);
+
+
+            Preference birth = findPreference("BirthDate");
+            String vbirth = sharedPreferences.getString("BirthDate", "");
+
+            birth.setTitle(vbirth);
+
+            /*
             SharedPreferences.Editor editor = sharedPreferences.edit();
-
             editor.putString("FirstName", vfirst);
-
-
             editor.apply();
+             */
+
 
         }
 
