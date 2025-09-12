@@ -74,7 +74,7 @@ public class EditorProperties extends DialogFragment {
 
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        final View view = inflater.inflate(R.layout.model_properties, null);
+        final View view = inflater.inflate(R.layout.dialog_model_properties, null);
 
 
 
@@ -170,11 +170,11 @@ public class EditorProperties extends DialogFragment {
 
 
         if (types != null) {
-            edit_type.setAdapter(new ArrayAdapter<>(getContext(), R.layout.editor_item, types));
+            edit_type.setAdapter(new ArrayAdapter<>(getContext(), R.layout.diagram_sappy_item, types));
         }
 
         if (states != null) {
-            edit_state.setAdapter(new ArrayAdapter<>(getContext(), R.layout.editor_item, states));
+            edit_state.setAdapter(new ArrayAdapter<>(getContext(), R.layout.diagram_sappy_item, states));
         }
 
 

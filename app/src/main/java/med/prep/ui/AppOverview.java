@@ -46,7 +46,7 @@ public class AppOverview extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(R.layout.diagram, container, false);
+        View view = inflater.inflate(R.layout.diagram_overview, container, false);
 
 
         expo = new DiagramExpose(getContext(), view.findViewById(R.id.diagram), view.findViewById(R.id.scroll));
@@ -80,14 +80,22 @@ public class AppOverview extends Fragment {
         view.findViewById(R.id.record_add).setOnClickListener(
                 v -> {
 
-                    //Toast.makeText(getContext(), "add", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "neu", Toast.LENGTH_SHORT).show();
 
-                    UniversalModel model = expo().getStore().createDefaultModel("Anwendungsgebiet", "Medikament");
-                    expo().getStore().saveLocalModel(expo(), expo().getFolder());
+                    UniversalModel model = null;
 
-                    expo().setFocus(model.getId(), false);
+                    Resources res = getContext().getResources();
 
-                    expo().scrollToEnd();
+                    String[] array_type = res.getStringArray(R.array.type);
+                    ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
+
+
+                    String[] array_state = res.getStringArray(R.array.state);
+                    ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+
+
+                    EditorProperties editor = new EditorProperties(expo(), types, states, model);
+                    editor.show(getChildFragmentManager(), "");
                 }
         );
 
@@ -101,7 +109,6 @@ public class AppOverview extends Fragment {
 
         view.findViewById(R.id.record_share).setOnClickListener(
                 v -> {
-
                     Toast.makeText(getContext(), "share", Toast.LENGTH_SHORT).show();
                 }
         );

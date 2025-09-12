@@ -43,7 +43,7 @@ public class StockUp extends DialogFragment {
 
 
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        final View view = inflater.inflate(R.layout.stock_up, null);
+        final View view = inflater.inflate(R.layout.dialog_stockup, null);
 
 
 

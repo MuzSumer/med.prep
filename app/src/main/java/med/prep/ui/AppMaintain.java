@@ -42,7 +42,8 @@ public class AppMaintain extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.diagram, container, false);
+
+        View view = inflater.inflate(R.layout.diagram_maintain, container, false);
 
 
         expo = new DiagramExpose(getContext(), view.findViewById(R.id.diagram), view.findViewById(R.id.scroll));
@@ -75,15 +76,7 @@ public class AppMaintain extends Fragment {
     private void registerActions(View view) {
         view.findViewById(R.id.record_add).setOnClickListener(
                 v -> {
-
-                    //Toast.makeText(getContext(), "add", Toast.LENGTH_SHORT).show();
-
-                    UniversalModel model = expo().getStore().createDefaultModel("Titel", "Betreff");
-                    expo().getStore().saveLocalModel(expo(), expo().getFolder());
-
-                    expo().setFocus(model.getId(), false);
-
-                    expo().scrollToEnd();
+                    Toast.makeText(getContext(), R.string.diagram_notice_error, Toast.LENGTH_SHORT).show();
                 }
         );
 

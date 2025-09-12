@@ -115,10 +115,8 @@ public class AppOverviewReport extends AppReport {
         }// model
 
 
-        html += "</table>";
-
         // >>> end
-        html += "</body>";
+        html += "</table></body>";
 
 
         return html;

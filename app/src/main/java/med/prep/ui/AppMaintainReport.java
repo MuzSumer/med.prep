@@ -109,10 +109,8 @@ public class AppMaintainReport extends AppReport {
         }// model
 
 
-        html += "</table>";
-
         // >>> end
-        html += "</body>";
+        html += "</table></body>";
 
 
         return html;
