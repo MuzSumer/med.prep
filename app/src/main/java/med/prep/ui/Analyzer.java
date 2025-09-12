@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -500,7 +501,7 @@ public class Analyzer extends Fragment {
                             tagesdosis = 0;
                     }
 
-                    long bedarf = diff * tagesdosis;
+                    long benutzt = diff * tagesdosis;
 
 
 
@@ -512,12 +513,20 @@ public class Analyzer extends Fragment {
                     }
 
 
+                    long rest = vorrat - benutzt;
+
+                    long restdays = rest/tagesdosis;
 
 
-                    mv.getLocation().setText(diff + " Tage   " + bedarf + "/" + vorrat + " Tabletten");
+
+                    mv.getLocation().setText(diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten");
 
 
+                    mv.getLocation().setText("noch " + restdays + " Tage");
 
+                    if (restdays < 10) {
+                        mv.getLocation().setTextColor(Color.RED);
+                    }
 
                 } catch (Exception e) {
                     mv.getLocation().setText(model.getDate());
