@@ -109,6 +109,9 @@ public class OverviewReport extends Reports {
 
         for(int timeslot=0; timeslot<24; timeslot++) {
 
+
+            html += "<table width='100%' border='1' valign='top'><tr>";
+
             String ts = Integer.toString(timeslot);
             if (ts.length() < 2) ts = "0" + ts;
             ts += ":00";
@@ -131,8 +134,10 @@ public class OverviewReport extends Reports {
 
             html += "<tr>";
             html += "<th style='text-align:left'>" + ts + "</th>";
-            html += "<th style='text-align:right;font-size:11'>" + tm + "</th>";
+            html += "<th style='text-align:right'>" + tm + "</th>";
             html += "</tr>";
+
+            html += "</table>";
         }
 
 

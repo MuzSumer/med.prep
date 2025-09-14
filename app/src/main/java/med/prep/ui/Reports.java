@@ -36,8 +36,8 @@ public class Reports extends AppCompatActivity {
 
 
         html += "<tr>";
-        html += "<th colspan='1' style='text-align:left;font-size:12'>" + firstname + " " + lastname + "</th>";
-        html += "<th colspan='2' style='text-align:right;font-size:12'>" + birthdate + "</th>";
+        html += "<th colspan='1' style='text-align:left;font-size:13'>" + firstname + " " + lastname + "</th>";
+        html += "<th colspan='2' style='text-align:right;font-size:13'>" + birthdate + "</th>";
         html += "</tr>";
 
 
