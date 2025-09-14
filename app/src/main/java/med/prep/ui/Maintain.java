@@ -92,7 +92,7 @@ public class Maintain extends Fragment {
 
                     Toast.makeText(getContext(), "loading...", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getContext(), AnalyzerReport.class);
+                    Intent intent = new Intent(getContext(), MaintainReport.class);
                     intent.putExtra("namespace", namespace);
 
                     view.getContext().startActivity(intent);
@@ -412,10 +412,6 @@ public class Maintain extends Fragment {
                 //mv.getLocation().setText(shortLocation(model.getLocation(), 1));
                 mv.getLocation().setContentDescription(id);
 
-
-                /*
-
-                 */
 
                 String location = model.getLocation();
 

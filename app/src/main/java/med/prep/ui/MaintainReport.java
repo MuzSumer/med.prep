@@ -100,7 +100,7 @@ public class MaintainReport extends Reports {
     private String ltrPage() {
 
         // >>> header
-        String html = createHeader();
+        String html = createHeader("Bestellung");
 
         // >>> model
         for (UniversalModel model : expo.getStore().getModels()) {

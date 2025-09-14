@@ -101,14 +101,42 @@ public class OverviewReport extends Reports {
     private String ltrPage() {
 
         // >>> header
-        String html = createHeader();
+        String html = createHeader("Tagesplan");
+
+
+        // TODO build timeslot table
+        // add medication
+
+        for(int timeslot=0; timeslot<24; timeslot++) {
+
+            String ts = Integer.toString(timeslot);
+            if (ts.length() < 2) ts = "0" + ts;
+            ts += ":00";
+
+
+            //html += "<th style='padding:2px' valign='top'>";
+            //html += "<table width='100%' border='0'>";
+
+            String tm = "";
+            for (UniversalModel model : expo.getStore().getModels()) {
+                if (model.getTags().contains(ts)) {
+                    if (tm.isEmpty()) {
+                        tm = tm + model.getSubject();
+                    } else {
+                        tm = tm + ", " + model.getSubject();
+                    }
+                }
+                //html = append(html, ltrModel(model));
+            }// model
+
+            html += "<tr>";
+            html += "<th style='text-align:left'>" + ts + "</th>";
+            html += "<th style='text-align:right;font-size:11'>" + tm + "</th>";
+            html += "</tr>";
+        }
 
 
 
-        // >>> model
-        for (UniversalModel model : expo.getStore().getModels()) {
-            html = append(html, ltrModel(model));
-        }// model
 
 
         // >>> end

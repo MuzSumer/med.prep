@@ -473,7 +473,7 @@ public class Analyzer extends Fragment {
 
 
 
-                    mv.getLocation().setText(diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten");
+                    //mv.getLocation().setText(diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten");
 
 
                     mv.getLocation().setText("noch " + restdays + " Tage");

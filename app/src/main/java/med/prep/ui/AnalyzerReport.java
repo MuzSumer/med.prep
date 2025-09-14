@@ -101,7 +101,7 @@ public class AnalyzerReport extends Reports {
     private String ltrPage() {
 
         // >>> header
-        String html = createHeader();
+        String html = createHeader("Analyse");
 
 
 

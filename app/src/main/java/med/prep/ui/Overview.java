@@ -112,7 +112,7 @@ public class Overview extends Fragment {
 
                     Toast.makeText(getContext(), "loading...", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getContext(), AnalyzerReport.class);
+                    Intent intent = new Intent(getContext(), OverviewReport.class);
                     intent.putExtra("namespace", namespace);
 
                     view.getContext().startActivity(intent);
@@ -408,32 +408,9 @@ public class Overview extends Fragment {
             {
                 mv.getOpenLocation().setContentDescription(id);
                 //mv.getOpenLocation().setOnClickListener(openMap());
-
-                //mv.getLocation().setText(shortLocation(model.getLocation(), 1));
                 mv.getLocation().setContentDescription(id);
 
-
-                /*
-                String l = model.getLocation();
-                if (!l.isEmpty()) {
-                    String words[] = model.getLocation().split(",");
-                    for (int p=0; p<6; p++) {
-                        if (p < words.length) {
-                            if (l == "") {
-                                l = words[p];
-                            } else {
-                                    l = "," + words[p];
-                                }
-                            }
-                        }
-                    }
-
-                }
-                 */
-
                 String location = model.getLocation();
-
-
                 mv.getLocation().setText(location);
 
                 //mv.getLocation().setOnClickListener(wrongLocation());

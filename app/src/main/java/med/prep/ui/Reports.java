@@ -8,7 +8,7 @@ import androidx.preference.PreferenceManager;
 public class Reports extends AppCompatActivity {
 
 
-    public String createHeader() {
+    public String createHeader(String title) {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
@@ -20,11 +20,11 @@ public class Reports extends AppCompatActivity {
 
 
         // >>> header
-        String html = "<head><center>" + "MEDPREP Report</center></head><body>";
+        String html = "<head><center>" + "MEDPREP" + "</center></head><body>";
 
         // >>> subject
         html += "<br>";
-        html += "<H0 style='color:darkblue'; 'ul'><center><u>" + "Report" + "</u></center></H0>";
+        html += "<H0 style='color:darkblue'; 'ul'><center><u>" + title + "</u></center></H0>";
         html += "<br>";
 
 
@@ -36,8 +36,8 @@ public class Reports extends AppCompatActivity {
 
 
         html += "<tr>";
-        html += "<th colspan='1' style='text-align:left;font-size:9'>" + firstname + " " + lastname + "</th>";
-        html += "<th colspan='2' style='text-align:right;font-size:9'>" + birthdate + "</th>";
+        html += "<th colspan='1' style='text-align:left;font-size:12'>" + firstname + " " + lastname + "</th>";
+        html += "<th colspan='2' style='text-align:right;font-size:12'>" + birthdate + "</th>";
         html += "</tr>";
 
 
