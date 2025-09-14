@@ -136,7 +136,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/model_tags"
                         android:textSize="11sp"
-                        tools:visibility="visible" />
+                        android:visibility="gone" />
 
 
                     <!--

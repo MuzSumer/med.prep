@@ -95,6 +95,7 @@ public class RemoveMany extends DialogFragment {
                 }
             }
 
+            diagram.setFocus("", false);
             diagram.getStore().saveLocalModel(diagram, diagram.getFolder());
 
             diagram.setFocus("", false);

@@ -82,20 +82,34 @@ public class Overview extends Fragment {
 
                     Toast.makeText(getContext(), "neu", Toast.LENGTH_SHORT).show();
 
-                    UniversalModel model = null;
 
-                    Resources res = getContext().getResources();
+                    if (false) {
+                        UniversalModel model = expo().getStore().createDefaultModel("Anwendungsgebiet", "Medikament");
+                        expo().getStore().saveLocalModel(expo(), expo().getFolder());
 
-                    String[] array_type = res.getStringArray(R.array.type);
-                    ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
+                        expo().setFocus(model.getId(), false);
+
+                        expo().scrollToEnd();
+                    }
 
 
-                    String[] array_state = res.getStringArray(R.array.state);
-                    ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+                    if (true) {
+                        UniversalModel model = null;
+
+                        Resources res = getContext().getResources();
+
+                        String[] array_type = res.getStringArray(R.array.type);
+                        ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
 
 
-                    EditorProperties editor = new EditorProperties(expo(), types, states, model);
-                    editor.show(getChildFragmentManager(), "");
+                        String[] array_state = res.getStringArray(R.array.state);
+                        ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+
+
+                        EditorProperties editor = new EditorProperties(expo(), types, states, model);
+                        editor.show(getChildFragmentManager(), "");
+                    }
+
                 }
         );
 
@@ -199,15 +213,6 @@ public class Overview extends Fragment {
          */
 
     };
-
-
-
-
-
-
-
-
-
 
 
 
@@ -328,6 +333,7 @@ public class Overview extends Fragment {
 
 
             {
+                //mv.getDate().setText(model.getId() + "/" + model.getDate());
                 mv.getDate().setText(model.getDate());
                 mv.getDate().setContentDescription(id);
                 //mv.getDate().setOnClickListener(editCell());
