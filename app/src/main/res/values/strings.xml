@@ -78,9 +78,9 @@
     <string name="med_title">Andwendung bei</string>
     <string name="med_subject">Medik. Name</string>
     <string name="med_content">Dosierung</string>
-    <string name="med_tags">wörtlich</string>
+    <string name="med_tags">Einnahmezeiten</string>
     <string name="med_specs">Packung</string>
-    <string name="med_location">"? Bestand"</string>
+    <string name="med_location">"Bestand"</string>
 
     <string name="snapshot">Snapshot</string>
     <string name="states">States</string>

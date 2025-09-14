@@ -433,26 +433,7 @@ public class Overview extends Fragment {
 
                 String location = model.getLocation();
 
-                // shor location
-                if (!location.isEmpty()) {
 
-                    int max = 64;
-
-                    String l = "";
-
-                    String[] words = location.split(",");
-                    for (String w : words) {
-                        if (l.isEmpty()) {
-                            l = w;
-                        } else {
-                            if ((l.length() + w.length() + 1) < max) {
-                                l = l + "," + w;
-                            }
-                        }
-                    }
-
-                    location = l;
-                }
                 mv.getLocation().setText(location);
 
                 //mv.getLocation().setOnClickListener(wrongLocation());
