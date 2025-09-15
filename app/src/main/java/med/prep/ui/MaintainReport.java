@@ -1,6 +1,8 @@
 package med.prep.ui;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.core.view.MenuCompat;
+import androidx.preference.PreferenceManager;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,6 +42,8 @@ public class MaintainReport extends Reports {
 
     DiagramExpose expo;
 
+
+    int order = 33;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +71,16 @@ public class MaintainReport extends Reports {
 
         web = findViewById(R.id.web_view);
         web.getSettings().setAllowFileAccess(true);
+
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+
+
+        String s = preferences.getString("order", "");
+        if (!s.isEmpty()) {
+            order = Integer.parseInt(s);
+        }
 
 
         // >>> expose model
@@ -181,9 +196,12 @@ public class MaintainReport extends Reports {
 
                 long restdays = rest/tagesdosis;
 
-                if (restdays < 33) {
+
+
+                if (restdays < order) {
                     html = append(html, ltrModel(model, restdays));
                 }
+
             } catch (Exception e) {}
 
 
@@ -227,7 +245,7 @@ public class MaintainReport extends Reports {
                     // *** title, date ***
 
                     html += "<tr>";
-                    html += "<th style='text-align:left'>noch " + restdays + " Tage</th>";
+                    html += "<th style='text-align:left'>nur noch " + restdays + " Tage</th>";
                     //html += "<th style='text-align:right;font-size:9'>" + model.getDate() + "</th>";
                     html += "</tr>";
 

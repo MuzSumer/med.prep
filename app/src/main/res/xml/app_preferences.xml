@@ -27,6 +27,23 @@
 
 
     </PreferenceCategory>
+    <PreferenceCategory android:title="Reports">
+
+        <EditTextPreference
+            android:defaultValue="11"
+            android:key="emergency"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Notfallabstand"
+            app:summary="Notfallabstand (Tage)" />
+        <EditTextPreference
+            android:defaultValue="33"
+            android:key="order"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Bestellhorizont"
+            app:summary="Bestellabstand (Tage)" />
+    </PreferenceCategory>
 
 
 </PreferenceScreen>

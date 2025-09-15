@@ -80,7 +80,7 @@
     <string name="med_content">Dosierung</string>
     <string name="med_tags">Einnahmezeiten</string>
     <string name="med_specs">Packung</string>
-    <string name="med_location">"Bestand"</string>
+    <string name="med_location">""</string>
 
     <string name="snapshot">Snapshot</string>
     <string name="states">States</string>

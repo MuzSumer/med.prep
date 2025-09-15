@@ -359,26 +359,7 @@ public class Overview extends Fragment {
                 mv.getTitle().setText(model.getTitle());
                 mv.getTitle().setContentDescription(id);
                 //mv.getTitle().setOnClickListener(selectCell());
-                /*
-                mv.getTitle().addTextChangedListener(new TextWatcher() {
 
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        String id = mv.getTitle().getContentDescription().toString();
-                        UniversalModel edit = expo().getStore().findModel(id);
-
-                        edit.setTitle(DiagramUtil.trim(mv.getTitle()));
-                        expo().getStore().saveLocalModel(expo(), expo().getFolder());
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                    }
-                });
-                 */
 
 
 
@@ -386,25 +367,7 @@ public class Overview extends Fragment {
                 //mv.getSubject().setText(model.getSubject());
                 mv.getSubject().setContentDescription(id);
                 //mv.getSubject().setOnClickListener(selectCell());
-                /*
-                mv.getSubject().addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        String id = mv.getTitle().getContentDescription().toString();
-                        UniversalModel edit = expo().getStore().findModel(id);
-
-                        edit.setSubject(DiagramUtil.trim(mv.getSubject()));
-                        expo().getStore().saveLocalModel(expo(), expo().getFolder());
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                    }
-                });
-                 */
 
             }// title, subject
 

@@ -70,6 +70,17 @@ public class AppSettings extends AppCompatActivity {
 
             birth.setTitle(vbirth);
 
+
+            Preference order = findPreference("order");
+            String vorder = sharedPreferences.getString("order", "");
+
+            order.setTitle(vorder);
+
+
+            Preference emergency = findPreference("emergency");
+            String vemergency = sharedPreferences.getString("emergency", "");
+
+            emergency.setTitle(vemergency);
             /*
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("FirstName", vfirst);
