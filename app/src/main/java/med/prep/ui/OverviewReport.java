@@ -97,6 +97,7 @@ public class OverviewReport extends Reports {
 
 
 
+    String newline = "<br>";
 
     private String ltrPage() {
 
@@ -106,6 +107,8 @@ public class OverviewReport extends Reports {
 
         // TODO build timeslot table
         // add medication
+
+
 
         for(int timeslot=0; timeslot<24; timeslot++) {
 
@@ -126,7 +129,7 @@ public class OverviewReport extends Reports {
                     if (tm.isEmpty()) {
                         tm = tm + model.getSubject();
                     } else {
-                        tm = tm + ", " + model.getSubject();
+                        tm = tm + newline + model.getSubject();
                     }
                 }
                 //html = append(html, ltrModel(model));
@@ -151,7 +154,7 @@ public class OverviewReport extends Reports {
         return html;
     }
 
-    private String ltrModel(UniversalModel model) {
+    private String unused_ltrModel(UniversalModel model) {
         String html = "";
 
         {// outline table
@@ -189,24 +192,24 @@ public class OverviewReport extends Reports {
                     // *** type ***
 
 
-                    html += "<tr>";
-                    html += "<th colspan='2' style='text-align:right;font-size:9'>" + model.getSubject() + "</th>";
-                    html += "</tr>";
+                    //html += "<tr>";
+                    //html += "<th colspan='2' style='text-align:right;font-size:9'>" + model.getSubject() + "</th>";
+                    //html += "</tr>";
 
                     // *** state ***
 
-                    html += "<tr>";
-                    html += "<th colspan='2' style='text-align:right;font-size:9'>" + model.getState() + "</th>";
-                    html += "</tr>";
+                    //html += "<tr>";
+                    //html += "<th colspan='2' style='text-align:right;font-size:9'>" + model.getState() + "</th>";
+                    //html += "</tr>";
 
 
 
 
                     // *** title ***
 
-                    html += "<tr>";
-                    html += "<th colspan='2' style='text-align:left;font-size:17;color:darkgreen'><br>" + model.getTitle() + "</th>";
-                    html += "</tr>";
+                    //html += "<tr>";
+                    //html += "<th colspan='2' style='text-align:left;font-size:17;color:darkgreen'><br>" + model.getTitle() + "</th>";
+                    //html += "</tr>";
 
                     // *** subject ***
                     html += "<tr>";

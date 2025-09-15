@@ -53,7 +53,7 @@ public class Analyzer extends Fragment {
 
         expo = new DiagramExpose(getContext(), view.findViewById(R.id.diagram), view.findViewById(R.id.scroll));
 
-        Store store = new DiagramStore(expo(),namespace);
+        Store store = new DiagramStore(expo(), namespace);
         expo().createStore(store, namespace, "");
 
         registerActions(view);
@@ -338,9 +338,10 @@ public class Analyzer extends Fragment {
 
 
             {
-                mv.getTitle().setText(model.getTitle());
+                mv.getTitle().setText(model.getSubject());
                 mv.getTitle().setContentDescription(id);
                 //mv.getTitle().setOnClickListener(selectCell());
+                /*
                 mv.getTitle().addTextChangedListener(new TextWatcher() {
 
                     @Override
@@ -359,11 +360,14 @@ public class Analyzer extends Fragment {
                     public void afterTextChanged(Editable s) {
                     }
                 });
+                 */
 
 
-                mv.getSubject().setText(model.getSubject());
+
+                mv.getSubject().setText(model.getTitle());
                 mv.getSubject().setContentDescription(id);
                 //mv.getSubject().setOnClickListener(selectCell());
+                /*
                 mv.getSubject().addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -381,6 +385,8 @@ public class Analyzer extends Fragment {
                     public void afterTextChanged(Editable s) {
                     }
                 });
+                 */
+
             }// title, subject
 
 
@@ -473,13 +479,17 @@ public class Analyzer extends Fragment {
 
 
 
+
                     //mv.getLocation().setText(diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten");
 
+                    mv.getLocation().setText(vorrat + " Stück, noch " + restdays + " Tage");
 
-                    mv.getLocation().setText("noch " + restdays + " Tage");
 
-                    if (restdays < 10) {
+
+
+                    if (restdays < 11) {
                         mv.getLocation().setTextColor(Color.RED);
+                        mv.getLocation().setText(vorrat + " Stück, nur " + restdays + " Tage");
                     }
 
                 } catch (Exception e) {

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,8 +21,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import med.prep.R;
 import med.prep.model.DiagramUtil;
@@ -48,7 +53,7 @@ public class Maintain extends Fragment {
 
         expo = new DiagramExpose(getContext(), view.findViewById(R.id.diagram), view.findViewById(R.id.scroll));
 
-        Store store = new DiagramStore(expo(),namespace);
+        Store store = new DiagramStore(expo(), namespace);
         expo().createStore(store, namespace, "");
 
         registerActions(view);
@@ -355,6 +360,7 @@ public class Maintain extends Fragment {
                 mv.getTitle().setText(model.getTitle());
                 mv.getTitle().setContentDescription(id);
                 //mv.getTitle().setOnClickListener(selectCell());
+                /*
                 mv.getTitle().addTextChangedListener(new TextWatcher() {
 
                     @Override
@@ -373,11 +379,14 @@ public class Maintain extends Fragment {
                     public void afterTextChanged(Editable s) {
                     }
                 });
+                 */
+
 
 
                 mv.getSubject().setText(model.getSubject());
                 mv.getSubject().setContentDescription(id);
                 //mv.getSubject().setOnClickListener(selectCell());
+                /*
                 mv.getSubject().addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -395,6 +404,8 @@ public class Maintain extends Fragment {
                     public void afterTextChanged(Editable s) {
                     }
                 });
+                 */
+
             }// title, subject
 
 
@@ -415,9 +426,94 @@ public class Maintain extends Fragment {
 
                 String location = model.getLocation();
 
-                location = model.getCoordinates() + " vorhanden";
+                int n = 0;
+                String c = model.getCoordinates();
+                if (!c.isEmpty()) {
+                    n = Integer.parseInt(c);
+                }
+                location = "Größe " + model.getSpecs() + ", " + n + " vorhanden";
 
                 mv.getLocation().setText(location);
+
+
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+
+
+                    Date model_day = sdf.parse(model.getDate());
+
+                    Date today = new Date();
+                    sdf.format(today);
+
+                    long diffInMillies = Math.abs(today.getTime() - model_day.getTime());
+                    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+                    int type = Integer.parseInt(model.getType());
+                    int tagesdosis = 0;
+
+                    switch (type) {
+
+                        case 0:
+                            tagesdosis = 1;
+                            break;
+
+                        case 1:
+                            tagesdosis = 2;
+                            break;
+
+                        case 2:
+                            tagesdosis = 3;
+                            break;
+
+                        case 3:
+                            tagesdosis = 3;
+                            break;
+
+                        case 4:
+                            tagesdosis = 5;
+                            break;
+
+
+                        case 5:
+                            tagesdosis = 1;
+                            break;
+
+                        case 6:
+                            tagesdosis = 1;
+                            break;
+
+                        case 7:
+                            tagesdosis = 2;
+                            break;
+
+                        default:
+                            tagesdosis = 0;
+                    }
+
+                    long benutzt = diff * tagesdosis;
+
+
+
+                    int vorrat = 0;
+
+                    if (!model.getCoordinates().isEmpty()) {
+
+                        vorrat = Integer.parseInt(model.getCoordinates());
+                    }
+
+
+                    long rest = vorrat - benutzt;
+
+                    long restdays = rest/tagesdosis;
+
+                    if (restdays < 11) {
+                        mv.getLocation().setTextColor(Color.RED);
+
+                        location = "Größe " + model.getSpecs() + ", nur " + restdays + " Tage";
+                        mv.getLocation().setText(location);
+                    }
+
+                } catch (Exception e) {}
 
                 //mv.getLocation().setOnClickListener(wrongLocation());
             }// location

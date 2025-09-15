@@ -51,7 +51,7 @@ public class Overview extends Fragment {
 
         expo = new DiagramExpose(getContext(), view.findViewById(R.id.diagram), view.findViewById(R.id.scroll));
 
-        Store store = new DiagramStore(expo(),namespace);
+        Store store = new DiagramStore(expo(), namespace);
         expo().createStore(store, namespace, "");
 
         registerActions(view);
@@ -83,33 +83,31 @@ public class Overview extends Fragment {
                     Toast.makeText(getContext(), "neu", Toast.LENGTH_SHORT).show();
 
 
-                    if (false) {
-                        UniversalModel model = expo().getStore().createDefaultModel("Anwendungsgebiet", "Medikament");
+
+                    UniversalModel model = null;
+
+                    Resources res = getContext().getResources();
+
+                    String[] array_type = res.getStringArray(R.array.type);
+                    ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
+
+
+                    String[] array_state = res.getStringArray(R.array.state);
+                    ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+
+
+                    EditorProperties editor = new EditorProperties(expo(), types, states, model);
+                    editor.show(getChildFragmentManager(), "");
+
+                    
+                    /*
+                    UniversalModel model = expo().getStore().createDefaultModel("Anwendungsgebiet", "Medikament");
                         expo().getStore().saveLocalModel(expo(), expo().getFolder());
 
                         expo().setFocus(model.getId(), false);
 
                         expo().scrollToEnd();
-                    }
-
-
-                    if (true) {
-                        UniversalModel model = null;
-
-                        Resources res = getContext().getResources();
-
-                        String[] array_type = res.getStringArray(R.array.type);
-                        ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
-
-
-                        String[] array_state = res.getStringArray(R.array.state);
-                        ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
-
-
-                        EditorProperties editor = new EditorProperties(expo(), types, states, model);
-                        editor.show(getChildFragmentManager(), "");
-                    }
-
+                     */
                 }
         );
 
@@ -361,6 +359,7 @@ public class Overview extends Fragment {
                 mv.getTitle().setText(model.getTitle());
                 mv.getTitle().setContentDescription(id);
                 //mv.getTitle().setOnClickListener(selectCell());
+                /*
                 mv.getTitle().addTextChangedListener(new TextWatcher() {
 
                     @Override
@@ -379,11 +378,15 @@ public class Overview extends Fragment {
                     public void afterTextChanged(Editable s) {
                     }
                 });
+                 */
 
 
-                mv.getSubject().setText(model.getSubject());
+
+                mv.getSubject().setText(model.getSubject() + " " + model.getContent());
+                //mv.getSubject().setText(model.getSubject());
                 mv.getSubject().setContentDescription(id);
                 //mv.getSubject().setOnClickListener(selectCell());
+                /*
                 mv.getSubject().addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -401,6 +404,8 @@ public class Overview extends Fragment {
                     public void afterTextChanged(Editable s) {
                     }
                 });
+                 */
+
             }// title, subject
 
 

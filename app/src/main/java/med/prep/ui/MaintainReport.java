@@ -17,6 +17,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.view.MenuCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
@@ -104,8 +109,87 @@ public class MaintainReport extends Reports {
 
         // >>> model
         for (UniversalModel model : expo.getStore().getModels()) {
-            html = append(html, ltrModel(model));
+
+
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+
+
+                Date model_day = sdf.parse(model.getDate());
+
+                Date today = new Date();
+                sdf.format(today);
+
+                long diffInMillies = Math.abs(today.getTime() - model_day.getTime());
+                long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+                int type = Integer.parseInt(model.getType());
+                int tagesdosis = 0;
+
+                switch (type) {
+
+                    case 0:
+                        tagesdosis = 1;
+                        break;
+
+                    case 1:
+                        tagesdosis = 2;
+                        break;
+
+                    case 2:
+                        tagesdosis = 3;
+                        break;
+
+                    case 3:
+                        tagesdosis = 3;
+                        break;
+
+                    case 4:
+                        tagesdosis = 5;
+                        break;
+
+
+                    case 5:
+                        tagesdosis = 1;
+                        break;
+
+                    case 6:
+                        tagesdosis = 1;
+                        break;
+
+                    case 7:
+                        tagesdosis = 2;
+                        break;
+
+                    default:
+                        tagesdosis = 0;
+                }
+
+                long benutzt = diff * tagesdosis;
+
+
+
+                int vorrat = 0;
+
+                if (!model.getCoordinates().isEmpty()) {
+
+                    vorrat = Integer.parseInt(model.getCoordinates());
+                }
+
+
+                long rest = vorrat - benutzt;
+
+                long restdays = rest/tagesdosis;
+
+                if (restdays < 33) {
+                    html = append(html, ltrModel(model, restdays));
+                }
+            } catch (Exception e) {}
+
+
         }// model
+
+
 
 
         // >>> end
@@ -115,7 +199,7 @@ public class MaintainReport extends Reports {
         return html;
     }
 
-    private String ltrModel(UniversalModel model) {
+    private String ltrModel(UniversalModel model, long restdays) {
         String html = "";
 
         {// outline table
@@ -143,8 +227,8 @@ public class MaintainReport extends Reports {
                     // *** title, date ***
 
                     html += "<tr>";
-                    html += "<th style='text-align:left'>" + model.getTitle() + "</th>";
-                    html += "<th style='text-align:right;font-size:9'>" + model.getDate() + "</th>";
+                    html += "<th style='text-align:left'>noch " + restdays + " Tage</th>";
+                    //html += "<th style='text-align:right;font-size:9'>" + model.getDate() + "</th>";
                     html += "</tr>";
 
 
@@ -153,47 +237,47 @@ public class MaintainReport extends Reports {
                     // *** type ***
 
 
-                    html += "<tr>";
-                    html += "<th colspan='2' style='text-align:right;font-size:9'>" + model.getSubject() + "</th>";
-                    html += "</tr>";
+                    //html += "<tr>";
+                    //html += "<th colspan='2' style='text-align:right;font-size:9'>" + model.getSubject() + "</th>";
+                    //html += "</tr>";
 
                     // *** state ***
 
+                    //html += "<tr>";
+                    //html += "<th colspan='2' style='text-align:right;font-size:9'>" + model.getState() + "</th>";
+                    //html += "</tr>";
+
+
+                    // *** subject ***
                     html += "<tr>";
-                    html += "<th colspan='2' style='text-align:right;font-size:9'>" + model.getState() + "</th>";
+                    html += "<th colspan='2' style='text-align:left;font-size:19'><br>" + model.getSubject() + " " + model.getContent() + "</th>";
                     html += "</tr>";
-
-
-
 
                     // *** title ***
 
                     html += "<tr>";
-                    html += "<th colspan='2' style='text-align:left;font-size:17;color:darkgreen'><br>" + model.getTitle() + "</th>";
+                    html += "<th colspan='2' style='text-align:left;font-size:17;color:darkgreen'><br>" + model.getSpecs() + " " + model.getTitle() + "</th>";
                     html += "</tr>";
 
-                    // *** subject ***
-                    html += "<tr>";
-                    html += "<th colspan='2' style='text-align:left;font-size:19'><br>" + model.getSubject() + "</th>";
-                    html += "</tr>";
+
 
 
 
 
                     // *** content ***
-                    html += "<tr>";
-                    html += "<th colspan='2' style='text-align:left'><br><br>" + model.getContent() + "</th>";
-                    html += "</tr>";
+                    //html += "<tr>";
+                    //html += "<th colspan='2' style='text-align:left'><br><br>" + model.getContent() + "</th>";
+                    //html += "</tr>";
 
                     // *** specs ***
-                    html += "<tr>";
-                    html += "<th colspan='2' style='text-align:left'>" + model.getSpecs() + "</th>";
-                    html += "</tr>";
+                    //html += "<tr>";
+                    //html += "<th colspan='2' style='text-align:left'>" + model.getSpecs() + "</th>";
+                    //html += "</tr>";
 
                     // *** tags ***
-                    html += "<tr>";
-                    html += "<th colspan='2' style='text-align:left;color:darkblue'>" + model.getTags() + "</th>";
-                    html += "</tr>";
+                    //html += "<tr>";
+                    //html += "<th colspan='2' style='text-align:left;color:darkblue'>" + model.getTags() + "</th>";
+                    //html += "</tr>";
 
 
                     html += "</table>";
@@ -203,9 +287,9 @@ public class MaintainReport extends Reports {
 
                 // *** bottom ***
 
-                html += "<tr>";
-                html += "<th style='text-align:right;vertical-align:bottom'>" + model.getTags() + "</th>";
-                html += "</tr>";
+                //html += "<tr>";
+                //html += "<th style='text-align:right;vertical-align:bottom'>" + model.getTags() + "</th>";
+                //html += "</tr>";
 
                 html += "</table>";
             }// inner table
