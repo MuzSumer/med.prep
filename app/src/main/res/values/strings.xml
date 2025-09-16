@@ -36,11 +36,13 @@
     <string name="record_delete_warning">The item will be removed from your device.</string>
 
     <string name="action_print">print</string>
+    <string name="action_email">send</string>
+    <string name="action_email_warning">Vorsicht beim Teilen persönlicher Daten</string>
 
     <!-- diagram -->
     <string name="diagram_notice1">text > select</string>
 
-    <string name="diagram_notice2">image > edit</string>
+    <string name="diagram_notice2">image > edit\n✅ > report</string>
 
     <string name="diagram_notice_error">Das ist hier nicht möglich.</string>
     <!--

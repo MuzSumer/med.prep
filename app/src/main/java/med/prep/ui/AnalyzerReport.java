@@ -17,7 +17,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.view.MenuCompat;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;

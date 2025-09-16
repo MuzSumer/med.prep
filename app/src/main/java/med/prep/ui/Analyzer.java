@@ -8,8 +8,6 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +45,10 @@ public class Analyzer extends Fragment {
     public DiagramExpose expo() { return expo; }
 
     int emergency = 11;
+    int order = 37;
+
+    String fullname;
+    String birthdate;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -62,7 +64,23 @@ public class Analyzer extends Fragment {
         registerActions(view);
 
 
-        //store.createDefaultModel("A", "A");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        String e = preferences.getString("emergency", "");
+        if (!e.isEmpty()) {
+            emergency = Integer.parseInt(e);
+        }
+
+        String o = preferences.getString("order", "");
+        if (!o.isEmpty()) {
+            order = Integer.parseInt(o);
+        }
+
+        fullname = preferences.getString("FirstName", "") + " " + preferences.getString("LastName", "");
+        birthdate = preferences.getString("BirthDate", "");
+
+
+
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         expo().getDiagram().setLayoutManager(manager);
@@ -70,15 +88,6 @@ public class Analyzer extends Fragment {
         ModelAdapter adapter = new ModelAdapter(expo().getContext());
         expo().getDiagram().setAdapter(adapter);
 
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-
-
-        String s = preferences.getString("emergency", "");
-        if (!s.isEmpty()) {
-            emergency = Integer.parseInt(s);
-        }
 
         return view;
     }
@@ -120,13 +129,118 @@ public class Analyzer extends Fragment {
         view.findViewById(R.id.record_search).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), "coming soon...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.action_email_warning), Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("text/html");
+                    //intent.putExtra(Intent.EXTRA_EMAIL, "muzsuna@mail.com");
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Analyse");
+                    intent.putExtra(Intent.EXTRA_TEXT, body());
+
+                    startActivity(Intent.createChooser(intent, "Send Email"));
 
                 }
         );
     }
 
+    private String body() {
 
+        String body = fullname + ", " + birthdate + "\n\n";
+
+        for (UniversalModel model : expo().getStore().getModels()) {
+
+
+            String result = "";
+
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+
+
+                Date model_day = sdf.parse(model.getDate());
+                Date today = sdf.parse(expo().getStore().today());
+
+
+                long diffInMillies = Math.abs(today.getTime() - model_day.getTime());
+                long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+
+                int type = Integer.parseInt(model.getType());
+                int tagesdosis = 0;
+
+                switch (type) {
+
+                    case 0:
+                        tagesdosis = 1;
+                        break;
+
+                    case 1:
+                        tagesdosis = 2;
+                        break;
+
+                    case 2:
+                        tagesdosis = 3;
+                        break;
+
+                    case 3:
+                        tagesdosis = 3;
+                        break;
+
+                    case 4:
+                        tagesdosis = 5;
+                        break;
+
+
+                    case 5:
+                        tagesdosis = 1;
+                        break;
+
+                    case 6:
+                        tagesdosis = 1;
+                        break;
+
+                    case 7:
+                        tagesdosis = 2;
+                        break;
+
+                    default:
+                        tagesdosis = 0;
+                }
+
+                long benutzt = diff * tagesdosis;
+
+
+
+                int vorrat = 0;
+                if (!model.getCoordinates().isEmpty()) {
+                    vorrat = Integer.parseInt(model.getCoordinates());
+                }
+
+
+                long rest = vorrat - benutzt;
+
+                long restdays = rest/tagesdosis;
+
+
+                result = vorrat + " Stück, noch " + restdays + " Tage";
+                //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
+
+
+            } catch (Exception e) {}
+
+
+
+            if (body.isEmpty()) {
+                body = model.getSubject() + " " + result;
+            } else {
+                body = body + "\n" + model.getSubject() + " " + result;
+            }
+
+
+
+
+        }
+        return body;
+    }
 
 
     public View.OnClickListener selectCell() { return cellSelect; }
@@ -383,7 +497,7 @@ public class Analyzer extends Fragment {
                 mv.getLocation().setContentDescription(id);
 
 
-                // TODO analyze
+                // *** analyze
                 try {
                     SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
 
