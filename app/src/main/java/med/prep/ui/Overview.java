@@ -29,6 +29,7 @@ import med.prep.R;
 import med.prep.model.DiagramUtil;
 import med.prep.model.dialog.EditorProperties;
 import med.prep.model.dialog.RemoveMany;
+import med.prep.model.dialog.StockUp;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
@@ -415,7 +416,19 @@ public class Overview extends Fragment {
                 //mv.getDate().setText(model.getId() + "/" + model.getDate());
                 mv.getDate().setText(model.getDate());
                 mv.getDate().setContentDescription(id);
-                //mv.getDate().setOnClickListener(editCell());
+                mv.getDate().setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int bestand = 0;
+                        if (!model.getCoordinates().isEmpty()) {
+                            bestand = Integer.parseInt(model.getCoordinates());
+                        }
+
+
+                        StockUp dialog = new StockUp(expo(), model);
+                        dialog.show(getChildFragmentManager(), "");
+                    }
+                });
 
 
                 try {
