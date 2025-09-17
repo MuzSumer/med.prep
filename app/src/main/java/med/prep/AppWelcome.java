@@ -85,6 +85,12 @@ public class AppWelcome extends AppCompatActivity {
             return true;
         }
 
+        // show backup
+        if (id == R.id.action_backup) {
+
+            startActivity(new Intent(this, AppBackup.class));
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }//menu

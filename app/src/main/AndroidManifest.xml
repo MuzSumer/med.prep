@@ -16,7 +16,7 @@
 
         <activity android:name="med.prep.AppAbout" />
         <activity android:name="med.prep.AppSettings" />
-
+        <activity android:name="med.prep.AppBackup" />
 
         <activity android:name="med.prep.ui.OverviewReport" />
         <activity android:name="med.prep.ui.AnalyzerReport" />
