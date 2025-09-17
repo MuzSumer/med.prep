@@ -22,8 +22,15 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import med.prep.R;
 import med.prep.model.DiagramUtil;
@@ -136,16 +143,7 @@ public class Overview extends Fragment {
             //days + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
 
 
-
-            if (body.isEmpty()) {
-                //body = model.getTitle() + " " + model.getSubject() + " " + result;
-                body = model.getSubject() + " " + result;
-            } else {
-                //body = body + "\n" + model.getTitle() + " " + model.getSubject() + " " + result;
-                body = body + "\n" + model.getSubject() + " " + result;
-            }
-
-
+            body = body + "\n" + model.getSubject() + " " + result;
 
 
         }
@@ -188,6 +186,7 @@ public class Overview extends Fragment {
 
         view.findViewById(R.id.record_remove).setOnClickListener(
                 v -> {
+
                     RemoveMany editor = new RemoveMany(expo());
                     editor.show(getChildFragmentManager(), "remove");
                 }
@@ -224,9 +223,6 @@ public class Overview extends Fragment {
         );
     }
 
-
-
-
     public View.OnClickListener selectCell() { return cellSelect; }
 
 
@@ -257,7 +253,7 @@ public class Overview extends Fragment {
 
         Resources res = getContext().getResources();
 
-        String[] array_type = res.getStringArray(R.array.type);
+        String[] array_type = res.getStringArray(R.array.type_speak);
         ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
 
 

@@ -17,13 +17,13 @@ import androidx.fragment.app.DialogFragment;
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.meta.UniversalModel;
+import med.prep.ui.Reports;
 
 public class StockUp extends DialogFragment {
 
     DiagramExpose diagram;
     UniversalModel model;
 
-    int bestand = 0;
 
     EditText add_bestand, add_zubuchen;
 
@@ -55,11 +55,24 @@ public class StockUp extends DialogFragment {
             add_zubuchen = view.findViewById(R.id.add_zubuchen);
 
 
+
+            long days = Reports.days(model, diagram.getStore().today());
+            int tagesdosis = Reports.tagesdosis(model);
+
+            long benutzt = days * tagesdosis;
+
+
+
+            int vorrat = 0;
+
             if (!model.getCoordinates().isEmpty()) {
-                bestand = Integer.parseInt(model.getCoordinates());
+                vorrat = Integer.parseInt(model.getCoordinates());
             }
 
-            add_bestand.setText(Integer.toString(bestand));
+
+            long rest = vorrat - benutzt;
+
+            add_bestand.setText(Long.toString(rest));
 
         }// fields
 
@@ -72,15 +85,14 @@ public class StockUp extends DialogFragment {
         String okay = getContext().getString(R.string.dialog_add_confirm);
         builder.setPositiveButton(okay, (dialog, id) -> {
 
+            int saldo = Integer.parseInt(add_bestand.getText().toString());
             int zubuchen = Integer.parseInt(add_zubuchen.getText().toString());
 
-            int neu = bestand + zubuchen;
-
-            model.setCoordinates(Integer.toString(neu));
+            model.setCoordinates(Integer.toString(saldo + zubuchen));
             model.setDate(diagram.getStore().today());
 
-            diagram.getStore().saveLocalModel(diagram, "");
 
+            diagram.getStore().saveLocalModel(diagram, diagram.getFolder());
             diagram.redraw(true);
 
         });

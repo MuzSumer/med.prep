@@ -167,9 +167,9 @@ public class Analyzer extends Fragment {
             long restdays = rest/tagesdosis;
 
 
-            result = vorrat + " Stück, noch " + restdays + " Tage";
+            result = rest + " Stück, noch " + restdays + " Tage";
             if (restdays < order) {
-                result = vorrat + " Stück, nur noch " + restdays + " Tage";
+                result = rest + " Stück, nur noch " + restdays + " Tage";
             }
             //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
 
@@ -220,7 +220,7 @@ public class Analyzer extends Fragment {
 
         Resources res = getContext().getResources();
 
-        String[] array_type = res.getStringArray(R.array.type);
+        String[] array_type = res.getStringArray(R.array.type_speak);
         ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
 
 
@@ -465,12 +465,12 @@ public class Analyzer extends Fragment {
 
                 //mv.getLocation().setText(diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten");
 
-                mv.getLocation().setText(vorrat + " Stück, noch " + restdays + " Tage");
+                mv.getLocation().setText(rest + " Stück, noch " + restdays + " Tage");
 
 
                 if (restdays < emergency) {
                     mv.getLocation().setTextColor(Color.RED);
-                    mv.getLocation().setText(vorrat + " Stück, nur noch " + restdays + " Tage");
+                    mv.getLocation().setText(rest + " Stück, nur noch " + restdays + " Tage");
                 }
 
 

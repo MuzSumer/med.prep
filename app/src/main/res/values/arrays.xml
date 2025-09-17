@@ -5,14 +5,23 @@
         <item>1 - 0 - 0</item>
         <item>1 - 0 - 1</item>
         <item>1 - 1 - 1</item>
-        <item>1 - 0 - 1 - 0 - 1</item>
-        <item>1 - 1 - 1 - 1 - 1</item>
+        <item>1 0 1 0 1</item>
+        <item>1 1 1 1 1</item>
         <item>0 - 0 - 1</item>
         <item>0 - 1 - 0</item>
         <item>0 - 1 - 1</item>
     </string-array>
 
-
+    <string-array name="type_speak">
+        <item>morgens</item>
+        <item>morgens und abends</item>
+        <item>morgens, mittags, abends</item>
+        <item>alle 8 Stunden</item>
+        <item>alle 4 Stunden</item>
+        <item>abends</item>
+        <item>mittags</item>
+        <item>mittags und abends</item>
+    </string-array>
 
 
     <string-array name="state">

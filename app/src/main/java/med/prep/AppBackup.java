@@ -8,6 +8,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
@@ -139,13 +145,15 @@ public class AppBackup extends AppCompatActivity {
                 expo.createStore(sexpo, namespace, "");
 
                 for (int i=0; i<4; i++) {
-                    UniversalModel model = expo.getStore().createDefaultModel("Anwendungsgebiet", "Name");
+                    UniversalModel model = expo.getStore().createDefaultModel("Anwendung", "Name");
                     model.setContent("10 mg");
                     model.setSpecs("N3");
                     model.setTags("08:00");
                     model.setType("0");
                     model.setCoordinates("100");
                     model.setState("0");
+
+                    redateModel(model, expo.getStore().today());
                 }
 
                 expo.getStore().saveLocalModel(expo, expo.getFolder());
@@ -154,4 +162,24 @@ public class AppBackup extends AppCompatActivity {
 
     }
 
+    private void redateModel(UniversalModel model, String today) {
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+
+            Date model_day = sdf.parse(model.getDate());
+
+            long diffInMillies = Math.abs(sdf.parse(today).getTime() - model_day.getTime());
+            long days = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+            Calendar c = Calendar.getInstance();
+            c.setTime(model_day);
+            c.set(Calendar.DATE, -7);
+
+            model.setDate(sdf.format(c.getTime()));
+
+            //expo.getStore().saveLocalModel(expo, expo.getFolder());
+            //expo.redraw(true);
+
+        } catch (Exception e) {}
+    }
 }

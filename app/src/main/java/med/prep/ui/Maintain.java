@@ -169,7 +169,7 @@ public class Maintain extends Fragment {
             long restdays = rest/tagesdosis;
 
 
-            result = vorrat + " Stück, noch " + restdays + " Tage";
+            result = rest + " Stück, noch " + restdays + " Tage";
             //days + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
 
 
@@ -185,11 +185,9 @@ public class Maintain extends Fragment {
             }
 
 
+        }//for
 
 
-
-
-        }
         return body;
     }
 
@@ -225,7 +223,7 @@ public class Maintain extends Fragment {
 
         Resources res = getContext().getResources();
 
-        String[] array_type = res.getStringArray(R.array.type);
+        String[] array_type = res.getStringArray(R.array.type_speak);
         ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
 
 
@@ -445,13 +443,6 @@ public class Maintain extends Fragment {
                 mv.getAction().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getContext(), id, Toast.LENGTH_SHORT).show();
-
-                        int bestand = 0;
-                        if (!model.getCoordinates().isEmpty()) {
-                            bestand = Integer.parseInt(model.getCoordinates());
-                        }
-
 
                         StockUp dialog = new StockUp(expo(), model);
                         dialog.show(getChildFragmentManager(), "");
@@ -492,14 +483,7 @@ public class Maintain extends Fragment {
                 mv.getLocation().setContentDescription(id);
 
 
-                String location = model.getLocation();
-
-                int n = 0;
-                String c = model.getCoordinates();
-                if (!c.isEmpty()) {
-                    n = Integer.parseInt(c);
-                }
-                location = "Größe " + model.getSpecs() + ", " + n + " vorhanden";
+                String location = model.getSpecs() + ", " + rest + " vorhanden";
 
                 mv.getLocation().setText(location);
 
@@ -511,7 +495,7 @@ public class Maintain extends Fragment {
                 if (restdays < emergency) {
                     mv.getLocation().setTextColor(Color.RED);
 
-                    location = "Größe " + model.getSpecs() + ", nur " + restdays + " Tage";
+                    location = rest + " Stück, nur " + restdays + " Tage";
                     mv.getLocation().setText(location);
                 }
 
