@@ -169,8 +169,8 @@ public class Maintain extends Fragment {
             long restdays = rest/tagesdosis;
 
 
-            result = vorrat + " Stück, nur noch " + restdays + " Tage";
-            //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
+            result = vorrat + " Stück, noch " + restdays + " Tage";
+            //days + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
 
 
             // only report low supplies

@@ -1,6 +1,7 @@
 package med.prep.ui;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.core.view.MenuCompat;
+import androidx.preference.PreferenceManager;
 
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
@@ -34,6 +36,12 @@ public class AnalyzerReport extends Reports {
 
     DiagramExpose expo;
 
+
+    int emergency = 11;
+    int order = 37;
+
+    String fullname;
+    String birthdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,24 @@ public class AnalyzerReport extends Reports {
 
         web = findViewById(R.id.web_view);
         web.getSettings().setAllowFileAccess(true);
+
+
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+
+        String e = preferences.getString("emergency", "");
+        if (!e.isEmpty()) {
+            emergency = Integer.parseInt(e);
+        }
+
+        String o = preferences.getString("order", "");
+        if (!o.isEmpty()) {
+            order = Integer.parseInt(o);
+        }
+
+        fullname = preferences.getString("FirstName", "") + " " + preferences.getString("LastName", "");
+        birthdate = preferences.getString("BirthDate", "");
 
 
         // >>> expose model
@@ -144,33 +170,7 @@ public class AnalyzerReport extends Reports {
 
                     // *** title, date ***
 
-                    html += "<tr>";
-                    //html += "<th style='text-align:left'>" + model.getTitle() + "</th>";
-                    html += "<th style='text-align:right;font-size:9'>" + model.getDate() + "</th>";
-                    html += "</tr>";
 
-
-
-
-                    // *** type ***
-
-
-                    //html += "<tr>";
-                    //html += "<th colspan='2' style='text-align:right;font-size:9'>" + model.getSubject() + "</th>";
-                    //html += "</tr>";
-
-                    // *** state ***
-
-                    //html += "<tr>";
-                    //html += "<th colspan='2' style='text-align:right;font-size:9'>" + model.getState() + "</th>";
-                    //html += "</tr>";
-
-
-
-
-
-
-                    //*** analysis ***
                     String result;
 
                     long days = Reports.days(model, expo.getStore().today());
@@ -195,17 +195,39 @@ public class AnalyzerReport extends Reports {
                     result = "noch " + restdays + " Tage";
                     //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
 
+                    if (restdays < emergency) {
+                        result = "nur noch " + restdays + " Tage";
+                    }
 
+                    html += "<tr>";
+                    if (restdays < emergency) {
+                        html += "<th colspan='2' style='text-align:left;color:red'>" + result + "</th>";
+                    } else {
+                        html += "<th colspan='2' style='text-align:left'>" + result + "</th>";
+                    }
+
+                    html += "<th colspan='2' style='text-align:right'>" + model.getDate() + "</th>";
                     html += "</tr>";
 
 
-                    /*
-
-                    //mv.getLocation().setText();
 
 
-                    mv.getLocation().setText();
-                     */
+                    // *** type ***
+
+
+                    //html += "<tr>";
+                    //html += "<th colspan='2' style='text-align:right;font-size:9'>" + model.getSubject() + "</th>";
+                    //html += "</tr>";
+
+                    // *** state ***
+
+                    //html += "<tr>";
+                    //html += "<th colspan='2' style='text-align:right;font-size:9'>" + model.getState() + "</th>";
+                    //html += "</tr>";
+
+
+
+
 
 
                     //*** subject ***

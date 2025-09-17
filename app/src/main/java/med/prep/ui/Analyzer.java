@@ -169,7 +169,7 @@ public class Analyzer extends Fragment {
 
             result = vorrat + " Stück, noch " + restdays + " Tage";
             if (restdays < order) {
-                result = vorrat + " Stück, nur " + restdays + " Tage";
+                result = vorrat + " Stück, nur noch " + restdays + " Tage";
             }
             //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
 
@@ -470,7 +470,7 @@ public class Analyzer extends Fragment {
 
                 if (restdays < emergency) {
                     mv.getLocation().setTextColor(Color.RED);
-                    mv.getLocation().setText(vorrat + " Stück, nur " + restdays + " Tage");
+                    mv.getLocation().setText(vorrat + " Stück, nur noch " + restdays + " Tage");
                 }
 
 

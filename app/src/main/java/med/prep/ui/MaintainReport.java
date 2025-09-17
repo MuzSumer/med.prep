@@ -191,7 +191,7 @@ public class MaintainReport extends Reports {
                     // *** title, date ***
 
                     html += "<tr>";
-                    html += "<th style='text-align:left'>nur noch " + restdays + " Tage</th>";
+                    html += "<th style='text-align:left'>noch " + restdays + " Tage</th>";
                     //html += "<th style='text-align:right;font-size:9'>" + model.getDate() + "</th>";
                     html += "</tr>";
 
