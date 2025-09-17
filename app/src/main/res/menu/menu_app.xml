@@ -7,12 +7,12 @@
     <group android:id="@+id/system">
         <item
             android:id="@+id/action_settings"
-            android:title="@string/app_prefs" />
+            android:title="@string/app_preferences" />
         <item
             android:id="@+id/action_about"
-            android:title="@string/about" />
+            android:title="@string/menu_about" />
         <item
             android:id="@+id/action_backup"
-            android:title="@string/backup" />
+            android:title="@string/menu_backup" />
     </group>
 </menu>

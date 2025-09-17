@@ -113,7 +113,7 @@ public class Maintain extends Fragment {
         view.findViewById(R.id.record_share).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), "loading...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.report_generation), Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(getContext(), MaintainReport.class);
                     intent.putExtra("namespace", namespace);
@@ -326,13 +326,43 @@ public class Maintain extends Fragment {
              */
 
 
+            // *** analyze
+            long days = Reports.days(model, expo.getStore().today());
+            int tagesdosis = Reports.tagesdosis(model);
+
+            long benutzt = days * tagesdosis;
+
+
+
+            int vorrat = 0;
+
+            if (!model.getCoordinates().isEmpty()) {
+
+                vorrat = Integer.parseInt(model.getCoordinates());
+            }
+
+
+            long rest = vorrat - benutzt;
+
+            long restdays = rest/tagesdosis;
+
             {
+
+
                 if (id.equals(expo().getSelected())) {
+                    if (restdays < order) {
+                        mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_yellow));
+                    } else {
+                        mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_selected));
+                    }
                     mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_selected));
-                    registerForContextMenu(mv.getImage());
                 } else {
+                    if (restdays < order) {
+                        mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_red));
+                    } else {
+                        mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_background));
+                    }
                     mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_background));
-                    unregisterForContextMenu(mv.getImage());
                 }
             }// selection
 
@@ -476,24 +506,7 @@ public class Maintain extends Fragment {
 
                 // *** analyze
 
-                long days = Reports.days(model, expo.getStore().today());
-                int tagesdosis = Reports.tagesdosis(model);
 
-                long benutzt = days * tagesdosis;
-
-
-
-                int vorrat = 0;
-
-                if (!model.getCoordinates().isEmpty()) {
-
-                    vorrat = Integer.parseInt(model.getCoordinates());
-                }
-
-
-                long rest = vorrat - benutzt;
-
-                long restdays = rest/tagesdosis;
 
                 if (restdays < emergency) {
                     mv.getLocation().setTextColor(Color.RED);

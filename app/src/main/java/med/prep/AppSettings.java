@@ -24,7 +24,7 @@ public class AppSettings extends AppCompatActivity {
         if (actionBar != null) {
             //actionBar.setDisplayHomeAsUpEnabled(true);
 
-            actionBar.setTitle(getString(R.string.app_prefs));
+            actionBar.setTitle(getString(R.string.app_preferences));
         }
 
         //PreferenceFragment pref = new PreferenceFragment();
@@ -81,6 +81,8 @@ public class AppSettings extends AppCompatActivity {
             String vemergency = sharedPreferences.getString("emergency", "");
 
             emergency.setTitle(vemergency);
+
+
             /*
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("FirstName", vfirst);

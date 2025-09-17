@@ -12,6 +12,7 @@ import android.media.AudioManager;
 import android.media.ToneGenerator;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -163,8 +164,8 @@ public class DiagramExpose implements Diagram {
         ImageView image;
         public ImageView getImage() { return image; }
 
-        Button action;
-        public Button getAction() { return action; }
+        ImageButton action;
+        public ImageButton getAction() { return action; }
 
         ImageView openLocation;
         public ImageView getOpenLocation() { return openLocation; }

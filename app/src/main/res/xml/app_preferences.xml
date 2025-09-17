@@ -4,7 +4,7 @@
     android:divider="@drawable/app_rbox">
 
 
-    <PreferenceCategory android:title="@string/app_prefs">
+    <PreferenceCategory android:title="@string/app_preferences">
 
         <EditTextPreference
             android:key="FirstName"

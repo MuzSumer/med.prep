@@ -28,12 +28,13 @@
             android:contentDescription="@string/model_id"
             app:srcCompat="@drawable/pill28" />
 
-        <Button
+        <ImageButton
             android:id="@+id/item_add"
-            android:layout_width="54dp"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/app_progress_notification"
-            android:text="+" />
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:backgroundTint="@color/ic_color_day"
+            android:visibility="visible"
+            app:srcCompat="@drawable/app_progress_notification" />
 
         <LinearLayout
             android:id="@+id/model"

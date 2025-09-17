@@ -3,16 +3,15 @@
     <string name="app_support">pinimento@gmail.com</string>
 
 
-    <string name="app_prefs">Settings</string>
+    <string name="app_preferences">Settings</string>
     <string name="app_notifications">Notifications</string>
 
     <string name="menu_about">About</string>
-    <string name="about">About</string>
-    <string name="backup">Backup</string>
+    <string name="menu_backup">Backup</string>
 
     <string name="title_overview">Bestand</string>
     <string name="title_analyzer">Analyse</string>
-    <string name="title_maintain">Saldo</string>
+    <string name="title_maintain">Empfehlung</string>
 
     <!-- records -->
     <string name="dialog_add">Add</string>
@@ -27,8 +26,10 @@
     <string name="dialog_selected_up">selected up</string>
     <string name="dialog_selected_down">selected down</string>
 
+    <string name="report_generation">generating...</string>
     <string name="report_select">Select an Exposé</string>
     <string name="report_select_model">Select a Snapshot</string>
+
 
     <string name="record_add">New Exposé</string>
     <string name="record_select">Select an Exposé</string>
@@ -41,7 +42,7 @@
     <string name="action_email_warning">Vorsicht beim Teilen persönlicher Daten</string>
 
     <!-- diagram -->
-    <string name="diagram_notice1">text > selectn✏html, mail</string>
+    <string name="diagram_notice1">text > select\n✏html, mail</string>
 
     <string name="diagram_notice2">image > edit\n✏html, mail</string>
 

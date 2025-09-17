@@ -111,7 +111,7 @@ public class Analyzer extends Fragment {
         view.findViewById(R.id.record_share).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), "loading...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.report_generation), Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(getContext(), AnalyzerReport.class);
                     intent.putExtra("namespace", namespace);
@@ -168,6 +168,9 @@ public class Analyzer extends Fragment {
 
 
             result = vorrat + " Stück, noch " + restdays + " Tage";
+            if (restdays < order) {
+                result = vorrat + " Stück, nur " + restdays + " Tage";
+            }
             //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
 
 

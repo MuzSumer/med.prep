@@ -197,7 +197,7 @@ public class Overview extends Fragment {
         view.findViewById(R.id.record_share).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), "loading...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.report_generation), Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(getContext(), OverviewReport.class);
                     intent.putExtra("namespace", namespace);
