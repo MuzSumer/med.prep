@@ -21,12 +21,8 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import med.prep.R;
 import med.prep.model.DiagramUtil;
@@ -155,93 +151,38 @@ public class Maintain extends Fragment {
 
             String result = "";
 
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+            long days = Reports.days(model, expo.getStore().today());
+            int tagesdosis = Reports.tagesdosis(model);
+
+            long benutzt = days * tagesdosis;
 
 
-                Date model_day = sdf.parse(model.getDate());
-                Date today = sdf.parse(expo().getStore().today());
+
+            int vorrat = 0;
+            if (!model.getCoordinates().isEmpty()) {
+                vorrat = Integer.parseInt(model.getCoordinates());
+            }
 
 
-                long diffInMillies = Math.abs(today.getTime() - model_day.getTime());
-                long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+            long rest = vorrat - benutzt;
+
+            long restdays = rest/tagesdosis;
 
 
-                int type = Integer.parseInt(model.getType());
-                int tagesdosis = 0;
-
-                switch (type) {
-
-                    case 0:
-                        tagesdosis = 1;
-                        break;
-
-                    case 1:
-                        tagesdosis = 2;
-                        break;
-
-                    case 2:
-                        tagesdosis = 3;
-                        break;
-
-                    case 3:
-                        tagesdosis = 3;
-                        break;
-
-                    case 4:
-                        tagesdosis = 5;
-                        break;
+            result = vorrat + " Stück, nur noch " + restdays + " Tage";
+            //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
 
 
-                    case 5:
-                        tagesdosis = 1;
-                        break;
+            // only report low supplies
+            if (restdays < order) {
 
-                    case 6:
-                        tagesdosis = 1;
-                        break;
-
-                    case 7:
-                        tagesdosis = 2;
-                        break;
-
-                    default:
-                        tagesdosis = 0;
+                if (body.isEmpty()) {
+                    body = model.getSubject() + " " + result;
+                } else {
+                    body = body + "\n" + model.getSubject() + " " + result;
                 }
 
-                long benutzt = diff * tagesdosis;
-
-
-
-                int vorrat = 0;
-                if (!model.getCoordinates().isEmpty()) {
-                    vorrat = Integer.parseInt(model.getCoordinates());
-                }
-
-
-                long rest = vorrat - benutzt;
-
-                long restdays = rest/tagesdosis;
-
-
-                result = vorrat + " Stück, nur noch " + restdays + " Tage";
-                //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
-
-
-                // only report low supplies
-                if (restdays < order) {
-
-                    if (body.isEmpty()) {
-                        body = model.getSubject() + " " + result;
-                    } else {
-                        body = body + "\n" + model.getSubject() + " " + result;
-                    }
-
-                }
-
-            } catch (Exception e) {}
-
-
+            }
 
 
 
@@ -534,84 +475,32 @@ public class Maintain extends Fragment {
 
 
                 // *** analyze
-                try {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
 
+                long days = Reports.days(model, expo.getStore().today());
+                int tagesdosis = Reports.tagesdosis(model);
 
-                    Date model_day = sdf.parse(model.getDate());
-
-                    Date today = new Date();
-                    sdf.format(today);
-
-                    long diffInMillies = Math.abs(today.getTime() - model_day.getTime());
-                    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
-                    int type = Integer.parseInt(model.getType());
-                    int tagesdosis = 0;
-
-                    switch (type) {
-
-                        case 0:
-                            tagesdosis = 1;
-                            break;
-
-                        case 1:
-                            tagesdosis = 2;
-                            break;
-
-                        case 2:
-                            tagesdosis = 3;
-                            break;
-
-                        case 3:
-                            tagesdosis = 3;
-                            break;
-
-                        case 4:
-                            tagesdosis = 5;
-                            break;
-
-
-                        case 5:
-                            tagesdosis = 1;
-                            break;
-
-                        case 6:
-                            tagesdosis = 1;
-                            break;
-
-                        case 7:
-                            tagesdosis = 2;
-                            break;
-
-                        default:
-                            tagesdosis = 0;
-                    }
-
-                    long benutzt = diff * tagesdosis;
+                long benutzt = days * tagesdosis;
 
 
 
-                    int vorrat = 0;
+                int vorrat = 0;
 
-                    if (!model.getCoordinates().isEmpty()) {
+                if (!model.getCoordinates().isEmpty()) {
 
-                        vorrat = Integer.parseInt(model.getCoordinates());
-                    }
+                    vorrat = Integer.parseInt(model.getCoordinates());
+                }
 
 
-                    long rest = vorrat - benutzt;
+                long rest = vorrat - benutzt;
 
-                    long restdays = rest/tagesdosis;
+                long restdays = rest/tagesdosis;
 
-                    if (restdays < emergency) {
-                        mv.getLocation().setTextColor(Color.RED);
+                if (restdays < emergency) {
+                    mv.getLocation().setTextColor(Color.RED);
 
-                        location = "Größe " + model.getSpecs() + ", nur " + restdays + " Tage";
-                        mv.getLocation().setText(location);
-                    }
-
-                } catch (Exception e) {}
+                    location = "Größe " + model.getSpecs() + ", nur " + restdays + " Tage";
+                    mv.getLocation().setText(location);
+                }
 
                 //mv.getLocation().setOnClickListener(wrongLocation());
             }// location

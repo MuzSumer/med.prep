@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -20,12 +22,8 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import med.prep.R;
 import med.prep.model.DiagramUtil;
@@ -113,80 +111,28 @@ public class Overview extends Fragment {
 
             String result = "";
 
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+            long days = Reports.days(model, expo().getStore().today());
+
+            int tagesdosis = Reports.tagesdosis(model);
 
 
-                Date model_day = sdf.parse(model.getDate());
-                Date today = sdf.parse(expo().getStore().today());
-
-
-                long diffInMillies = Math.abs(today.getTime() - model_day.getTime());
-                long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
-
-                int type = Integer.parseInt(model.getType());
-                int tagesdosis = 0;
-
-                switch (type) {
-
-                    case 0:
-                        tagesdosis = 1;
-                        break;
-
-                    case 1:
-                        tagesdosis = 2;
-                        break;
-
-                    case 2:
-                        tagesdosis = 3;
-                        break;
-
-                    case 3:
-                        tagesdosis = 3;
-                        break;
-
-                    case 4:
-                        tagesdosis = 5;
-                        break;
-
-
-                    case 5:
-                        tagesdosis = 1;
-                        break;
-
-                    case 6:
-                        tagesdosis = 1;
-                        break;
-
-                    case 7:
-                        tagesdosis = 2;
-                        break;
-
-                    default:
-                        tagesdosis = 0;
-                }
-
-                long benutzt = diff * tagesdosis;
+            long benutzt = days * tagesdosis;
 
 
 
-                int vorrat = 0;
-                if (!model.getCoordinates().isEmpty()) {
-                    vorrat = Integer.parseInt(model.getCoordinates());
-                }
+            int vorrat = 0;
+            if (!model.getCoordinates().isEmpty()) {
+                vorrat = Integer.parseInt(model.getCoordinates());
+            }
 
 
-                long rest = vorrat - benutzt;
+            long rest = vorrat - benutzt;
 
-                long restdays = rest/tagesdosis;
-
-
-                result = vorrat + " Stück, noch " + restdays + " Tage";
-                //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
+            long restdays = rest/tagesdosis;
 
 
-            } catch (Exception e) {}
+            result = "noch " + restdays + " Tage";
+            //days + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
 
 
 
@@ -563,4 +509,78 @@ public class Overview extends Fragment {
     }//ModelAdapter
 
 
+
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        menu.add(0, v.getId(), 0, getString(R.string.dialog_selected_up));
+        menu.add(0, v.getId(), 0, getString(R.string.dialog_selected_down));
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        UniversalModel source = expo.getStore().findModel(expo.getSelected());
+        if (source == null) {
+            Toast.makeText(getContext(), getString(R.string.report_select_model), Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+
+        int p0 = findPosition(expo.getSelected());
+
+
+        if (item.getTitle() == getString(R.string.dialog_selected_up)) {
+
+            int p1 = p0 - 1;
+            if (p1 < 0) { return false; }
+
+            UniversalModel older = expo.getStore().getModelAt(p1);
+            expo.getStore().swapModel(source, older);
+            expo.setSelected(older.getId());
+
+            expo.getStore().saveLocalModel(expo, expo.getFolder());
+
+            expo.redraw(true);
+            expo.setFocus(expo.getSelected(), false);
+        }
+
+        if (item.getTitle() == getString(R.string.dialog_selected_down)) {
+
+            int p1 = p0 + 1;
+            if (p1 > expo.getStore().size() - 1) { return false; }
+
+
+            UniversalModel younger = expo.getStore().getModelAt(p1);
+            expo.getStore().swapModel(source, younger);
+            expo.setSelected(younger.getId());
+
+            expo.getStore().saveLocalModel(expo, expo.getFolder());
+
+            expo.redraw(true);
+            expo.setFocus(expo.getSelected(), false);
+        }
+
+        return true;
+    }
+
+    public int findPosition(String id) {
+        int found = -1;
+
+        int p = 0;
+        for (UniversalModel model : expo.getStore().getModels()) {
+            if (model.getId().equals(id)) {
+
+                if (found < 0) { // find first
+                    found = p;
+                }
+            }
+            p++;
+        }
+
+        return found;
+    }
 }

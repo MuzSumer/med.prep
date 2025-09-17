@@ -17,11 +17,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.view.MenuCompat;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
@@ -176,99 +171,32 @@ public class AnalyzerReport extends Reports {
 
 
                     //*** analysis ***
-                    try {
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+                    String result;
 
+                    long days = Reports.days(model, expo.getStore().today());
 
-                        Date model_day = sdf.parse(model.getDate());
+                    int tagesdosis = Reports.tagesdosis(model);
 
-                        Date today = new Date();
-                        sdf.format(today);
-
-                        long diffInMillies = Math.abs(today.getTime() - model_day.getTime());
-                        long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
-                        int type = Integer.parseInt(model.getType());
-                        int tagesdosis = 0;
-
-                        switch (type) {
-
-                            case 0:
-                                tagesdosis = 1;
-                                break;
-
-                            case 1:
-                                tagesdosis = 2;
-                                break;
-
-                            case 2:
-                                tagesdosis = 3;
-                                break;
-
-                            case 3:
-                                tagesdosis = 3;
-                                break;
-
-                            case 4:
-                                tagesdosis = 5;
-                                break;
-
-
-                            case 5:
-                                tagesdosis = 1;
-                                break;
-
-                            case 6:
-                                tagesdosis = 1;
-                                break;
-
-                            case 7:
-                                tagesdosis = 2;
-                                break;
-
-                            default:
-                                tagesdosis = 0;
-                        }
-
-                        long benutzt = diff * tagesdosis;
+                    long benutzt = days * tagesdosis;
 
 
 
-                        int vorrat = 0;
-
-                        if (!model.getCoordinates().isEmpty()) {
-
-                            vorrat = Integer.parseInt(model.getCoordinates());
-                        }
+                    int vorrat = 0;
+                    if (!model.getCoordinates().isEmpty()) {
+                        vorrat = Integer.parseInt(model.getCoordinates());
+                    }
 
 
-                        long rest = vorrat - benutzt;
+                    long rest = vorrat - benutzt;
 
-                        long restdays = rest/tagesdosis;
-
-
+                    long restdays = rest/tagesdosis;
 
 
-                        String analysis = vorrat + " Stück, noch " + restdays + " Tage";
-                        if (restdays < 11) {
-                            analysis = vorrat + " Stück, nur " + restdays + " Tage";
-                        }
-                        //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
-
-                        String redline = "<th colspan='2' style='text-align:left;font-size:19;color:red'><br>";
-                        String greenline = "<th colspan='2' style='text-align:left;font-size:19;color:green'><br>";
-
-                        html += "<tr>";
-                        if (restdays < 11) {
-                            html += redline + analysis + "</th>";
-                        } else {
-                            html += greenline + analysis + "</th>";
-                        }
+                    result = "noch " + restdays + " Tage";
+                    //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
 
 
-                        html += "</tr>";
-
-                    } catch (Exception e) {}
+                    html += "</tr>";
 
 
                     /*

@@ -125,83 +125,30 @@ public class MaintainReport extends Reports {
         for (UniversalModel model : expo.getStore().getModels()) {
 
 
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+            long days = Reports.days(model, expo.getStore().today());
+            int tagesdosis = Reports.tagesdosis(model);
 
-
-                Date model_day = sdf.parse(model.getDate());
-
-                Date today = new Date();
-                sdf.format(today);
-
-                long diffInMillies = Math.abs(today.getTime() - model_day.getTime());
-                long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
-                int type = Integer.parseInt(model.getType());
-                int tagesdosis = 0;
-
-                switch (type) {
-
-                    case 0:
-                        tagesdosis = 1;
-                        break;
-
-                    case 1:
-                        tagesdosis = 2;
-                        break;
-
-                    case 2:
-                        tagesdosis = 3;
-                        break;
-
-                    case 3:
-                        tagesdosis = 3;
-                        break;
-
-                    case 4:
-                        tagesdosis = 5;
-                        break;
-
-
-                    case 5:
-                        tagesdosis = 1;
-                        break;
-
-                    case 6:
-                        tagesdosis = 1;
-                        break;
-
-                    case 7:
-                        tagesdosis = 2;
-                        break;
-
-                    default:
-                        tagesdosis = 0;
-                }
-
-                long benutzt = diff * tagesdosis;
+            long benutzt = days * tagesdosis;
 
 
 
-                int vorrat = 0;
+            int vorrat = 0;
 
-                if (!model.getCoordinates().isEmpty()) {
+            if (!model.getCoordinates().isEmpty()) {
 
-                    vorrat = Integer.parseInt(model.getCoordinates());
-                }
-
-
-                long rest = vorrat - benutzt;
-
-                long restdays = rest/tagesdosis;
+                vorrat = Integer.parseInt(model.getCoordinates());
+            }
 
 
+            long rest = vorrat - benutzt;
 
-                if (restdays < order) {
-                    html = append(html, ltrModel(model, restdays));
-                }
+            long restdays = rest/tagesdosis;
 
-            } catch (Exception e) {}
+
+
+            if (restdays < order) {
+                html = append(html, ltrModel(model, restdays));
+            }
 
 
         }// model
