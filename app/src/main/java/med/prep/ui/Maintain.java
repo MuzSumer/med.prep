@@ -211,7 +211,17 @@ public class Maintain extends Fragment {
         String id = view.getContentDescription().toString();
         UniversalModel model = expo().getStore().findModel(id);
 
-        UniversalModel focused = expo().getSelectedModel();
+        if (Reports.quickMode(getContext())) {
+            expo().setFocus(id, false);
+            expo().redraw(true);
+
+            StockUp dialog = new StockUp(expo(), model);
+            dialog.show(getChildFragmentManager(), "");
+
+            return;
+        }
+
+        UniversalModel focused = expo.getSelectedModel();
 
         if (focused == null) {
             expo().setFocus(id, false);
@@ -220,30 +230,29 @@ public class Maintain extends Fragment {
             return;
         }
 
-        if (id == focused.getId()) {
-            StockUp dialog = new StockUp(expo(), model);
-            dialog.show(getChildFragmentManager(), "");
+        if (model.getId() != focused.getId()) {
+            expo().setFocus(id, false);
+            expo().redraw(true);
 
             return;
         }
 
-        expo().setFocus(id, false);
-        expo().redraw(true);
+        if (model.getId() == focused.getId()) {
+            StockUp dialog = new StockUp(expo(), model);
+            dialog.show(getChildFragmentManager(), "");
+        }
 
     };
 
     private final View.OnClickListener cellOpen = view -> {
         String id = view.getContentDescription().toString();
 
-        if (!expo().getSelected().equals(id)) {
-            //getDiagram().setSelected(id);
-            expo().setFocus(id, false);
+        expo().setFocus(id, false);
+        expo().redraw(false);
 
-            UniversalModel model = expo().getStore().findModel(id);
-            String subject = model.getSubject();
 
-            return;
-        }
+        UniversalModel model = expo().getStore().findModel(id);
+        String subject = model.getSubject();
 
 
         /*

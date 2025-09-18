@@ -244,25 +244,61 @@ public class Overview extends Fragment {
 
     private final View.OnClickListener cellEdit = view -> {
         String id = view.getContentDescription().toString();
-
-        expo().setFocus(id, false);
-
         UniversalModel model = expo().getStore().findModel(id);
 
+        if (Reports.quickMode(getContext())) {
+
+            expo().setFocus(model.getId(), false);
+            expo().redraw(false);
 
 
-        Resources res = getContext().getResources();
+            Resources res = getContext().getResources();
 
-        String[] array_type = res.getStringArray(R.array.type_speak);
-        ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
-
-
-        String[] array_state = res.getStringArray(R.array.state);
-        ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+            String[] array_type = res.getStringArray(R.array.type_speak);
+            ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
 
 
-        EditorProperties editor = new EditorProperties(expo(), types, states, model);
-        editor.show(getChildFragmentManager(), "");
+            String[] array_state = res.getStringArray(R.array.state);
+            ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+
+            EditorProperties editor = new EditorProperties(expo(), types, states, model);
+            editor.show(getChildFragmentManager(), "");
+
+            return;
+        }
+
+        UniversalModel focused = expo().getSelectedModel();
+
+        if (focused == null) {
+            expo().setFocus(model.getId(), false);
+            expo().redraw(false);
+
+            return;
+        }
+
+        if (model.getId() != focused.getId()) {
+            expo().setFocus(model.getId(), false);
+            expo().redraw(true);
+
+            return;
+        }
+
+        if (model.getId() == focused.getId()) {
+
+            Resources res = getContext().getResources();
+
+            String[] array_type = res.getStringArray(R.array.type_speak);
+            ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
+
+
+            String[] array_state = res.getStringArray(R.array.state);
+            ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+
+            EditorProperties editor = new EditorProperties(expo(), types, states, model);
+            editor.show(getChildFragmentManager(), "");
+        }
+
+
     };
 
     private final View.OnClickListener cellOpen = view -> {
@@ -416,6 +452,16 @@ public class Overview extends Fragment {
                     @Override
                     public void onClick(View v) {
 
+                        if (Reports.quickMode(getContext())) {
+                            expo().setFocus(model.getId(), false);
+                            expo().redraw(true);
+
+                            StockUp dialog = new StockUp(expo(), model);
+                            dialog.show(getChildFragmentManager(), "");
+
+                            return;
+                        }
+
                         UniversalModel focused = expo().getSelectedModel();
 
                         if (focused == null) {
@@ -425,15 +471,20 @@ public class Overview extends Fragment {
                             return;
                         }
 
-                        if (model.getId() == focused.getId()) {
-                            StockUp dialog = new StockUp(expo(), model);
-                            dialog.show(getChildFragmentManager(), "");
+                        if (model.getId() != focused.getId()) {
+                            expo().setFocus(model.getId(), false);
+                            expo().redraw(true);
 
                             return;
                         }
 
-                        expo().setFocus(model.getId(), false);
-                        expo().redraw(true);
+                        if (model.getId() == focused.getId()) {
+                            expo().setFocus(model.getId(), false);
+                            expo().redraw(true);
+
+                            StockUp dialog = new StockUp(expo(), model);
+                            dialog.show(getChildFragmentManager(), "");
+                        }
 
                     }
                 });

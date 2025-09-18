@@ -1,5 +1,6 @@
 package med.prep.ui;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,14 @@ import med.prep.model.meta.UniversalModel;
 public class Reports extends AppCompatActivity {
 
 
+    public static boolean quickMode(Context context) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        boolean quickmode = preferences.getBoolean("quick_mode", false);
+
+        return quickmode;
+    }
     public String createHeader(String title) {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

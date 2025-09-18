@@ -24,6 +24,13 @@
             android:singleLine="true"
             android:title="BirthDate"
             app:summary="Geburtsdatum" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="quick_mode"
+            android:title="Schnellmodus"
+            app:summary="Schnellmodus"
+            app:switchTextOff="Aus"
+            app:switchTextOn="An" />
 
 
     </PreferenceCategory>
