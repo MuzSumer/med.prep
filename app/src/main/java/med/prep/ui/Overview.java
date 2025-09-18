@@ -528,7 +528,17 @@ public class Overview extends Fragment {
             {
                 mv.getContent().setText(model.getContent());
                 mv.getSpecs().setText(model.getSpecs());
-                mv.getTags().setText(model.getTags());
+
+
+                Resources res = getContext().getResources();
+
+                String[] array_type = res.getStringArray(R.array.type_speak);
+                ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
+
+                int index = Integer.parseInt(model.getType());
+
+                mv.getTags().setText(types.get(index));
+
             }// content, specs, tags
 
 

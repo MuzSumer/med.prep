@@ -216,6 +216,7 @@ public class EditorProperties extends DialogFragment {
                 edit_type.setSelection(0);
                 edit_state.setSelection(0);
 
+
             } else {
 
                 edit_id.setText(model.getId());
@@ -266,6 +267,7 @@ public class EditorProperties extends DialogFragment {
             if (create) {
                 model = new DiagramModel();
                 model.setId(new_id);
+                model.setDate(diagram.getStore().today());
 
                 diagram.getStore().addModel(model);
 
