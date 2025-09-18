@@ -42,9 +42,11 @@
     <string name="action_email_warning">Vorsicht beim Teilen persönlicher Daten</string>
 
     <!-- diagram -->
-    <string name="diagram_notice1">text > select\n✏html, mail</string>
+    <string name="diagram_notice1">image > edit\n
+        text > select</string>
 
-    <string name="diagram_notice2">image > edit\date > load</string>
+    <string name="diagram_notice2">image > edit\n
+        date > load</string>
 
     <string name="diagram_notice3">image > load</string>
 

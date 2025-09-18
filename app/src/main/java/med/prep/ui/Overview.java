@@ -446,7 +446,7 @@ public class Overview extends Fragment {
 
             {
                 //mv.getDate().setText(model.getId() + "/" + model.getDate());
-                mv.getDate().setText(model.getDate());
+                mv.getDate().setText(model.getDate() + " \uD83D\uDCB1");
                 mv.getDate().setContentDescription(id);
                 mv.getDate().setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -537,6 +537,7 @@ public class Overview extends Fragment {
 
                 int index = Integer.parseInt(model.getType());
 
+                //mv.getTags().setText(types.get(index) + " (" + model.getTags() + ")");
                 mv.getTags().setText(types.get(index));
 
             }// content, specs, tags

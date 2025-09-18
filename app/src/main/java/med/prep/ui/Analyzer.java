@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ import java.util.Arrays;
 import med.prep.R;
 import med.prep.model.DiagramUtil;
 import med.prep.model.dialog.EditorProperties;
+import med.prep.model.dialog.StockUp;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
@@ -77,12 +79,48 @@ public class Analyzer extends Fragment {
 
 
 
-
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
         expo().getDiagram().setLayoutManager(manager);
 
         ModelAdapter adapter = new ModelAdapter(expo().getContext());
         expo().getDiagram().setAdapter(adapter);
+
+        // *** Empfehlung
+        long low_days = 365;
+        for (UniversalModel model : expo().getStore().getModels()) {
+
+
+            long days = Reports.days(model, expo().getStore().today());
+            int tagesdosis = Reports.tagesdosis(model);
+
+            long benutzt = days * tagesdosis;
+
+            int vorrat = 0;
+            if (!model.getCoordinates().isEmpty()) {
+                vorrat = Integer.parseInt(model.getCoordinates());
+            }
+
+
+            long rest = vorrat - benutzt;
+            long restdays = rest/tagesdosis;
+
+
+            if (restdays < low_days) {
+                low_days = restdays;
+            }
+
+        }
+
+
+        TextView tv = view.findViewById(R.id.analyzer_state);
+
+        if (low_days < emergency) {
+            tv.setText("Nachschub erforderlich");
+        } else if (low_days < order) {
+            tv.setText("Nachschub empfohlen");
+        } else {
+            tv.setText("Bestand ist ausreichend");
+        }
 
 
         return view;
@@ -211,25 +249,63 @@ public class Analyzer extends Fragment {
 
     private final View.OnClickListener cellEdit = view -> {
         String id = view.getContentDescription().toString();
-
-        expo().setFocus(id, false);
-
         UniversalModel model = expo().getStore().findModel(id);
 
 
+        if (Reports.quickMode(getContext())) {
+            expo().setFocus(model.getId(), false);
+            expo().redraw(true);
 
-        Resources res = getContext().getResources();
+            Resources res = getContext().getResources();
 
-        String[] array_type = res.getStringArray(R.array.type_speak);
-        ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
-
-
-        String[] array_state = res.getStringArray(R.array.state);
-        ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+            String[] array_type = res.getStringArray(R.array.type_speak);
+            ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
 
 
-        EditorProperties editor = new EditorProperties(expo(), types, states, model);
-        editor.show(getChildFragmentManager(), "");
+            String[] array_state = res.getStringArray(R.array.state);
+            ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+
+
+            EditorProperties editor = new EditorProperties(expo(), types, states, model);
+            editor.show(getChildFragmentManager(), "");
+
+            return;
+        }
+
+        UniversalModel focused = expo().getSelectedModel();
+
+        if (focused == null) {
+            expo().setFocus(model.getId(), false);
+            expo().redraw(true);
+
+            return;
+        }
+
+        if (model.getId() != focused.getId()) {
+            expo().setFocus(model.getId(), false);
+            expo().redraw(true);
+
+            return;
+        }
+
+        if (model.getId() == focused.getId()) {
+            expo().setFocus(model.getId(), false);
+            expo().redraw(true);
+
+            Resources res = getContext().getResources();
+
+            String[] array_type = res.getStringArray(R.array.type_speak);
+            ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
+
+
+            String[] array_state = res.getStringArray(R.array.state);
+            ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+
+
+            EditorProperties editor = new EditorProperties(expo(), types, states, model);
+            editor.show(getChildFragmentManager(), "");
+        }
+
     };
 
     private final View.OnClickListener cellOpen = view -> {
@@ -439,7 +515,7 @@ public class Analyzer extends Fragment {
 
                 int index = Integer.parseInt(model.getType());
 
-                mv.getTags().setText(types.get(index));
+                mv.getTags().setText(types.get(index) + " (" + model.getTags() + ")");
             }// content, specs, tags
 
 
@@ -492,7 +568,7 @@ public class Analyzer extends Fragment {
 
             {
                 mv.getImage().setContentDescription(id);
-                mv.getImage().setOnClickListener(openCell());
+                mv.getImage().setOnClickListener(editCell());
 
 
                 expo().setImage(mv.getImage(), model.getSymbol(), getResources().getInteger(R.integer.cell_size_small));

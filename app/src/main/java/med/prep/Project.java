@@ -3,7 +3,13 @@ package med.prep;
 public class Project {
 
     /*
-    V 1.30
+    V1.5
+    views finetuned
+    reports finetuned
+    quick edit
+
+
+    V 1.3
     cell coloring
     backup/restore
 
