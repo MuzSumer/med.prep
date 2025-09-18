@@ -85,6 +85,8 @@ public class Analyzer extends Fragment {
         ModelAdapter adapter = new ModelAdapter(expo().getContext());
         expo().getDiagram().setAdapter(adapter);
 
+
+
         // *** Empfehlung
         long low_days = 365;
         for (UniversalModel model : expo().getStore().getModels()) {
