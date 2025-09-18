@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -21,12 +20,8 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import med.prep.R;
 import med.prep.model.DiagramUtil;
-import med.prep.model.dialog.EditorProperties;
 import med.prep.model.dialog.StockUp;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
@@ -214,25 +209,27 @@ public class Maintain extends Fragment {
 
     private final View.OnClickListener cellEdit = view -> {
         String id = view.getContentDescription().toString();
-
-        expo().setFocus(id, false);
-
         UniversalModel model = expo().getStore().findModel(id);
 
+        UniversalModel focused = expo().getSelectedModel();
 
+        if (focused == null) {
+            expo().setFocus(id, false);
+            expo().redraw(true);
 
-        Resources res = getContext().getResources();
+            return;
+        }
 
-        String[] array_type = res.getStringArray(R.array.type_speak);
-        ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
+        if (id == focused.getId()) {
+            StockUp dialog = new StockUp(expo(), model);
+            dialog.show(getChildFragmentManager(), "");
 
+            return;
+        }
 
-        String[] array_state = res.getStringArray(R.array.state);
-        ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+        expo().setFocus(id, false);
+        expo().redraw(true);
 
-
-        EditorProperties editor = new EditorProperties(expo(), types, states, model);
-        editor.show(getChildFragmentManager(), "");
     };
 
     private final View.OnClickListener cellOpen = view -> {
@@ -440,15 +437,7 @@ public class Maintain extends Fragment {
                 //mv.getState().setOnClickListener(editCell());
 
                 // TODO stock up
-                mv.getAction().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        StockUp dialog = new StockUp(expo(), model);
-                        dialog.show(getChildFragmentManager(), "");
-
-                    }
-                });
+                mv.getImage().setOnClickListener(editCell());
 
             }// date, type, state
 
@@ -495,7 +484,7 @@ public class Maintain extends Fragment {
                 if (restdays < emergency) {
                     mv.getLocation().setTextColor(Color.RED);
 
-                    location = rest + " Stück, nur " + restdays + " Tage";
+                    location = rest + " Stück, nur noch " + restdays + " Tage";
                     mv.getLocation().setText(location);
                 }
 

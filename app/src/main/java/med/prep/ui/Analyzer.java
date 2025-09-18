@@ -483,7 +483,7 @@ public class Analyzer extends Fragment {
 
             {
                 mv.getImage().setContentDescription(id);
-                //mv.getImage().setOnClickListener(editCell());
+                mv.getImage().setOnClickListener(openCell());
 
 
                 expo().setImage(mv.getImage(), model.getSymbol(), getResources().getInteger(R.integer.cell_size_small));

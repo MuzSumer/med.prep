@@ -415,14 +415,26 @@ public class Overview extends Fragment {
                 mv.getDate().setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        int bestand = 0;
-                        if (!model.getCoordinates().isEmpty()) {
-                            bestand = Integer.parseInt(model.getCoordinates());
+
+                        UniversalModel focused = expo().getSelectedModel();
+
+                        if (focused == null) {
+                            expo().setFocus(model.getId(), false);
+                            expo().redraw(true);
+
+                            return;
                         }
 
+                        if (model.getId() == focused.getId()) {
+                            StockUp dialog = new StockUp(expo(), model);
+                            dialog.show(getChildFragmentManager(), "");
 
-                        StockUp dialog = new StockUp(expo(), model);
-                        dialog.show(getChildFragmentManager(), "");
+                            return;
+                        }
+
+                        expo().setFocus(model.getId(), false);
+                        expo().redraw(true);
+
                     }
                 });
 

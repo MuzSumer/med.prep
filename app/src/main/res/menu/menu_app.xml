@@ -3,16 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-
     <group android:id="@+id/system">
-        <item
-            android:id="@+id/action_settings"
-            android:title="@string/app_preferences" />
-        <item
-            android:id="@+id/action_about"
-            android:title="@string/menu_about" />
         <item
             android:id="@+id/action_backup"
             android:title="@string/menu_backup" />
+        <item
+            android:id="@+id/action_settings"
+            android:title="@string/app_preferences" />
+    </group>
+    <group android:id="@+id/app" >
+        <item
+            android:id="@+id/action_about"
+            android:title="@string/menu_about" />
     </group>
 </menu>

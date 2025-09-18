@@ -164,8 +164,6 @@ public class DiagramExpose implements Diagram {
         ImageView image;
         public ImageView getImage() { return image; }
 
-        ImageButton action;
-        public ImageButton getAction() { return action; }
 
         ImageView openLocation;
         public ImageView getOpenLocation() { return openLocation; }
@@ -191,8 +189,6 @@ public class DiagramExpose implements Diagram {
 
             location = itemView.findViewById(R.id.item_location);
             openLocation = itemView.findViewById(R.id.open_location);
-
-            action = itemView.findViewById(R.id.item_add);
 
         }
     }
