@@ -26,7 +26,7 @@
     <string name="dialog_selected_up">selected up</string>
     <string name="dialog_selected_down">selected down</string>
 
-    <string name="report_generation">generating...</string>
+    <string name="report_generation">Report wird erstellt...</string>
     <string name="report_select">Select an Exposé</string>
     <string name="report_select_model">Select a Snapshot</string>
 
@@ -44,16 +44,20 @@
     <!-- diagram -->
     <string name="diagram_notice1">text > select\n✏html, mail</string>
 
-    <string name="diagram_notice2">image > edit\n✏html, mail</string>
+    <string name="diagram_notice2">image > edit\date > load</string>
+
+    <string name="diagram_notice3">image > load</string>
+
+    <string name="diagram_notice4">date > edit\n
+        text > focus
+        \ntext double > open</string>
 
     <string name="diagram_notice_error">Das ist hier nicht möglich.</string>
     <!--
     <string name="diagram_notice2">date > edit
         \ntext > open</string>
     -->
-    <string name="diagram_notice3">date > edit\n
-        text > focus
-        \ntext double > open</string>
+
 
 
     <!-- model -->
