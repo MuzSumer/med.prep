@@ -28,7 +28,6 @@ import java.util.Arrays;
 import med.prep.R;
 import med.prep.model.DiagramUtil;
 import med.prep.model.dialog.EditorProperties;
-import med.prep.model.dialog.StockUp;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
@@ -139,13 +138,15 @@ public class Analyzer extends Fragment {
     private void registerActions(View view) {
         view.findViewById(R.id.record_add).setOnClickListener(
                 v -> {
-                    Toast.makeText(getContext(), R.string.diagram_notice_error, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), R.string.diagram_error, Toast.LENGTH_SHORT).show();
+                    expo().beep();
                 }
         );
 
         view.findViewById(R.id.record_remove).setOnClickListener(
                 v -> {
-                    Toast.makeText(getContext(), R.string.diagram_notice_error, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), R.string.diagram_error, Toast.LENGTH_SHORT).show();
+                    expo().beep();
                 }
         );
 
@@ -154,6 +155,7 @@ public class Analyzer extends Fragment {
                 v -> {
 
                     Toast.makeText(getContext(), getString(R.string.report_generation), Toast.LENGTH_SHORT).show();
+
 
                     Intent intent = new Intent(getContext(), AnalyzerReport.class);
                     intent.putExtra("namespace", namespace);
@@ -171,7 +173,7 @@ public class Analyzer extends Fragment {
 
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/html");
-                    //intent.putExtra(Intent.EXTRA_EMAIL, "muzsuna@mail.com");
+                    //intent.putExtra(Intent.EXTRA_EMAIL, "");
                     intent.putExtra(Intent.EXTRA_SUBJECT, "Analyse");
                     intent.putExtra(Intent.EXTRA_TEXT, body());
 
@@ -538,22 +540,13 @@ public class Analyzer extends Fragment {
 
                 long benutzt = days * tagesdosis;
 
-
-
                 int vorrat = 0;
-
-                if (!model.getCoordinates().isEmpty()) {
-
-                    vorrat = Integer.parseInt(model.getCoordinates());
-                }
-
+                if (!model.getCoordinates().isEmpty()) { vorrat = Integer.parseInt(model.getCoordinates()); }
 
                 long rest = vorrat - benutzt;
-
                 long restdays = rest/tagesdosis;
 
                 //mv.getLocation().setText(diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten");
-
                 mv.getLocation().setText(rest + " Stück, noch " + restdays + " Tage");
 
 
@@ -595,7 +588,7 @@ public class Analyzer extends Fragment {
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.app_analyzer, parent, false));
+            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.diagram_analyzer_item, parent, false));
         }
 
         @Override

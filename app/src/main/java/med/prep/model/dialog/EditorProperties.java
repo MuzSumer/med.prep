@@ -170,11 +170,11 @@ public class EditorProperties extends DialogFragment {
 
 
         if (types != null) {
-            edit_type.setAdapter(new ArrayAdapter<>(getContext(), R.layout.diagram_sappy_item, types));
+            edit_type.setAdapter(new ArrayAdapter<>(getContext(), R.layout.diagram_quick_edit, types));
         }
 
         if (states != null) {
-            edit_state.setAdapter(new ArrayAdapter<>(getContext(), R.layout.diagram_sappy_item, states));
+            edit_state.setAdapter(new ArrayAdapter<>(getContext(), R.layout.diagram_quick_edit, states));
         }
 
 

@@ -94,13 +94,15 @@ public class Maintain extends Fragment {
     private void registerActions(View view) {
         view.findViewById(R.id.record_add).setOnClickListener(
                 v -> {
-                    Toast.makeText(getContext(), R.string.diagram_notice_error, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), R.string.diagram_error, Toast.LENGTH_SHORT).show();
+                    expo().beep();
                 }
         );
 
         view.findViewById(R.id.record_remove).setOnClickListener(
                 v -> {
-                    Toast.makeText(getContext(), R.string.diagram_notice_error, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getContext(), R.string.diagram_error, Toast.LENGTH_SHORT).show();
+                    expo().beep();
                 }
         );
 
@@ -125,7 +127,7 @@ public class Maintain extends Fragment {
 
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/html");
-                    //intent.putExtra(Intent.EXTRA_EMAIL, "muzsuna@mail.com");
+                    //intent.putExtra(Intent.EXTRA_EMAIL, "");
                     intent.putExtra(Intent.EXTRA_SUBJECT, "Bedarf");
                     intent.putExtra(Intent.EXTRA_TEXT, body());
 
@@ -526,7 +528,7 @@ public class Maintain extends Fragment {
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.app_maintain, parent, false));
+            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.diagram_maintain_item, parent, false));
         }
 
         @Override

@@ -26,11 +26,6 @@
     <string name="dialog_selected_up">selected up</string>
     <string name="dialog_selected_down">selected down</string>
 
-    <string name="report_generation">Vorsicht beim Teilen persönlicher Daten</string>
-    <string name="report_select">Select an Exposé</string>
-    <string name="report_select_model">Select a Snapshot</string>
-
-
     <string name="record_add">New Exposé</string>
     <string name="record_select">Select an Exposé</string>
     <string name="record_select_model">Select a Snapshot</string>
@@ -40,6 +35,11 @@
     <string name="action_print">print</string>
     <string name="action_email">send</string>
     <string name="action_email_warning">Vorsicht beim Teilen persönlicher Daten</string>
+
+    <string name="report_generation">Vorsicht beim Teilen persönlicher Daten</string>
+    <string name="report_select">Select an Exposé</string>
+    <string name="report_select_model">Select a Snapshot</string>
+
 
     <!-- diagram -->
     <string name="diagram_notice1">image > edit\n
@@ -54,7 +54,7 @@
         text > focus
         \ntext double > open</string>
 
-    <string name="diagram_notice_error">Das ist hier nicht möglich.</string>
+    <string name="diagram_error">Das ist hier nicht möglich.</string>
     <!--
     <string name="diagram_notice2">date > edit
         \ntext > open</string>

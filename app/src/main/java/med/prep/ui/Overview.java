@@ -22,15 +22,8 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import med.prep.R;
 import med.prep.model.DiagramUtil;
@@ -153,10 +146,6 @@ public class Overview extends Fragment {
         view.findViewById(R.id.record_add).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), "neu", Toast.LENGTH_SHORT).show();
-
-
-
                     UniversalModel model = null;
 
                     Resources res = getContext().getResources();
@@ -175,7 +164,7 @@ public class Overview extends Fragment {
                     
                     /*
                     UniversalModel model = expo().getStore().createDefaultModel("Anwendungsgebiet", "Medikament");
-                        expo().getStore().saveLocalModel(expo(), expo().getFolder());
+                        //expo().getStore().saveLocalModel(expo(), expo().getFolder());
 
                         expo().setFocus(model.getId(), false);
 
@@ -210,15 +199,20 @@ public class Overview extends Fragment {
         view.findViewById(R.id.record_search).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), getString(R.string.action_email_warning), Toast.LENGTH_LONG).show();
+                    expo().beep();
+
 
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/html");
-                    //intent.putExtra(Intent.EXTRA_EMAIL, "muzsuna@mail.com");
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "Übersicht");
+                    //intent.putExtra(Intent.EXTRA_EMAIL, "");
+                    intent.putExtra(Intent.EXTRA_SUBJECT, "Bestand");
                     intent.putExtra(Intent.EXTRA_TEXT, body());
 
+                    /*
+                    Toast.makeText(getContext(), getString(R.string.action_email_warning), Toast.LENGTH_LONG).show();
                     startActivity(Intent.createChooser(intent, "Send Email"));
+                     */
+
                 }
         );
     }
@@ -509,12 +503,27 @@ public class Overview extends Fragment {
 
 
             {
-                mv.getTitle().setText(model.getTitle());
                 mv.getTitle().setContentDescription(id);
                 //mv.getTitle().setOnClickListener(selectCell());
 
 
+                long days = Reports.days(model, expo.getStore().today());
+                int tagesdosis = Reports.tagesdosis(model);
 
+                long benutzt = days * tagesdosis;
+
+                int vorrat = 0;
+                if (!model.getCoordinates().isEmpty()) { vorrat = Integer.parseInt(model.getCoordinates()); }
+
+
+                long rest = vorrat - benutzt;
+                long restdays = rest/tagesdosis;
+
+                mv.getTitle().setText(model.getTitle() + ", noch " + restdays + " Tage");
+
+                if (restdays < emergency) {
+                    mv.getTitle().setText(model.getTitle() + ", nur noch " + restdays + " Tage");
+                }
 
                 mv.getSubject().setText(model.getSubject() + " " + model.getContent());
                 //mv.getSubject().setText(model.getSubject());
@@ -580,7 +589,7 @@ public class Overview extends Fragment {
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.app_overview, parent, false));
+            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.diagram_overview_item, parent, false));
         }
 
         @Override

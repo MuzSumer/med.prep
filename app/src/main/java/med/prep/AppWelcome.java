@@ -26,7 +26,7 @@ public class AppWelcome extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.app_overview,
-                R.id.app_analyzer,
+                //R.id.app_analyzer,
                 R.id.app_maintain
         ).build();
 

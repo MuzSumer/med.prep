@@ -97,7 +97,7 @@
             app:layout_constraintBottom_toBottomOf="@id/control"
             app:layout_constraintStart_toEndOf="@id/record_share"
             app:layout_constraintTop_toTopOf="@id/control"
-            app:srcCompat="?attr/actionModeShareDrawable" />
+            app:srcCompat="@android:drawable/ic_menu_share" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/record_remove"
