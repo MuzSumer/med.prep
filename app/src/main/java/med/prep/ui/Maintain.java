@@ -329,7 +329,7 @@ public class Maintain extends Fragment {
 
                 if (id.equals(expo().getSelected())) {
                     if (restdays < order) {
-                        mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_yellow));
+                        mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_light));
                     } else {
                         mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_selected));
                     }

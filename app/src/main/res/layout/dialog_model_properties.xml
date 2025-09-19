@@ -116,7 +116,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:ems="10"
-                android:inputType="text"
+                android:inputType="text|textEmailSubject|textCapWords"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -142,7 +142,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:ems="10"
-                android:inputType="text"
+                android:inputType="text|textEmailSubject|textCapWords"
                 android:textSize="14sp" />
 
         </LinearLayout>

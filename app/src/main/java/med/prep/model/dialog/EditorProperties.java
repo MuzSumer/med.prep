@@ -86,7 +86,10 @@ public class EditorProperties extends DialogFragment {
             display_date = view.findViewById(R.id.display_date);
 
             edit_title = view.findViewById(R.id.edit_title);
+            //edit_title.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
             edit_subject = view.findViewById(R.id.edit_subject);
+            //edit_subject.setInputType(InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+
             edit_symbol = view.findViewById(R.id.edit_symbol);
             edit_content = view.findViewById(R.id.edit_content);
             edit_tags = view.findViewById(R.id.edit_tags);

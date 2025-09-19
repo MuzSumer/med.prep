@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -488,12 +489,7 @@ public class Overview extends Fragment {
             {
                 mv.getTitle().setContentDescription(id);
                 //mv.getTitle().setOnClickListener(selectCell());
-
-
-
                 mv.getTitle().setText(model.getTitle());
-
-
 
 
                 mv.getSubject().setText(model.getSubject() + " " + model.getContent());
@@ -523,6 +519,7 @@ public class Overview extends Fragment {
                 String result = ", noch " + restdays + " Tage";
                 if (restdays < emergency) {
                     result = ", nur noch " + restdays + " Tage";
+                    mv.getTags().setTextColor(Color.RED);
                 }
 
                 mv.getTags().setText(types.get(index) + result);
