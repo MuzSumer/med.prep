@@ -112,24 +112,7 @@ public class Overview extends Fragment {
 
             String result = "";
 
-            long days = Reports.days(model, expo().getStore().today());
-
-            int tagesdosis = Reports.tagesdosis(model);
-
-
-            long benutzt = days * tagesdosis;
-
-
-
-            int vorrat = 0;
-            if (!model.getCoordinates().isEmpty()) {
-                vorrat = Integer.parseInt(model.getCoordinates());
-            }
-
-
-            long rest = vorrat - benutzt;
-
-            long restdays = rest/tagesdosis;
+            long restdays = Reports.restdays(model, expo.getStore().today());
 
 
             result = "noch " + restdays + " Tage";
@@ -507,23 +490,11 @@ public class Overview extends Fragment {
                 //mv.getTitle().setOnClickListener(selectCell());
 
 
-                long days = Reports.days(model, expo.getStore().today());
-                int tagesdosis = Reports.tagesdosis(model);
 
-                long benutzt = days * tagesdosis;
-
-                int vorrat = 0;
-                if (!model.getCoordinates().isEmpty()) { vorrat = Integer.parseInt(model.getCoordinates()); }
+                mv.getTitle().setText(model.getTitle());
 
 
-                long rest = vorrat - benutzt;
-                long restdays = rest/tagesdosis;
 
-                mv.getTitle().setText(model.getTitle() + ", noch " + restdays + " Tage");
-
-                if (restdays < emergency) {
-                    mv.getTitle().setText(model.getTitle() + ", nur noch " + restdays + " Tage");
-                }
 
                 mv.getSubject().setText(model.getSubject() + " " + model.getContent());
                 //mv.getSubject().setText(model.getSubject());
@@ -547,7 +518,16 @@ public class Overview extends Fragment {
                 int index = Integer.parseInt(model.getType());
 
                 //mv.getTags().setText(types.get(index) + " (" + model.getTags() + ")");
-                mv.getTags().setText(types.get(index));
+
+                long restdays = Reports.restdays(model, expo.getStore().today());
+                String result = ", noch " + restdays + " Tage";
+                if (restdays < emergency) {
+                    result = ", nur noch " + restdays + " Tage";
+                }
+
+                mv.getTags().setText(types.get(index) + result);
+
+
 
             }// content, specs, tags
 

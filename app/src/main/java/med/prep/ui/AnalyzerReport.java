@@ -173,23 +173,8 @@ public class AnalyzerReport extends Reports {
 
                     String result;
 
-                    long days = Reports.days(model, expo.getStore().today());
 
-                    int tagesdosis = Reports.tagesdosis(model);
-
-                    long benutzt = days * tagesdosis;
-
-
-
-                    int vorrat = 0;
-                    if (!model.getCoordinates().isEmpty()) {
-                        vorrat = Integer.parseInt(model.getCoordinates());
-                    }
-
-
-                    long rest = vorrat - benutzt;
-
-                    long restdays = rest/tagesdosis;
+                    long restdays = Reports.restdays(model, expo.getStore().today());
 
 
                     result = "noch " + restdays + " Tage";

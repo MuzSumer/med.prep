@@ -148,37 +148,25 @@ public class Maintain extends Fragment {
 
             String result = "";
 
-            long days = Reports.days(model, expo.getStore().today());
-            int tagesdosis = Reports.tagesdosis(model);
 
-            long benutzt = days * tagesdosis;
+            long restdays = Reports.restdays(model, expo.getStore().today());
 
 
-
-            int vorrat = 0;
-            if (!model.getCoordinates().isEmpty()) {
-                vorrat = Integer.parseInt(model.getCoordinates());
-            }
-
-
-            long rest = vorrat - benutzt;
-
-            long restdays = rest/tagesdosis;
-
-
-            result = rest + " Stück, noch " + restdays + " Tage";
-            //days + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
-
-
-            // only report low supplies
             if (restdays < order) {
+                result = "noch " + restdays + " Tage";
+                //days + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
+
+                if (restdays < emergency) {
+                    result = "nur noch " + restdays + " Tage";
+                }
+
+
 
                 if (body.isEmpty()) {
                     body = model.getSubject() + " " + result;
                 } else {
                     body = body + "\n" + model.getSubject() + " " + result;
                 }
-
             }
 
 
@@ -333,24 +321,8 @@ public class Maintain extends Fragment {
 
 
             // *** analyze
-            long days = Reports.days(model, expo.getStore().today());
-            int tagesdosis = Reports.tagesdosis(model);
 
-            long benutzt = days * tagesdosis;
-
-
-
-            int vorrat = 0;
-
-            if (!model.getCoordinates().isEmpty()) {
-
-                vorrat = Integer.parseInt(model.getCoordinates());
-            }
-
-
-            long rest = vorrat - benutzt;
-
-            long restdays = rest/tagesdosis;
+            long restdays = Reports.restdays(model, expo.getStore().today());
 
             {
 
@@ -483,7 +455,7 @@ public class Maintain extends Fragment {
                 mv.getLocation().setContentDescription(id);
 
 
-                String location = model.getSpecs() + ", " + rest + " vorhanden";
+                String location = model.getSpecs() + ", " + restdays + " Tage";
 
                 mv.getLocation().setText(location);
 
@@ -495,7 +467,7 @@ public class Maintain extends Fragment {
                 if (restdays < emergency) {
                     mv.getLocation().setTextColor(Color.RED);
 
-                    location = rest + " Stück, nur noch " + restdays + " Tage";
+                    location = "nur noch " + restdays + " Tage";
                     mv.getLocation().setText(location);
                 }
 

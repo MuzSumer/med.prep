@@ -92,20 +92,7 @@ public class Analyzer extends Fragment {
         long low_days = 365;
         for (UniversalModel model : expo().getStore().getModels()) {
 
-
-            long days = Reports.days(model, expo().getStore().today());
-            int tagesdosis = Reports.tagesdosis(model);
-
-            long benutzt = days * tagesdosis;
-
-            int vorrat = 0;
-            if (!model.getCoordinates().isEmpty()) {
-                vorrat = Integer.parseInt(model.getCoordinates());
-            }
-
-
-            long rest = vorrat - benutzt;
-            long restdays = rest/tagesdosis;
+            long restdays = Reports.restdays(model, expo.getStore().today());
 
 
             if (restdays < low_days) {
@@ -192,28 +179,13 @@ public class Analyzer extends Fragment {
 
             String result = "";
 
-            long days = Reports.days(model, expo().getStore().today());
 
-            int tagesdosis = Reports.tagesdosis(model);
-
-            long benutzt = days * tagesdosis;
+            long restdays = Reports.restdays(model, expo.getStore().today());
 
 
-
-            int vorrat = 0;
-            if (!model.getCoordinates().isEmpty()) {
-                vorrat = Integer.parseInt(model.getCoordinates());
-            }
-
-
-            long rest = vorrat - benutzt;
-
-            long restdays = rest/tagesdosis;
-
-
-            result = rest + " Stück, noch " + restdays + " Tage";
+            result = "noch " + restdays + " Tage";
             if (restdays < order) {
-                result = rest + " Stück, nur noch " + restdays + " Tage";
+                result = "nur noch " + restdays + " Tage";
             }
             //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
 
@@ -223,8 +195,6 @@ public class Analyzer extends Fragment {
             } else {
                 body = body + "\n" + model.getSubject() + " " + result;
             }
-
-
 
 
         }
@@ -535,24 +505,15 @@ public class Analyzer extends Fragment {
 
                 // *** analyze
 
-                long days = Reports.days(model, expo.getStore().today());
-                int tagesdosis = Reports.tagesdosis(model);
-
-                long benutzt = days * tagesdosis;
-
-                int vorrat = 0;
-                if (!model.getCoordinates().isEmpty()) { vorrat = Integer.parseInt(model.getCoordinates()); }
-
-                long rest = vorrat - benutzt;
-                long restdays = rest/tagesdosis;
+                long restdays = Reports.restdays(model, expo.getStore().today());
 
                 //mv.getLocation().setText(diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten");
-                mv.getLocation().setText(rest + " Stück, noch " + restdays + " Tage");
+                mv.getLocation().setText("noch " + restdays + " Tage");
 
 
                 if (restdays < emergency) {
                     mv.getLocation().setTextColor(Color.RED);
-                    mv.getLocation().setText(rest + " Stück, nur noch " + restdays + " Tage");
+                    mv.getLocation().setText("nur noch " + restdays + " Tage");
                 }
 
 

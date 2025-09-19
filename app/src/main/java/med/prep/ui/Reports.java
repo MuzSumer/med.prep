@@ -128,4 +128,24 @@ public class Reports extends AppCompatActivity {
 
         return tagesdosis;
     }
+
+
+    public static long restdays(UniversalModel model, String today) {
+        long restdays = 0;
+
+        long days = days(model, today);
+        int tagesdosis = tagesdosis(model);
+
+
+        long benutzt = days * tagesdosis;
+
+        int vorrat = 0;
+        if (!model.getCoordinates().isEmpty()) { vorrat = Integer.parseInt(model.getCoordinates()); }
+
+
+        long rest = vorrat - benutzt;
+        restdays = rest/tagesdosis;
+
+        return restdays;
+    }
 }
