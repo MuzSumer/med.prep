@@ -26,7 +26,7 @@
     <string name="dialog_selected_up">selected up</string>
     <string name="dialog_selected_down">selected down</string>
 
-    <string name="report_generation">Report wird erstellt...</string>
+    <string name="report_generation">Vorsicht beim Teilen persönlicher Daten</string>
     <string name="report_select">Select an Exposé</string>
     <string name="report_select_model">Select a Snapshot</string>
 

@@ -87,7 +87,9 @@ public class Analyzer extends Fragment {
 
 
 
-        // *** Empfehlung
+
+        // *** analysis
+
         long low_days = 365;
         for (UniversalModel model : expo().getStore().getModels()) {
 
