@@ -8,12 +8,12 @@
         android:title="@string/title_overview" />
 
     <!--
+
+    -->
     <item
         android:id="@+id/app_analyzer"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_analyzer" />
-    -->
-
 
     <item
         android:id="@+id/app_maintain"

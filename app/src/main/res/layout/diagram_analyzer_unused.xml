@@ -110,7 +110,8 @@
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="@id/control"
             app:layout_constraintEnd_toStartOf="@+id/record_add"
-            app:layout_constraintTop_toTopOf="@id/control" />
+            app:layout_constraintTop_toTopOf="@id/control"
+            app:srcCompat="@android:drawable/ic_delete" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/record_add"
@@ -123,7 +124,8 @@
             app:fabSize="mini"
             app:layout_constraintBottom_toBottomOf="@id/control"
             app:layout_constraintEnd_toEndOf="@id/control"
-            app:layout_constraintTop_toTopOf="@id/control" />
+            app:layout_constraintTop_toTopOf="@id/control"
+            app:srcCompat="@android:drawable/ic_input_add" />
 
         <TextView
             android:id="@+id/textView"

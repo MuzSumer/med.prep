@@ -12,13 +12,13 @@
         tools:layout="@layout/diagram_overview" />
 
     <!--
+
+    -->
     <fragment
         android:id="@+id/app_analyzer"
         android:name="med.prep.ui.Analyzer"
         android:label="@string/title_analyzer"
         tools:layout="@layout/diagram_overview" />
-    -->
-
 
     <fragment
         android:id="@+id/app_maintain"

@@ -1,33 +1,22 @@
 package med.prep.ui;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import med.prep.R;
-import med.prep.model.DiagramUtil;
-import med.prep.model.dialog.EditorProperties;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
@@ -50,15 +39,15 @@ public class Analyzer extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.diagram_analyzer, container, false);
+        View view = inflater.inflate(R.layout.diagram_analyzer_sheet, container, false);
 
 
-        expo = new DiagramExpose(getContext(), view.findViewById(R.id.diagram), view.findViewById(R.id.scroll));
+        expo = new DiagramExpose(getContext(), null, null);
 
         Store store = new DiagramStore(expo(), namespace);
         expo().createStore(store, namespace, "");
 
-        registerActions(view);
+        //registerActions(view);
 
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -78,39 +67,81 @@ public class Analyzer extends Fragment {
 
 
 
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        expo().getDiagram().setLayoutManager(manager);
-
-        ModelAdapter adapter = new ModelAdapter(expo().getContext());
-        expo().getDiagram().setAdapter(adapter);
-
-
-
 
         // *** analysis
 
-        long low_days = 365;
+        long worst_days = 365;
+        long best_days = 0;
+        long average_days = 0;
+
         for (UniversalModel model : expo().getStore().getModels()) {
 
-            long restdays = Reports.restdays(model, expo.getStore().today());
+
+            // *** analyze ***
+            long restdays = 0;
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
 
 
-            if (restdays < low_days) {
-                low_days = restdays;
+                Date model_day = sdf.parse(model.getDate());
+                Date date = sdf.parse(expo().getStore().today());
+
+
+                long diffInMillies = Math.abs(date.getTime() - model_day.getTime());
+                long days = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+
+                int tagesdosis = Reports.tagesdosis(model);
+
+                long benutzt = days * tagesdosis;
+
+                int vorrat = 0;
+                if (!model.getCoordinates().isEmpty()) { vorrat = Integer.parseInt(model.getCoordinates()); }
+
+
+                long rest = vorrat - benutzt;
+                restdays = rest/tagesdosis;
+
+            } catch (Exception exception) {}//analyze
+
+
+
+
+            average_days = (average_days + restdays)/2;
+
+            if (restdays > best_days) {
+                best_days = restdays;
+            }
+
+
+            if (restdays < worst_days) {
+                worst_days = restdays;
             }
 
         }
 
+        TextView best = view.findViewById(R.id.result_best);
+        TextView worst = view.findViewById(R.id.result_worst);
+        TextView average = view.findViewById(R.id.result_average);
 
-        TextView tv = view.findViewById(R.id.analyzer_state);
+        best.setText(Long.toString(best_days));
+        worst.setText(Long.toString(worst_days));
+        average.setText(Long.toString(average_days));
 
-        if (low_days < emergency) {
+        TextView tv = view.findViewById(R.id.result_output);
+
+        if (worst_days < emergency) {
             tv.setText("Nachschub erforderlich");
-        } else if (low_days < order) {
+        } else if (worst_days < order) {
             tv.setText("Nachschub empfohlen");
         } else {
-            tv.setText("Bestand ist ausreichend");
+            long diff = worst_days - order;
+
+            tv.setText("Bestellen in " + diff + " Tagen");
         }
+
+
+
 
 
         return view;
@@ -121,442 +152,4 @@ public class Analyzer extends Fragment {
         super.onDestroyView();
     }
 
-
-    private void registerActions(View view) {
-        view.findViewById(R.id.record_add).setOnClickListener(
-                v -> {
-                    //Toast.makeText(getContext(), R.string.diagram_error, Toast.LENGTH_SHORT).show();
-                    expo().beep();
-                }
-        );
-
-        view.findViewById(R.id.record_remove).setOnClickListener(
-                v -> {
-                    //Toast.makeText(getContext(), R.string.diagram_error, Toast.LENGTH_SHORT).show();
-                    expo().beep();
-                }
-        );
-
-
-        view.findViewById(R.id.record_share).setOnClickListener(
-                v -> {
-
-                    Toast.makeText(getContext(), getString(R.string.report_generation), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getContext(), getString(R.string.action_data_warning), Toast.LENGTH_LONG).show();
-
-                    Intent intent = new Intent(getContext(), AnalyzerReport.class);
-                    intent.putExtra("namespace", namespace);
-
-                    view.getContext().startActivity(intent);
-
-                }
-        );
-
-
-        view.findViewById(R.id.record_search).setOnClickListener(
-                v -> {
-
-                    Toast.makeText(getContext(), getString(R.string.action_data_warning), Toast.LENGTH_LONG).show();
-
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("text/html");
-                    //intent.putExtra(Intent.EXTRA_EMAIL, "");
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "Analyse");
-                    intent.putExtra(Intent.EXTRA_TEXT, body());
-
-                    startActivity(Intent.createChooser(intent, "Send Email"));
-
-                }
-        );
-    }
-
-    private String body() {
-
-        String body = fullname + ", " + birthdate + "\n\n";
-
-        for (UniversalModel model : expo().getStore().getModels()) {
-
-
-            String result = "";
-
-
-            long restdays = Reports.restdays(model, expo.getStore().today());
-
-
-            result = "noch " + restdays + " Tage";
-            if (restdays < order) {
-                result = "nur noch " + restdays + " Tage";
-            }
-            //diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
-
-
-            if (body.isEmpty()) {
-                body = model.getSubject() + " " + result;
-            } else {
-                body = body + "\n" + model.getSubject() + " " + result;
-            }
-
-
-        }
-        return body;
-    }
-
-
-    public View.OnClickListener selectCell() { return cellSelect; }
-
-
-    public View.OnClickListener openCell() { return cellOpen; }
-
-
-    public View.OnClickListener editCell() { return cellEdit; }
-
-
-
-    private final View.OnClickListener cellSelect = view -> {
-        String modelId = view.getContentDescription().toString();
-
-        //getDiagram().setSelected(modelId);
-
-        expo().setFocus(modelId, false);
-
-        UniversalModel m = expo().getStore().findModel(modelId);
-
-    };
-
-    private final View.OnClickListener cellEdit = view -> {
-        String id = view.getContentDescription().toString();
-        UniversalModel model = expo().getStore().findModel(id);
-
-
-        if (Reports.quickMode(getContext())) {
-            expo().setFocus(model.getId(), false);
-            expo().redraw(true);
-
-            Resources res = getContext().getResources();
-
-            String[] array_type = res.getStringArray(R.array.type_speak);
-            ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
-
-
-            String[] array_state = res.getStringArray(R.array.state);
-            ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
-
-
-            EditorProperties editor = new EditorProperties(expo(), types, states, model);
-            editor.show(getChildFragmentManager(), "");
-
-            return;
-        }
-
-        UniversalModel focused = expo().getSelectedModel();
-
-        if (focused == null) {
-            expo().setFocus(model.getId(), false);
-            expo().redraw(true);
-
-            return;
-        }
-
-        if (model.getId() != focused.getId()) {
-            expo().setFocus(model.getId(), false);
-            expo().redraw(true);
-
-            return;
-        }
-
-        if (model.getId() == focused.getId()) {
-            expo().setFocus(model.getId(), false);
-            expo().redraw(true);
-
-            Resources res = getContext().getResources();
-
-            String[] array_type = res.getStringArray(R.array.type_speak);
-            ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
-
-
-            String[] array_state = res.getStringArray(R.array.state);
-            ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
-
-
-            EditorProperties editor = new EditorProperties(expo(), types, states, model);
-            editor.show(getChildFragmentManager(), "");
-        }
-
-    };
-
-    private final View.OnClickListener cellOpen = view -> {
-        String id = view.getContentDescription().toString();
-
-        if (!expo().getSelected().equals(id)) {
-            //getDiagram().setSelected(id);
-            expo().setFocus(id, false);
-
-            UniversalModel model = expo().getStore().findModel(id);
-            String subject = model.getSubject();
-
-            return;
-        }
-
-
-        /*
-        Intent intent = new Intent(getActivity(), ViewPlace.class);
-        intent.putExtra("namespace", expo().getNamespace());
-        intent.putExtra("folder", expo().getFolder());
-        intent.putExtra("id", id);
-
-        startActivity(intent);
-         */
-
-    };
-
-
-
-
-
-
-
-
-
-
-
-
-    class ModelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-
-
-        @SuppressLint("UseCompatLoadingForDrawables")
-        @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            UniversalModel model = expo().getStore().getModelAt(position);
-            String id = model.getId();
-
-            DiagramExpose.UniversalModelViewHolder mv = (DiagramExpose.UniversalModelViewHolder) holder;
-
-
-            mv.itemView.setContentDescription(id);
-            mv.itemView.setOnClickListener(openCell());
-
-
-
-            ConstraintLayout layout = mv.getLayout();
-            layout.setContentDescription(id);
-
-
-
-
-            // hovering
-            /*
-            mv.getLayout().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(View v, boolean hasFocus) {
-                    String id1 = v.getContentDescription().toString();
-
-                    message(id);
-                }
-            });
-
-            mv.getLayout().setOnHoverListener((view1, event) -> {
-
-                String id1 = view1.getContentDescription().toString();
-
-
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_HOVER_ENTER:
-                        message("enter " + id1);
-                        break;
-                    case MotionEvent.ACTION_HOVER_MOVE:
-                        message("move " + id1);
-                        break;
-                    case MotionEvent.ACTION_HOVER_EXIT:
-                        message("exit " + id1);
-                        break;
-                }
-                return false;
-            });
-             */
-
-
-            {
-                if (id.equals(expo().getSelected())) {
-                    mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_selected));
-                    registerForContextMenu(mv.getImage());
-                } else {
-                    mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_background));
-                    unregisterForContextMenu(mv.getImage());
-                }
-            }// selection
-
-
-            {
-                if (id.equals(expo().getSelected())) {
-                    layout.post(() -> {
-                        int l = layout.getMeasuredWidth()*3/5;
-                        // select
-                        Drawable d = getContext().getDrawable(R.drawable.item_dot_green);
-                        int t = 23;
-                        DiagramUtil.setDBounds(d, 16, l, t);
-
-                        // edit
-                        Drawable e = getContext().getDrawable(R.drawable.item_dot_blue);
-                        t = 77;
-                        DiagramUtil.setDBounds(e, 16, l, t);
-
-                        // location
-                        Drawable f = getContext().getDrawable(R.drawable.item_dot_red);
-                        t = layout.getMeasuredHeight() - 23;
-                        DiagramUtil.setDBounds(f, 16, l, t);
-
-
-                        // image
-                        Drawable g = getContext().getDrawable(R.drawable.item_dot_white);
-                        l = mv.getImage().getMeasuredWidth()/2;
-                        t = mv.itemView.getMeasuredHeight()/2;
-                        DiagramUtil.setDBounds(g, 32, l, t);
-
-
-
-                        layout.getOverlay().clear();
-                        layout.getOverlay().add(d);
-                        layout.getOverlay().add(e);
-                        layout.getOverlay().add(f);
-                        //layout.getOverlay().add(g);
-                    });
-                } else {
-                    layout.post(() -> {
-                        int l = layout.getMeasuredWidth()*3/5;
-
-                        Drawable d = getContext().getDrawable(R.drawable.item_dot_yellow);
-                        int t = 23;
-
-                        DiagramUtil.setDBounds(d, 16, t, l);
-
-
-                        layout.getOverlay().clear();
-                        layout.getOverlay().add(d);
-                        //layout.getOverlay().add(e);
-                    });
-                }
-            }// overlay
-
-
-
-            {
-                mv.getDate().setText(model.getDate());
-                mv.getDate().setContentDescription(id);
-                //mv.getDate().setOnClickListener(editCell());
-
-
-                try {
-                    mv.getType().setText(model.getType());
-                    mv.getState().setText(model.getState());
-                } catch (Exception e) {
-                    mv.getType().setText(model.getType());
-                    mv.getState().setText(model.getState());
-                }
-
-
-                mv.getType().setContentDescription(id);
-                mv.getState().setContentDescription(id);
-
-                //mv.getType().setOnClickListener(editCell());
-                //mv.getState().setOnClickListener(editCell());
-
-            }// date, type, state
-
-
-            {
-                mv.getTitle().setText(model.getSubject());
-                mv.getTitle().setContentDescription(id);
-                //mv.getTitle().setOnClickListener(selectCell());
-
-
-
-                mv.getSubject().setText(model.getTitle());
-                mv.getSubject().setContentDescription(id);
-                //mv.getSubject().setOnClickListener(selectCell());
-
-
-            }// title, subject
-
-
-            {
-                mv.getContent().setText(model.getContent());
-                mv.getSpecs().setText(model.getSpecs());
-
-
-                Resources res = getContext().getResources();
-
-                String[] array_type = res.getStringArray(R.array.type_speak);
-                ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
-
-                int index = Integer.parseInt(model.getType());
-
-                mv.getTags().setText(types.get(index) + " (" + model.getTags() + ")");
-            }// content, specs, tags
-
-
-            {
-                mv.getOpenLocation().setContentDescription(id);
-                //mv.getOpenLocation().setOnClickListener(openMap());
-
-                //mv.getLocation().setText(shortLocation(model.getLocation(), 1));
-                mv.getLocation().setContentDescription(id);
-
-
-                // *** analyze
-
-                long restdays = Reports.restdays(model, expo.getStore().today());
-
-                //mv.getLocation().setText(diff + " Tage   " + benutzt + "/" + vorrat + " Tabletten");
-                mv.getLocation().setText("noch " + restdays + " Tage");
-
-
-                if (restdays < emergency) {
-                    mv.getLocation().setTextColor(Color.RED);
-                    mv.getLocation().setText("nur noch " + restdays + " Tage");
-                }
-
-
-
-
-
-                //mv.getLocation().setOnClickListener(wrongLocation());
-            }// location
-
-
-            {
-                mv.getImage().setContentDescription(id);
-                mv.getImage().setOnClickListener(editCell());
-
-
-                expo().setImage(mv.getImage(), model.getSymbol(), getResources().getInteger(R.integer.cell_size_small));
-
-            }// image
-
-        }
-
-
-
-
-
-
-
-        Context context;
-        public ModelAdapter(Context classContext) {
-            context = classContext;
-        }
-
-        @NonNull
-        @Override
-        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.diagram_analyzer_item, parent, false));
-        }
-
-        @Override
-        public int getItemCount() {
-            return expo().getStore().size();
-        }
-
-
-    }//ModelAdapter
 }
