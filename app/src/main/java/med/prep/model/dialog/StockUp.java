@@ -61,17 +61,11 @@ public class StockUp extends DialogFragment {
 
             long benutzt = days * tagesdosis;
 
-
-
             int vorrat = 0;
-
-            if (!model.getCoordinates().isEmpty()) {
-                vorrat = Integer.parseInt(model.getCoordinates());
-            }
+            if (!model.getCoordinates().isEmpty()) { vorrat = Integer.parseInt(model.getCoordinates()); }
 
 
             long rest = vorrat - benutzt;
-
             add_bestand.setText(Long.toString(rest));
 
         }// fields

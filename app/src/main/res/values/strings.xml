@@ -34,9 +34,9 @@
 
     <string name="action_print">print</string>
     <string name="action_email">send</string>
-    <string name="action_email_warning">Vorsicht beim Teilen persönlicher Daten</string>
+    <string name="action_data_warning">Vorsicht beim Teilen persönlicher Daten</string>
 
-    <string name="report_generation">Vorsicht beim Teilen persönlicher Daten</string>
+    <string name="report_generation">Der Report wird erstellt...</string>
     <string name="report_select">Select an Exposé</string>
     <string name="report_select_model">Select a Snapshot</string>
 

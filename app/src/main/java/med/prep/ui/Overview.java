@@ -170,6 +170,7 @@ public class Overview extends Fragment {
                 v -> {
 
                     Toast.makeText(getContext(), getString(R.string.report_generation), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.action_data_warning), Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(getContext(), OverviewReport.class);
                     intent.putExtra("namespace", namespace);

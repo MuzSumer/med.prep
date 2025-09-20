@@ -111,6 +111,7 @@ public class Maintain extends Fragment {
                 v -> {
 
                     Toast.makeText(getContext(), getString(R.string.report_generation), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getString(R.string.action_data_warning), Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(getContext(), MaintainReport.class);
                     intent.putExtra("namespace", namespace);
@@ -123,7 +124,7 @@ public class Maintain extends Fragment {
         view.findViewById(R.id.record_search).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), getString(R.string.action_email_warning), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), getString(R.string.action_data_warning), Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/html");
