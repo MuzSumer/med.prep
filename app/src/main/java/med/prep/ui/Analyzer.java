@@ -11,11 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
@@ -76,36 +71,7 @@ public class Analyzer extends Fragment {
 
         for (UniversalModel model : expo().getStore().getModels()) {
 
-
-            // *** analyze ***
-            long restdays = 0;
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
-
-
-                Date model_day = sdf.parse(model.getDate());
-                Date date = sdf.parse(expo().getStore().today());
-
-
-                long diffInMillies = Math.abs(date.getTime() - model_day.getTime());
-                long days = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
-
-
-                int tagesdosis = Reports.tagesdosis(model);
-
-                long benutzt = days * tagesdosis;
-
-                int vorrat = 0;
-                if (!model.getCoordinates().isEmpty()) { vorrat = Integer.parseInt(model.getCoordinates()); }
-
-
-                long rest = vorrat - benutzt;
-                restdays = rest/tagesdosis;
-
-            } catch (Exception exception) {}//analyze
-
-
-
+            long restdays = Reports.restdays(model, expo.getStore().today());
 
             average_days = (average_days + restdays)/2;
 
@@ -131,7 +97,7 @@ public class Analyzer extends Fragment {
         TextView tv = view.findViewById(R.id.result_output);
 
         if (worst_days < emergency) {
-            tv.setText("Nachschub erforderlich");
+            tv.setText("Nachschub umgehend erforderlich");
         } else if (worst_days < order) {
             tv.setText("Nachschub empfohlen");
         } else {
