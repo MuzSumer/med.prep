@@ -13,6 +13,10 @@
     <string name="title_analyzer">Analyse</string>
     <string name="title_maintain">Empfehlung</string>
 
+    <string name="analyze_ok">Bestellen in %s Tagen</string>
+    <string name="analyze_stockup">Nachschub empfohlen</string>
+    <string name="analyze_emergency">Nachschub umgehend erforderlich</string>
+
     <!-- records -->
     <string name="dialog_add">Add</string>
     <string name="dialog_add_confirm">Save</string>

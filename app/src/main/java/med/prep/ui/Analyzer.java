@@ -101,14 +101,26 @@ public class Analyzer extends Fragment {
 
         TextView tv = view.findViewById(R.id.result_output);
 
+
+
+        // Nachschub umgehend erforderlich
         if (worst_days < emergency) {
-            tv.setText("Nachschub umgehend erforderlich");
+            tv.setText(getString(R.string.analyze_emergency));
+
+
+
+        // Nachschub empfohlen
         } else if (worst_days < order) {
-            tv.setText("Nachschub empfohlen");
+            tv.setText(getString(R.string.analyze_ok));
         } else {
+
+
+
+        // Nachschub in <calculate> Tagen
             long diff = worst_days - order;
 
-            tv.setText("Bestellen in " + diff + " Tagen");
+            String d = getString(R.string.analyze_stockup).replace("%s", Long.toString(diff));
+            tv.setText(d);
         }
 
 
