@@ -467,7 +467,7 @@ public class Maintain extends Fragment {
                 // *** analyze
 
 
-
+                mv.getLocation().setTextColor(Color.BLACK);
                 if (restdays < emergency) {
                     mv.getLocation().setTextColor(Color.RED);
 

@@ -31,6 +31,11 @@ public class Analyzer extends Fragment {
     String fullname;
     String birthdate;
 
+
+    long worst_days = 365;
+    long best_days = 0;
+    long average_days = 0;
+
     private void loadPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
@@ -70,9 +75,7 @@ public class Analyzer extends Fragment {
 
         // *** analysis
 
-        long worst_days = 365;
-        long best_days = 0;
-        long average_days = 0;
+
 
         for (UniversalModel model : expo().getStore().getModels()) {
 
@@ -93,41 +96,58 @@ public class Analyzer extends Fragment {
 
 
 
-
         // show analysis
         best.setText(Long.toString(best_days));
         worst.setText(Long.toString(worst_days));
         average.setText(Long.toString(average_days));
 
-        TextView tv = view.findViewById(R.id.result_output);
 
 
 
-        // Nachschub umgehend erforderlich
-        if (worst_days < emergency) {
-            tv.setText(getString(R.string.analyze_emergency));
 
 
 
-        // Nachschub empfohlen
-        } else if (worst_days < order) {
-            tv.setText(getString(R.string.analyze_ok));
-        } else {
+        //write analytical text
+        analyticalText(view);
 
-
-
-        // Nachschub in <calculate> Tagen
-            long diff = worst_days - order;
-
-            String d = getString(R.string.analyze_stockup).replace("%s", Long.toString(diff));
-            tv.setText(d);
-        }
 
 
 
 
 
         return view;
+    }
+
+    private void analyticalText(View view) {
+
+        TextView tv = view.findViewById(R.id.result_output);
+
+        if (worst_days < emergency) {
+
+            /* Nachschub umgehend erforderlich */
+            tv.setText(getString(R.string.analyze_emergency));
+
+
+
+
+        } else if (worst_days < order) {
+
+            /* Nachschub empfohlen */
+            tv.setText(getString(R.string.analyze_stockup));
+
+
+        } else {
+
+
+
+            long diff = worst_days - order;
+
+
+            // Nachschub in xxx Tagen
+            String xxx = getString(R.string.analyze_ok).replace("%s", Long.toString(diff));
+            tv.setText(xxx);
+
+        }
     }
 
     @Override

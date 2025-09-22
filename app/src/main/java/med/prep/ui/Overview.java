@@ -443,6 +443,7 @@ public class Overview extends Fragment {
 
                             StockUp dialog = new StockUp(expo(), model);
                             dialog.show(getChildFragmentManager(), "");
+                            expo().redraw(true);
 
                             return;
                         }
@@ -469,6 +470,7 @@ public class Overview extends Fragment {
 
                             StockUp dialog = new StockUp(expo(), model);
                             dialog.show(getChildFragmentManager(), "");
+                            expo().redraw(true);
                         }
 
                     }
@@ -524,6 +526,8 @@ public class Overview extends Fragment {
 
                 long restdays = Reports.restdays(model, expo.getStore().today());
                 String result = ", noch " + restdays + " Tage";
+
+                mv.getTags().setTextColor(Color.BLACK);
                 if (restdays < emergency) {
                     result = ", nur noch " + restdays + " Tage";
                     mv.getTags().setTextColor(Color.RED);
