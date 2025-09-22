@@ -42,20 +42,7 @@ public class Maintain extends Fragment {
     String fullname;
     String birthdate;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.diagram_maintain, container, false);
-
-
-        expo = new DiagramExpose(getContext(), view.findViewById(R.id.diagram), view.findViewById(R.id.scroll));
-
-        Store store = new DiagramStore(expo(), namespace);
-        expo().createStore(store, namespace, "");
-
-        registerActions(view);
-
-
+    private void loadPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
 
@@ -71,7 +58,23 @@ public class Maintain extends Fragment {
 
         fullname = preferences.getString("FirstName", "") + " " + preferences.getString("LastName", "");
         birthdate = preferences.getString("BirthDate", "");
+    }
 
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.diagram_maintain, container, false);
+
+
+        expo = new DiagramExpose(getContext(), view.findViewById(R.id.diagram), view.findViewById(R.id.scroll));
+
+        Store store = new DiagramStore(expo(), namespace);
+        expo().createStore(store, namespace, "");
+
+        registerActions(view);
+
+
+        loadPreferences();
 
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());

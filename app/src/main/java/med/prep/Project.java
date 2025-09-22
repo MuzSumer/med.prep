@@ -7,16 +7,16 @@ public class Project {
 
     views finetuned
     reports finetuned
-    quick edit
 
 
     V 1.3
     cell coloring
     backup/restore
+    quickedit
 
     V 1.25
     create sample
-    added backub (stub)
+    added backub/restore (stub)
     added moving up/down
      */
 

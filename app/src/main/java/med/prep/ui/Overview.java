@@ -52,6 +52,23 @@ public class Overview extends Fragment {
     String fullname;
     String birthdate;
 
+    private void loadPreferences() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+
+        String e = preferences.getString("emergency", "");
+        if (!e.isEmpty()) {
+            emergency = Integer.parseInt(e);
+        }
+
+        String o = preferences.getString("order", "");
+        if (!o.isEmpty()) {
+            order = Integer.parseInt(o);
+        }
+
+        fullname = preferences.getString("FirstName", "") + " " + preferences.getString("LastName", "");
+        birthdate = preferences.getString("BirthDate", "");
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -68,21 +85,7 @@ public class Overview extends Fragment {
         registerActions(view);
 
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-
-        String e = preferences.getString("emergency", "");
-        if (!e.isEmpty()) {
-            emergency = Integer.parseInt(e);
-        }
-
-        String o = preferences.getString("order", "");
-        if (!o.isEmpty()) {
-            order = Integer.parseInt(o);
-        }
-
-        fullname = preferences.getString("FirstName", "") + " " + preferences.getString("LastName", "");
-        birthdate = preferences.getString("BirthDate", "");
+        loadPreferences();
 
 
 

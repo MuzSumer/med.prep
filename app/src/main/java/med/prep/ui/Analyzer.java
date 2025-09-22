@@ -31,21 +31,9 @@ public class Analyzer extends Fragment {
     String fullname;
     String birthdate;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-
-        View view = inflater.inflate(R.layout.diagram_analyzer_sheet, container, false);
-
-
-        expo = new DiagramExpose(getContext(), null, null);
-
-        Store store = new DiagramStore(expo(), namespace);
-        expo().createStore(store, namespace, "");
-
-        //registerActions(view);
-
-
+    private void loadPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
 
         String e = preferences.getString("emergency", "");
         if (!e.isEmpty()) {
@@ -59,8 +47,25 @@ public class Analyzer extends Fragment {
 
         fullname = preferences.getString("FirstName", "") + " " + preferences.getString("LastName", "");
         birthdate = preferences.getString("BirthDate", "");
+    }
+
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.diagram_analyzer_sheet, container, false);
 
 
+        expo = new DiagramExpose(getContext(), null, null);
+
+        Store store = new DiagramStore(expo(), namespace);
+        expo().createStore(store, namespace, "");
+
+
+        loadPreferences();
+
+        TextView best = view.findViewById(R.id.result_best);
+        TextView worst = view.findViewById(R.id.result_worst);
+        TextView average = view.findViewById(R.id.result_average);
 
 
         // *** analysis
@@ -84,12 +89,12 @@ public class Analyzer extends Fragment {
                 worst_days = restdays;
             }
 
-        }
+        }//next model
 
-        TextView best = view.findViewById(R.id.result_best);
-        TextView worst = view.findViewById(R.id.result_worst);
-        TextView average = view.findViewById(R.id.result_average);
 
+
+
+        // show analysis
         best.setText(Long.toString(best_days));
         worst.setText(Long.toString(worst_days));
         average.setText(Long.toString(average_days));
