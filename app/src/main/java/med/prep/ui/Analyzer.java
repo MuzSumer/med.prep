@@ -33,7 +33,7 @@ public class Analyzer extends Fragment {
     String birthdate;
 
 
-    long worst_days = 365;
+    long worst_days = 360;
     long best_days = 0;
     long average_days = 0;
 
@@ -58,7 +58,7 @@ public class Analyzer extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.diagram_analyzer_sheet, container, false);
+        View view = inflater.inflate(R.layout.diagram_analyzer, container, false);
 
 
         expo = new DiagramExpose(getContext(), null, null);

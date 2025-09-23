@@ -129,6 +129,8 @@ public class Overview extends Fragment {
         }
         return body;
     }
+
+
     private void registerActions(View view) {
         view.findViewById(R.id.record_add).setOnClickListener(
                 v -> {
@@ -187,19 +189,70 @@ public class Overview extends Fragment {
         view.findViewById(R.id.record_search).setOnClickListener(
                 v -> {
 
-                    expo().beep();
+
+                    long average_days = 0;
+                    long best_days = 0;
+                    long worst_days = 360;
+
+                    for (UniversalModel model : expo().getStore().getModels()) {
+
+                        long restdays = Reports.restdays(model, expo().getStore().today());
+
+                        average_days = (average_days + restdays)/2;
+
+                        if (restdays > best_days) { best_days = restdays; }
+
+                        if (restdays < worst_days) { worst_days = restdays; }
 
 
+                    }//next model
+
+
+
+                    String result = "";
+
+                    if (worst_days < emergency) {
+
+                        /* Nachschub umgehend erforderlich */
+                        result = getString(R.string.analyze_emergency);
+
+
+
+                    } else if (worst_days < order) {
+
+                        /* Nachschub baldmöglich empfohlen */
+                        result = getString(R.string.analyze_stockup);
+
+
+                    } else {
+
+
+
+                        long diff = worst_days - order;
+
+
+                        // Nachschub in # Tagen
+                        result = getString(R.string.analyze_ok).replace("%s", Long.toString(diff));
+
+
+                    }
+
+                    Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+
+
+
+                    //expo().beep();
+
+                    /* email
                     Intent intent = new Intent(Intent.ACTION_SEND);
                     intent.setType("text/html");
                     //intent.putExtra(Intent.EXTRA_EMAIL, "");
                     intent.putExtra(Intent.EXTRA_SUBJECT, "Bestand");
                     intent.putExtra(Intent.EXTRA_TEXT, body());
 
-                    /*
                     Toast.makeText(getContext(), getString(R.string.action_email_warning), Toast.LENGTH_LONG).show();
                     startActivity(Intent.createChooser(intent, "Send Email"));
-                     */
+                     */ //email
 
                 }
         );
@@ -577,7 +630,7 @@ public class Overview extends Fragment {
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.diagram_overview_item, parent, false));
+            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.item_overview, parent, false));
         }
 
         @Override

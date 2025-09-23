@@ -97,8 +97,18 @@ public class Maintain extends Fragment {
     private void registerActions(View view) {
         view.findViewById(R.id.record_add).setOnClickListener(
                 v -> {
-                    //Toast.makeText(getContext(), R.string.diagram_error, Toast.LENGTH_SHORT).show();
-                    expo().beep();
+
+                    UniversalModel model = expo().getSelectedModel();
+
+                    if (model == null) {
+                        Toast.makeText(getContext(), R.string.report_select_model, Toast.LENGTH_SHORT).show();
+                        expo().beep();
+                        return;
+                    }
+
+                    //
+                    StockUp dialog = new StockUp(expo(), model);
+                    dialog.show(getChildFragmentManager(), "");
                 }
         );
 
@@ -113,13 +123,29 @@ public class Maintain extends Fragment {
         view.findViewById(R.id.record_share).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), getString(R.string.report_generation), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getContext(), getString(R.string.action_data_warning), Toast.LENGTH_LONG).show();
+                    boolean create = false;
+                    for (UniversalModel model : expo().getStore().getModels()) {
+                        long restdays = Reports.restdays(model, expo().getStore().today());
 
-                    Intent intent = new Intent(getContext(), MaintainReport.class);
-                    intent.putExtra("namespace", namespace);
+                        if (restdays < order) {
+                            create = true;
+                        }
+                    }//next
 
-                    view.getContext().startActivity(intent);
+                    if (create) {
+                        Toast.makeText(getContext(), getString(R.string.report_generation), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getString(R.string.action_data_warning), Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(getContext(), MaintainReport.class);
+                        intent.putExtra("namespace", namespace);
+
+                        view.getContext().startActivity(intent);
+
+
+                    } else {
+                        Toast.makeText(getContext(), getString(R.string.report_empty), Toast.LENGTH_SHORT).show();
+                    }
+
                 }
         );
 
@@ -127,15 +153,33 @@ public class Maintain extends Fragment {
         view.findViewById(R.id.record_search).setOnClickListener(
                 v -> {
 
-                    Toast.makeText(getContext(), getString(R.string.action_data_warning), Toast.LENGTH_LONG).show();
+                    boolean create = false;
+                    for (UniversalModel model : expo().getStore().getModels()) {
+                        long restdays = Reports.restdays(model, expo().getStore().today());
 
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.setType("text/html");
-                    //intent.putExtra(Intent.EXTRA_EMAIL, "");
-                    intent.putExtra(Intent.EXTRA_SUBJECT, "Bedarf");
-                    intent.putExtra(Intent.EXTRA_TEXT, body());
+                        if (restdays < order) {
+                            create = true;
+                        }
+                    }//next
 
-                    startActivity(Intent.createChooser(intent, "Send Email"));
+                    if (create) {
+                        Toast.makeText(getContext(), getString(R.string.action_data_warning), Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/html");
+                        //intent.putExtra(Intent.EXTRA_EMAIL, "");
+                        intent.putExtra(Intent.EXTRA_SUBJECT, "Bedarf");
+                        intent.putExtra(Intent.EXTRA_TEXT, body());
+
+                        startActivity(Intent.createChooser(intent, "Send Email"));
+
+
+                    } else {
+                        Toast.makeText(getContext(), getString(R.string.report_empty), Toast.LENGTH_SHORT).show();
+                    }
+
+
+
 
                 }
         );
@@ -504,7 +548,7 @@ public class Maintain extends Fragment {
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.diagram_maintain_item, parent, false));
+            return expo().createViewHolder(LayoutInflater.from(context).inflate(R.layout.item_maintain, parent, false));
         }
 
         @Override

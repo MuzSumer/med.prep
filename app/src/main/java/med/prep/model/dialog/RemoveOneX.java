@@ -69,7 +69,7 @@ public class RemoveOneX extends DialogFragment {
         }
 
 
-        SpinnerAdapter adapter = new ArrayAdapter<>(diagram.expo().getContext(), R.layout.diagram_quick_edit, subjects);
+        SpinnerAdapter adapter = new ArrayAdapter<>(diagram.expo().getContext(), R.layout.item_quick_edit, subjects);
         spinner.setAdapter(adapter);
 
 
