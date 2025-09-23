@@ -82,7 +82,7 @@
             app:layout_constraintBottom_toBottomOf="@id/control"
             app:layout_constraintStart_toStartOf="@id/control"
             app:layout_constraintTop_toTopOf="@id/control"
-            app:srcCompat="@android:drawable/ic_menu_myplaces" />
+            app:srcCompat="@drawable/app_progress_notification" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/record_search"
@@ -97,7 +97,7 @@
             app:layout_constraintBottom_toBottomOf="@id/control"
             app:layout_constraintStart_toEndOf="@id/record_share"
             app:layout_constraintTop_toTopOf="@id/control"
-            app:srcCompat="@android:drawable/ic_menu_share" />
+            app:srcCompat="@drawable/ic_approve" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/record_remove"

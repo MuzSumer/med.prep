@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_overview">Bestand</string>
+    <string name="title_analyzer">Analyse</string>
+    <string name="title_maintain">Empfehlung</string>
+
+    <string name="analyze_ok">Bestellen in %s Tagen</string>
+    <string name="analyze_stockup">Nachschub baldmöglich empfohlen</string>
+    <string name="analyze_emergency">Nachschub umgehend erforderlich</string>
+
+
+
+    <string name="action_data_warning">Vorsicht beim Teilen persönlicher Daten</string>
+
+    <string name="report_generation">Der Report wird erstellt...</string>
+
+
+
+
+    <string name="med_type">Einnahme</string>
+    <string name="med_state">Status</string>
+    <string name="med_title">Andwendung bei</string>
+    <string name="med_subject">Medik. Name</string>
+    <string name="med_content">Dosierung</string>
+    <string name="med_tags">Einnahmezeiten</string>
+    <string name="med_specs">Packung</string>
+    <string name="med_location">""</string>
+
+
+</resources>

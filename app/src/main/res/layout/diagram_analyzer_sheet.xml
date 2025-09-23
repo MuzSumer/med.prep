@@ -70,6 +70,30 @@
         app:layout_constraintStart_toEndOf="@+id/d_average"
         app:layout_constraintTop_toBottomOf="@id/result_best" />
 
+
+    <TextView
+        android:id="@+id/d_load"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="33 Tage"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        app:layout_constraintBaseline_toBaselineOf="@+id/result_load"
+        app:layout_constraintEnd_toStartOf="@+id/result_load"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/result_load"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/d_load"
+        app:layout_constraintTop_toBottomOf="@id/result_average" />
+
+
+
     <TextView
         android:id="@+id/d_result"
         android:layout_width="120dp"
@@ -85,12 +109,12 @@
         android:id="@+id/result_output"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="192dp"
+        android:layout_marginTop="280dp"
         android:text="result"
         android:textColor="#E91E63"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/d_result"
-        app:layout_constraintTop_toBottomOf="@id/result_average" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
