@@ -21,8 +21,8 @@
     <string name="dialog_saved_confirmation">Saved</string>
 
     <!-- moves -->
-    <string name="dialog_selected_up">selected up</string>
-    <string name="dialog_selected_down">selected down</string>
+    <string name="dialog_selected_up">˄ selected up</string>
+    <string name="dialog_selected_down">˅ selected down</string>
 
     <string name="record_add">New Exposé</string>
     <string name="record_select">select a record</string>

@@ -263,110 +263,6 @@ public class Overview extends Fragment {
 
 
 
-    public View.OnClickListener selectCell() { return cellSelect; }
-
-
-    public View.OnClickListener openCell() { return cellOpen; }
-
-
-    public View.OnClickListener editCell() { return cellEdit; }
-
-
-
-    private final View.OnClickListener cellSelect = view -> {
-        String id = view.getContentDescription().toString();
-
-        expo().setFocus(id, false);
-
-        UniversalModel m = expo().getStore().findModel(id);
-
-    };
-
-    private final View.OnClickListener cellEdit = view -> {
-        String id = view.getContentDescription().toString();
-        UniversalModel model = expo().getStore().findModel(id);
-
-        if (Reports.quickMode(getContext())) {
-
-            expo().setFocus(model.getId(), false);
-            expo().redraw(false);
-
-
-            Resources res = getContext().getResources();
-
-            String[] array_type = res.getStringArray(R.array.type_speak);
-            ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
-
-
-            String[] array_state = res.getStringArray(R.array.state);
-            ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
-
-            EditorProperties editor = new EditorProperties(expo(), types, states, model);
-            editor.show(getChildFragmentManager(), "");
-
-            return;
-        }
-
-        UniversalModel focused = expo().getSelectedModel();
-
-        if (focused == null) {
-            expo().setFocus(model.getId(), false);
-            expo().redraw(false);
-
-            return;
-        }
-
-        if (model.getId() != focused.getId()) {
-            expo().setFocus(model.getId(), false);
-            expo().redraw(true);
-
-            return;
-        }
-
-        if (model.getId() == focused.getId()) {
-
-            Resources res = getContext().getResources();
-
-            String[] array_type = res.getStringArray(R.array.type_speak);
-            ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
-
-
-            String[] array_state = res.getStringArray(R.array.state);
-            ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
-
-            EditorProperties editor = new EditorProperties(expo(), types, states, model);
-            editor.show(getChildFragmentManager(), "");
-        }
-
-
-    };
-
-    private final View.OnClickListener cellOpen = view -> {
-        String id = view.getContentDescription().toString();
-
-        if (!expo().getSelected().equals(id)) {
-
-            expo().setFocus(id, false);
-
-            UniversalModel model = expo().getStore().findModel(id);
-            String subject = model.getSubject();
-
-            return;
-        }
-
-
-        /*
-        Intent intent = new Intent(getActivity(), ViewPlace.class);
-        intent.putExtra("namespace", expo().getNamespace());
-        intent.putExtra("folder", expo().getFolder());
-        intent.putExtra("id", id);
-
-        startActivity(intent);
-         */
-
-    };
-
-
 
     class ModelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -721,4 +617,116 @@ public class Overview extends Fragment {
 
         return found;
     }
+
+
+
+
+
+
+
+
+
+    public View.OnClickListener selectCell() { return cellSelect; }
+
+
+    public View.OnClickListener openCell() { return cellOpen; }
+
+
+    public View.OnClickListener editCell() { return cellEdit; }
+
+
+
+    private final View.OnClickListener cellSelect = view -> {
+        String id = view.getContentDescription().toString();
+
+        expo().setFocus(id, false);
+
+        UniversalModel m = expo().getStore().findModel(id);
+
+    };
+
+    private final View.OnClickListener cellEdit = view -> {
+        String id = view.getContentDescription().toString();
+        UniversalModel model = expo().getStore().findModel(id);
+
+        if (Reports.quickMode(getContext())) {
+
+            expo().setFocus(model.getId(), false);
+            expo().redraw(false);
+
+
+            Resources res = getContext().getResources();
+
+            String[] array_type = res.getStringArray(R.array.type_speak);
+            ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
+
+
+            String[] array_state = res.getStringArray(R.array.state);
+            ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+
+            EditorProperties editor = new EditorProperties(expo(), types, states, model);
+            editor.show(getChildFragmentManager(), "");
+
+            return;
+        }
+
+        UniversalModel focused = expo().getSelectedModel();
+
+        if (focused == null) {
+            expo().setFocus(model.getId(), false);
+            expo().redraw(false);
+
+            return;
+        }
+
+        if (model.getId() != focused.getId()) {
+            expo().setFocus(model.getId(), false);
+            expo().redraw(true);
+
+            return;
+        }
+
+        if (model.getId() == focused.getId()) {
+
+            Resources res = getContext().getResources();
+
+            String[] array_type = res.getStringArray(R.array.type_speak);
+            ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
+
+
+            String[] array_state = res.getStringArray(R.array.state);
+            ArrayList<String> states = new ArrayList<>(Arrays.asList(array_state));
+
+            EditorProperties editor = new EditorProperties(expo(), types, states, model);
+            editor.show(getChildFragmentManager(), "");
+        }
+
+
+    };
+
+    private final View.OnClickListener cellOpen = view -> {
+        String id = view.getContentDescription().toString();
+
+        if (!expo().getSelected().equals(id)) {
+
+            expo().setFocus(id, false);
+
+            UniversalModel model = expo().getStore().findModel(id);
+            String subject = model.getSubject();
+
+            return;
+        }
+
+
+        /*
+        Intent intent = new Intent(getActivity(), ViewPlace.class);
+        intent.putExtra("namespace", expo().getNamespace());
+        intent.putExtra("folder", expo().getFolder());
+        intent.putExtra("id", id);
+
+        startActivity(intent);
+         */
+
+    };
+
 }
