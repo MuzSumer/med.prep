@@ -511,6 +511,7 @@ public class Maintain extends Fragment {
                 mv.getLocation().setContentDescription(id);
 
 
+                // *** analyze
                 Resources res = getContext().getResources();
 
                 String[] array_type = res.getStringArray(R.array.type_speak);
@@ -520,16 +521,12 @@ public class Maintain extends Fragment {
                 index = Integer.parseInt(model.getType());
 
                 String location = types.get(index) + ", noch " + restdays + " Tage";
+
+                mv.getLocation().setTextColor(Color.GRAY);
                 mv.getLocation().setText(location);
 
+                //mv.getLocation().setTextColor(ContextCompat.getColor(getContext(), android.R.color.system_primary_light));
 
-                // *** analyze
-
-
-                String r = getString(R.string.report_select_model);
-
-
-                mv.getLocation().setTextColor(ContextCompat.getColor(getContext(), android.R.color.system_primary_light));
                 if (restdays < emergency) {
                     mv.getLocation().setTextColor(Color.RED);
 

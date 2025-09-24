@@ -586,8 +586,8 @@ public class Overview extends Fragment {
                 long restdays = Reports.restdays(model, expo.getStore().today());
                 String result = ", noch " + restdays + " Tage";
 
-                //mv.getTags().setTextColor(Color.BLACK);
-                mv.getTags().setTextColor(getColor(getContext(), android.R.color.system_primary_light));
+                mv.getTags().setTextColor(Color.GRAY);
+                //mv.getTags().setTextColor(getColor(getContext(), android.R.color.system_primary_light));
 
                 if (restdays < emergency) {
                     result = ", nur noch " + restdays + " Tage";

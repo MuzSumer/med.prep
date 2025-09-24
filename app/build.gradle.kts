@@ -10,8 +10,8 @@ android {
         applicationId = "med.prep"
         minSdk = 33
         targetSdk = 36
-        versionCode = 15
-        versionName = "1.5"
+        versionCode = 151
+        versionName = "1.51"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
