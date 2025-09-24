@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -215,12 +214,13 @@ public class Maintain extends Fragment {
                     result = "nur noch " + restdays + " Tage";
                 }
 
-
-
+                result = model.getSubject() + " " + model.getContent() + ", " + model.getSpecs() + " Stück";
                 if (body.isEmpty()) {
-                    body = model.getSubject() + " " + result;
+                    //body = model.getSubject() + " " + result;
+                    body = result;
                 } else {
-                    body = body + "\n" + model.getSubject() + " " + result;
+                    //body = body + "\n" + model.getSubject() + " " + result;
+                    body = body + "\n" + result;
                 }
             }
 

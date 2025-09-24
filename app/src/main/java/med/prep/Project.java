@@ -3,6 +3,12 @@ package med.prep;
 public class Project {
 
     /*
+    V1.52
+    Bestell html, mail
+
+    V1.51
+    colors for day/night
+
     V1.5
 
     views finetuned

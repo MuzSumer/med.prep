@@ -19,11 +19,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.core.view.MenuCompat;
 import androidx.preference.PreferenceManager;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.concurrent.TimeUnit;
-
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
@@ -72,20 +67,20 @@ public class MaintainReport extends Reports {
         web.getSettings().setAllowFileAccess(true);
 
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-
-
-        String s = preferences.getString("order", "");
-        if (!s.isEmpty()) {
-            order = Integer.parseInt(s);
-        }
-
+        getPreferences();
 
         // >>> expose model
         createBrowser();
     }
 
+    private void getPreferences() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        String o = preferences.getString("order", "");
+        if (!o.isEmpty()) {
+            order = Integer.parseInt(o);
+        }
+    }
 
 
     /* --------------------------------ExpoDrive-------------------------------- */
@@ -94,20 +89,7 @@ public class MaintainReport extends Reports {
         String base = "file:///data/user/0/med.prep/files/";
 
 
-        /*
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        branding = sharedPreferences.getString("report_branding", "");
-
-        layout = sharedPreferences.getString("report_layout", "business");
-        width = sharedPreferences.getString("report_image_width", "400");
-         */
-
-
-        String html = "Test";
-        html = ltrPage();
-
-
+        String html = ltrPage();
 
         web.loadDataWithBaseURL(base, html, "text/html", "UTF-8", null);
 
@@ -171,7 +153,8 @@ public class MaintainReport extends Reports {
                     // *** title, date ***
 
                     html += "<tr>";
-                    html += "<th style='text-align:left'>noch " + restdays + " Tage</th>";
+                    html += "<th style='text-align:left'>" + model.getTitle() + "</th>";
+                    //html += "<th style='text-align:left'>noch " + restdays + " Tage</th>";
                     //html += "<th style='text-align:right;font-size:9'>" + model.getDate() + "</th>";
                     html += "</tr>";
 
@@ -200,7 +183,7 @@ public class MaintainReport extends Reports {
                     // *** title ***
 
                     html += "<tr>";
-                    html += "<th colspan='2' style='text-align:left;font-size:17;color:darkgreen'><br>" + model.getSpecs() + " " + model.getTitle() + "</th>";
+                    html += "<th colspan='2' style='text-align:left;font-size:17;color:darkgreen'><br>" + model.getSpecs() + " Stück</th>";
                     html += "</tr>";
 
 

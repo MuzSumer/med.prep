@@ -1,6 +1,7 @@
 package med.prep.ui;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.core.view.MenuCompat;
+import androidx.preference.PreferenceManager;
 
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
@@ -71,23 +73,19 @@ public class OverviewReport extends Reports {
 
     /* --------------------------------ExpoDrive-------------------------------- */
 
+    private void getPreferences() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
+        String first_name = sharedPreferences.getString("FirstName", "");
+        String order = sharedPreferences.getString("order", "");
+    }
+
     private void createBrowser() {
         String base = "file:///data/user/0/med.prep/files/";
 
 
-        /*
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        branding = sharedPreferences.getString("report_branding", "");
-
-        layout = sharedPreferences.getString("report_layout", "business");
-        width = sharedPreferences.getString("report_image_width", "400");
-         */
-
-
         String html = "Test";
         html = ltrPage();
-
 
 
         web.loadDataWithBaseURL(base, html, "text/html", "UTF-8", null);
@@ -105,39 +103,36 @@ public class OverviewReport extends Reports {
         String html = createHeader("Tagesplan");
 
 
-        // TODO build timeslot table
+
         // add medication
 
-
-
-        for(int timeslot=0; timeslot<24; timeslot++) {
+        for(int hour=0; hour<24; hour++) {
 
 
             html += "<table width='100%' border='1' valign='top'><tr>";
 
-            String ts = Integer.toString(timeslot);
-            if (ts.length() < 2) ts = "0" + ts;
-            ts += ":00";
+            String timeslot = Integer.toString(hour);
+            if (timeslot.length() < 2) timeslot = "0" + timeslot;
+            timeslot += ":00";
 
 
             //html += "<th style='padding:2px' valign='top'>";
             //html += "<table width='100%' border='0'>";
 
-            String tm = "";
+            String meds = "";
             for (UniversalModel model : expo.getStore().getModels()) {
-                if (model.getTags().contains(ts)) {
-                    if (tm.isEmpty()) {
-                        tm = tm + model.getSubject();
+                if (model.getTags().contains(timeslot)) {
+                    if (meds.isEmpty()) {
+                        meds = meds + model.getSubject();
                     } else {
-                        tm = tm + newline + model.getSubject();
+                        meds = meds + newline + model.getSubject();
                     }
                 }
-                //html = append(html, ltrModel(model));
             }// model
 
             html += "<tr>";
-            html += "<th style='text-align:left'>" + ts + "</th>";
-            html += "<th style='text-align:right'>" + tm + "</th>";
+            html += "<th style='text-align:left'>" + timeslot + "</th>";
+            html += "<th style='text-align:right'>" + meds + "</th>";
             html += "</tr>";
 
             html += "</table>";

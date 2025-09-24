@@ -2,7 +2,7 @@
 <resources>
     <string name="title_overview">Bestand</string>
     <string name="title_analyzer">Analyse</string>
-    <string name="title_maintain">Empfehlung</string>
+    <string name="title_maintain">Nachschub</string>
 
     <string name="analyze_ok">Bestellen in %s Tagen</string>
     <string name="analyze_stockup">Nachschub baldmöglich empfohlen</string>
