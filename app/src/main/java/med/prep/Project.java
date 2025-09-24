@@ -5,6 +5,7 @@ public class Project {
     /*
     V1.52
     Bestell html, mail
+    Analyse entfernt
 
     V1.51
     colors for day/night
