@@ -4,19 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <!--
-    <item
-        android:id="@+id/app_bar_switch"
-        android:title="Schnellmodus"
-        app:actionLayout="@layout/menu_item_switch"
-        app:showAsAction="always" />
+    <!-- action symbols
+    <group android:id="@+id/navigation" >
+        <item
+            android:id="@+id/navigate_top"
+            android:title="°"
+            app:showAsAction="always|withText" />
 
-    <item
-        android:id="@+id/app_bar_check"
-        android:title="Schnellmodus"
-        app:actionLayout="@layout/menu_item_check"
-        app:showAsAction="always" />
+    </group>
     -->
+
 
     <group android:id="@+id/system">
         <item
