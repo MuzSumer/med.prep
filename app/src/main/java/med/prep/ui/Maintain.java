@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 import med.prep.R;
 import med.prep.model.DiagramUtil;
@@ -34,7 +36,7 @@ import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
 import med.prep.model.meta.UniversalModel;
 
-public class Maintain extends Fragment {
+public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
 
     final static String namespace = "medprep.xml";
 
@@ -47,6 +49,29 @@ public class Maintain extends Fragment {
 
     String fullname;
     String birthdate;
+
+
+
+    TextToSpeech tts;
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            int result = tts.setLanguage(Locale.GERMAN);
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Toast.makeText(getContext(), "error tts", Toast.LENGTH_LONG).show();
+            }
+
+        }
+    }
+
+    private void speak(String subject) {
+
+        tts.speak(subject, TextToSpeech.QUEUE_FLUSH, null, null);
+        //Toast.makeText(getContext(), subject, Toast.LENGTH_SHORT).show();
+
+    }
+
 
     private void loadPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -81,6 +106,8 @@ public class Maintain extends Fragment {
 
 
         loadPreferences();
+
+        tts = new TextToSpeech(getContext(), this);
 
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity());
@@ -245,6 +272,8 @@ public class Maintain extends Fragment {
 
         UniversalModel m = expo().getStore().findModel(modelId);
 
+        speak(m.getSubject());
+
     };
 
     private final View.OnClickListener cellEdit = view -> {
@@ -254,6 +283,7 @@ public class Maintain extends Fragment {
         if (Reports.quickMode(getContext())) {
             expo().setFocus(id, false);
             expo().redraw(true);
+            speak(model.getSubject());
 
             StockUp dialog = new StockUp(expo(), model);
             dialog.show(getChildFragmentManager(), "");
@@ -266,6 +296,7 @@ public class Maintain extends Fragment {
         if (focused == null) {
             expo().setFocus(id, false);
             expo().redraw(true);
+            speak(model.getSubject());
 
             return;
         }
@@ -273,11 +304,14 @@ public class Maintain extends Fragment {
         if (model.getId() != focused.getId()) {
             expo().setFocus(id, false);
             expo().redraw(true);
+            speak(model.getSubject());
 
             return;
         }
 
         if (model.getId() == focused.getId()) {
+            speak(model.getSubject());
+
             StockUp dialog = new StockUp(expo(), model);
             dialog.show(getChildFragmentManager(), "");
         }
@@ -293,7 +327,7 @@ public class Maintain extends Fragment {
 
         UniversalModel model = expo().getStore().findModel(id);
         String subject = model.getSubject();
-
+        speak(subject);
 
         /*
         Intent intent = new Intent(getActivity(), ViewPlace.class);
@@ -310,45 +344,47 @@ public class Maintain extends Fragment {
 
 
 
-    private void customItem(DiagramExpose.UniversalModelViewHolder mv, UniversalModel model) {
+    private void customizeViewItem(DiagramExpose.UniversalModelViewHolder mv, UniversalModel model) {
 
-        //mv.getTitle().setOnClickListener(selectCell());
-        //mv.getSubject().setOnClickListener(selectCell());
-        //mv.getDate().setOnClickListener(editCell());
-        //mv.getType().setOnClickListener(editCell());
-        //mv.getState().setOnClickListener(editCell());
-        //mv.getOpenLocation().setOnClickListener(openMap());
-        //mv.getLocation().setOnClickListener(wrongLocation());
-        //mv.getImage().setOnClickListener(editCell());
+        /*
+        mv.getTitle().setOnClickListener(selectCell());
+        mv.getSubject().setOnClickListener(selectCell());
+        mv.getDate().setOnClickListener(editCell());
+        mv.getType().setOnClickListener(editCell());
+        mv.getState().setOnClickListener(editCell());
+        mv.getOpenLocation().setOnClickListener(openMap());
+        mv.getLocation().setOnClickListener(wrongLocation());
+        mv.getImage().setOnClickListener(editCell());
+         */
 
 
         // stock up
         mv.getImage().setOnClickListener(editCell());
 
+        {
+            Resources res = getContext().getResources();
 
+            String[] array_type = res.getStringArray(R.array.type_speak);
+            ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
 
-        // analytic string
-        Resources res = getContext().getResources();
+            int index = 0;
+            index = Integer.parseInt(model.getType());
 
-        String[] array_type = res.getStringArray(R.array.type_speak);
-        ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
+            long restdays = Reports.restdays(model, expo.getStore().today());
+            String location = types.get(index) + ", noch " + restdays + " Tage";
 
-        int index = 0;
-        index = Integer.parseInt(model.getType());
+            mv.getLocation().setTextColor(Color.GRAY);
 
-        long restdays = Reports.restdays(model, expo.getStore().today());
-        String location = types.get(index) + ", noch " + restdays + " Tage";
+            //mv.getLocation().setTextColor(ContextCompat.getColor(getContext(), android.R.color.system_primary_light));
 
-        mv.getLocation().setTextColor(Color.GRAY);
+            if (restdays < emergency) {
+                mv.getLocation().setTextColor(Color.RED);
+                location = types.get(index) + ", nur noch " + restdays + " Tage";
+            }
 
-        //mv.getLocation().setTextColor(ContextCompat.getColor(getContext(), android.R.color.system_primary_light));
+            mv.getLocation().setText(location);
+        }//tag
 
-        if (restdays < emergency) {
-            mv.getLocation().setTextColor(Color.RED);
-            location = types.get(index) + ", nur noch " + restdays + " Tage";
-        }
-
-        mv.getLocation().setText(location);
 
     }
 
@@ -524,7 +560,7 @@ public class Maintain extends Fragment {
             }// image
 
 
-            customItem(mv, model);
+            customizeViewItem(mv, model);
 
         }
 
