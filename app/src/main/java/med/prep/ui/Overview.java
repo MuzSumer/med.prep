@@ -280,7 +280,7 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
     }
 
 
-    private void customizeViewItem(DiagramExpose.UniversalModelViewHolder mv, UniversalModel model) {
+    private void customViewItem(DiagramExpose.UniversalModelViewHolder mv, UniversalModel model) {
 
         /*
         mv.getTitle().setOnClickListener(selectCell());
@@ -551,7 +551,7 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
             }// image
 
 
-            customizeViewItem(mv, model);
+            customViewItem(mv, model);
         }
 
 
