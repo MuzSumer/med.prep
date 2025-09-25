@@ -5,11 +5,19 @@
              android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/dialog_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="Stock Up" />
+
+    <TextView
+        android:id="@+id/dialog_model"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="NAME"
+        android:textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"

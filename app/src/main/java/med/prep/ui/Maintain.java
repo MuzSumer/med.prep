@@ -93,11 +93,6 @@ public class Maintain extends Fragment {
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
 
 
     private void registerActions(View view) {
@@ -315,11 +310,47 @@ public class Maintain extends Fragment {
 
 
 
+    private void customItem(DiagramExpose.UniversalModelViewHolder mv, UniversalModel model) {
+
+        //mv.getTitle().setOnClickListener(selectCell());
+        //mv.getSubject().setOnClickListener(selectCell());
+        //mv.getDate().setOnClickListener(editCell());
+        //mv.getType().setOnClickListener(editCell());
+        //mv.getState().setOnClickListener(editCell());
+        //mv.getOpenLocation().setOnClickListener(openMap());
+        //mv.getLocation().setOnClickListener(wrongLocation());
+        //mv.getImage().setOnClickListener(editCell());
+
+
+        // stock up
+        mv.getImage().setOnClickListener(editCell());
 
 
 
+        // analytic string
+        Resources res = getContext().getResources();
 
+        String[] array_type = res.getStringArray(R.array.type_speak);
+        ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
 
+        int index = 0;
+        index = Integer.parseInt(model.getType());
+
+        long restdays = Reports.restdays(model, expo.getStore().today());
+        String location = types.get(index) + ", noch " + restdays + " Tage";
+
+        mv.getLocation().setTextColor(Color.GRAY);
+
+        //mv.getLocation().setTextColor(ContextCompat.getColor(getContext(), android.R.color.system_primary_light));
+
+        if (restdays < emergency) {
+            mv.getLocation().setTextColor(Color.RED);
+            location = types.get(index) + ", nur noch " + restdays + " Tage";
+        }
+
+        mv.getLocation().setText(location);
+
+    }
 
 
     class ModelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -376,26 +407,12 @@ public class Maintain extends Fragment {
              */
 
 
-            // *** analyze
 
-            long restdays = Reports.restdays(model, expo.getStore().today());
 
             {
-
-
                 if (id.equals(expo().getSelected())) {
-                    if (restdays < order) {
-                        mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_light));
-                    } else {
-                        mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_selected));
-                    }
                     mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_selected));
                 } else {
-                    if (restdays < order) {
-                        mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_red));
-                    } else {
-                        mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_background));
-                    }
                     mv.itemView.setBackground(AppCompatResources.getDrawable(getContext(), R.drawable.app_rbox_background));
                 }
             }// selection
@@ -457,7 +474,7 @@ public class Maintain extends Fragment {
             {
                 mv.getDate().setText(model.getDate());
                 mv.getDate().setContentDescription(id);
-                //mv.getDate().setOnClickListener(editCell());
+
 
 
                 try {
@@ -472,11 +489,6 @@ public class Maintain extends Fragment {
                 mv.getType().setContentDescription(id);
                 mv.getState().setContentDescription(id);
 
-                //mv.getType().setOnClickListener(editCell());
-                //mv.getState().setOnClickListener(editCell());
-
-                // TODO stock up
-                mv.getImage().setOnClickListener(editCell());
 
             }// date, type, state
 
@@ -484,14 +496,9 @@ public class Maintain extends Fragment {
             {
                 mv.getTitle().setText(model.getTitle());
                 mv.getTitle().setContentDescription(id);
-                //mv.getTitle().setOnClickListener(selectCell());
-
-
 
                 mv.getSubject().setText(model.getSubject());
                 mv.getSubject().setContentDescription(id);
-                //mv.getSubject().setOnClickListener(selectCell());
-
 
             }// title, subject
 
@@ -505,47 +512,19 @@ public class Maintain extends Fragment {
 
             {
                 mv.getOpenLocation().setContentDescription(id);
-                //mv.getOpenLocation().setOnClickListener(openMap());
-
-                //mv.getLocation().setText(shortLocation(model.getLocation(), 1));
                 mv.getLocation().setContentDescription(id);
 
-
-                // *** analyze
-                Resources res = getContext().getResources();
-
-                String[] array_type = res.getStringArray(R.array.type_speak);
-                ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
-
-                int index = 0;
-                index = Integer.parseInt(model.getType());
-
-                String location = types.get(index) + ", noch " + restdays + " Tage";
-
-                mv.getLocation().setTextColor(Color.GRAY);
-                mv.getLocation().setText(location);
-
-                //mv.getLocation().setTextColor(ContextCompat.getColor(getContext(), android.R.color.system_primary_light));
-
-                if (restdays < emergency) {
-                    mv.getLocation().setTextColor(Color.RED);
-
-                    location = types.get(index) + ", nur noch " + restdays + " Tage";
-                    mv.getLocation().setText(location);
-                }
-
-                //mv.getLocation().setOnClickListener(wrongLocation());
+                mv.getLocation().setText(model.getLocation());
             }// location
 
 
             {
                 mv.getImage().setContentDescription(id);
-                //mv.getImage().setOnClickListener(editCell());
-
-
                 expo().setImage(mv.getImage(), model.getSymbol(), getResources().getInteger(R.integer.cell_size_small));
-
             }// image
+
+
+            customItem(mv, model);
 
         }
 

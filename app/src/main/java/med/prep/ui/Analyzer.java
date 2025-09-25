@@ -163,9 +163,5 @@ public class Analyzer extends Fragment {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 
 }

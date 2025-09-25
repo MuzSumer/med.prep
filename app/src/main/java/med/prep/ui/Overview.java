@@ -102,10 +102,6 @@ public class Overview extends Fragment {
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 
 
 
@@ -261,8 +257,90 @@ public class Overview extends Fragment {
     }
 
 
+    private void customItem(DiagramExpose.UniversalModelViewHolder mv, UniversalModel model) {
+
+        //mv.getTitle().setOnClickListener(selectCell());
+        //mv.getSubject().setOnClickListener(selectCell());
+        //mv.getDate().setOnClickListener(editCell());
+        //mv.getType().setOnClickListener(editCell());
+        //mv.getState().setOnClickListener(editCell());
+        //mv.getOpenLocation().setOnClickListener(openMap());
+        //mv.getLocation().setOnClickListener(wrongLocation());
+        //mv.getImage().setOnClickListener(editCell());
 
 
+        Resources res = getContext().getResources();
+
+        String[] array_type = res.getStringArray(R.array.type_speak);
+        ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
+
+        int index = Integer.parseInt(model.getType());
+
+        //mv.getTags().setText(types.get(index) + " (" + model.getTags() + ")");
+
+        long restdays = Reports.restdays(model, expo.getStore().today());
+        String result = ", noch " + restdays + " Tage";
+
+        mv.getTags().setTextColor(Color.GRAY);
+        //mv.getTags().setTextColor(getColor(getContext(), android.R.color.system_primary_light));
+
+        if (restdays < emergency) {
+            result = ", nur noch " + restdays + " Tage";
+            mv.getTags().setTextColor(Color.RED);
+        }
+
+        mv.getTags().setText(types.get(index) + result);
+
+
+        mv.getSubject().setText(model.getSubject() + " " + model.getContent());
+
+        mv.getImage().setOnClickListener(editCell());
+
+        mv.getDate().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (Reports.quickMode(getContext())) {
+                    expo().setFocus(model.getId(), false);
+                    expo().redraw(true);
+
+                    StockUp dialog = new StockUp(expo(), model);
+                    dialog.show(getChildFragmentManager(), "");
+                    expo().redraw(true);
+
+                    return;
+                }
+
+                UniversalModel focused = expo().getSelectedModel();
+
+                if (focused == null) {
+                    expo().setFocus(model.getId(), false);
+                    expo().redraw(true);
+
+                    return;
+                }
+
+                if (model.getId() != focused.getId()) {
+                    expo().setFocus(model.getId(), false);
+                    expo().redraw(true);
+
+                    return;
+                }
+
+                if (model.getId() == focused.getId()) {
+                    expo().setFocus(model.getId(), false);
+                    expo().redraw(true);
+
+                    StockUp dialog = new StockUp(expo(), model);
+                    dialog.show(getChildFragmentManager(), "");
+                    expo().redraw(true);
+                }
+
+            }
+        });
+
+
+    }
 
     class ModelAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -382,51 +460,10 @@ public class Overview extends Fragment {
 
 
             {
-                //mv.getDate().setText(model.getId() + "/" + model.getDate());
+
                 mv.getDate().setText(model.getDate() + " \uD83D\uDCB1");
                 mv.getDate().setContentDescription(id);
-                mv.getDate().setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
 
-                        if (Reports.quickMode(getContext())) {
-                            expo().setFocus(model.getId(), false);
-                            expo().redraw(true);
-
-                            StockUp dialog = new StockUp(expo(), model);
-                            dialog.show(getChildFragmentManager(), "");
-                            expo().redraw(true);
-
-                            return;
-                        }
-
-                        UniversalModel focused = expo().getSelectedModel();
-
-                        if (focused == null) {
-                            expo().setFocus(model.getId(), false);
-                            expo().redraw(true);
-
-                            return;
-                        }
-
-                        if (model.getId() != focused.getId()) {
-                            expo().setFocus(model.getId(), false);
-                            expo().redraw(true);
-
-                            return;
-                        }
-
-                        if (model.getId() == focused.getId()) {
-                            expo().setFocus(model.getId(), false);
-                            expo().redraw(true);
-
-                            StockUp dialog = new StockUp(expo(), model);
-                            dialog.show(getChildFragmentManager(), "");
-                            expo().redraw(true);
-                        }
-
-                    }
-                });
 
 
                 try {
@@ -449,15 +486,10 @@ public class Overview extends Fragment {
 
             {
                 mv.getTitle().setContentDescription(id);
-                //mv.getTitle().setOnClickListener(selectCell());
                 mv.getTitle().setText(model.getTitle());
 
-
-                mv.getSubject().setText(model.getSubject() + " " + model.getContent());
-                //mv.getSubject().setText(model.getSubject());
                 mv.getSubject().setContentDescription(id);
-                //mv.getSubject().setOnClickListener(selectCell());
-
+                mv.getSubject().setText(model.getSubject());
 
             }// title, subject
 
@@ -465,56 +497,26 @@ public class Overview extends Fragment {
             {
                 mv.getContent().setText(model.getContent());
                 mv.getSpecs().setText(model.getSpecs());
-
-
-                Resources res = getContext().getResources();
-
-                String[] array_type = res.getStringArray(R.array.type_speak);
-                ArrayList<String> types = new ArrayList<>(Arrays.asList(array_type));
-
-                int index = Integer.parseInt(model.getType());
-
-                //mv.getTags().setText(types.get(index) + " (" + model.getTags() + ")");
-
-                long restdays = Reports.restdays(model, expo.getStore().today());
-                String result = ", noch " + restdays + " Tage";
-
-                mv.getTags().setTextColor(Color.GRAY);
-                //mv.getTags().setTextColor(getColor(getContext(), android.R.color.system_primary_light));
-
-                if (restdays < emergency) {
-                    result = ", nur noch " + restdays + " Tage";
-                    mv.getTags().setTextColor(Color.RED);
-                }
-
-                mv.getTags().setText(types.get(index) + result);
-
-
-
+                mv.getTags().setText(model.getTags());
             }// content, specs, tags
 
 
             {
                 mv.getOpenLocation().setContentDescription(id);
-                //mv.getOpenLocation().setOnClickListener(openMap());
                 mv.getLocation().setContentDescription(id);
 
-                String location = model.getLocation();
-                mv.getLocation().setText(location);
-
-                //mv.getLocation().setOnClickListener(wrongLocation());
+                mv.getLocation().setText(model.getLocation());
             }// location
 
 
             {
                 mv.getImage().setContentDescription(id);
-                mv.getImage().setOnClickListener(editCell());
-
-
                 expo().setImage(mv.getImage(), model.getSymbol(), getResources().getInteger(R.integer.cell_size_small));
 
             }// image
 
+
+            customItem(mv, model);
         }
 
 

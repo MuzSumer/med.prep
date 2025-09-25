@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,6 +52,9 @@ public class StockUp extends DialogFragment {
 
         builder.setView(view);
         {
+            TextView tv = view.findViewById(R.id.dialog_model);
+            tv.setText(model.getSubject());
+
             add_bestand = view.findViewById(R.id.add_bestand);
             add_zubuchen = view.findViewById(R.id.add_zubuchen);
 

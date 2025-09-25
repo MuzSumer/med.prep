@@ -71,7 +71,15 @@ public class AnalyzerReport extends Reports {
         web.getSettings().setAllowFileAccess(true);
 
 
+        loadPreferences();
 
+
+        // >>> expose model
+        createBrowser();
+    }
+
+
+    private void loadPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 
@@ -88,12 +96,7 @@ public class AnalyzerReport extends Reports {
         fullname = preferences.getString("FirstName", "") + " " + preferences.getString("LastName", "");
         birthdate = preferences.getString("BirthDate", "");
 
-
-        // >>> expose model
-        createBrowser();
     }
-
-
 
     /* --------------------------------ExpoDrive-------------------------------- */
 
@@ -101,18 +104,7 @@ public class AnalyzerReport extends Reports {
         String base = "file:///data/user/0/med.prep/files/";
 
 
-        /*
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-        branding = sharedPreferences.getString("report_branding", "");
-
-        layout = sharedPreferences.getString("report_layout", "business");
-        width = sharedPreferences.getString("report_image_width", "400");
-         */
-
-
-        String html = "Test";
-        html = ltrPage();
+        String html = ltrPage();
 
 
 

@@ -73,7 +73,7 @@ public class OverviewReport extends Reports {
 
     /* --------------------------------ExpoDrive-------------------------------- */
 
-    private void getPreferences() {
+    private void loadPreferences() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         String first_name = sharedPreferences.getString("FirstName", "");
@@ -84,8 +84,7 @@ public class OverviewReport extends Reports {
         String base = "file:///data/user/0/med.prep/files/";
 
 
-        String html = "Test";
-        html = ltrPage();
+        String html = ltrPage();
 
 
         web.loadDataWithBaseURL(base, html, "text/html", "UTF-8", null);

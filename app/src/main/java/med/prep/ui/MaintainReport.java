@@ -67,13 +67,13 @@ public class MaintainReport extends Reports {
         web.getSettings().setAllowFileAccess(true);
 
 
-        getPreferences();
+        loadPreferences();
 
         // >>> expose model
         createBrowser();
     }
 
-    private void getPreferences() {
+    private void loadPreferences() {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         String o = preferences.getString("order", "");
@@ -113,7 +113,7 @@ public class MaintainReport extends Reports {
             }
 
 
-        }// model
+        }//next model
 
 
 
