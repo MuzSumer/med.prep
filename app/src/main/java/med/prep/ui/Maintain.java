@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
+
 import med.prep.R;
 import med.prep.model.DiagramUtil;
 import med.prep.model.dialog.StockUp;
@@ -117,6 +118,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
         expo().getDiagram().setAdapter(adapter);
 
 
+
         return view;
     }
 
@@ -162,7 +164,11 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
 
                     if (create) {
                         Toast.makeText(getContext(), getString(R.string.report_generation), Toast.LENGTH_SHORT).show();
+                        speak(getString(R.string.report_generation));
+
                         Toast.makeText(getContext(), getString(R.string.action_data_warning), Toast.LENGTH_LONG).show();
+                        speak(getString(R.string.action_data_warning));
+
 
                         Intent intent = new Intent(getContext(), MaintainReport.class);
                         intent.putExtra("namespace", namespace);
@@ -192,6 +198,8 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
 
                     if (create) {
                         Toast.makeText(getContext(), getString(R.string.action_data_warning), Toast.LENGTH_LONG).show();
+                        speak(getString(R.string.action_data_warning));
+
 
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("text/html");
@@ -371,7 +379,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
             index = Integer.parseInt(model.getType());
 
             long restdays = Reports.restdays(model, expo.getStore().today());
-            String location = types.get(index) + ", noch " + restdays + " Tage";
+            String result = types.get(index) + ", noch " + restdays + " Tage";
 
             mv.getLocation().setTextColor(Color.GRAY);
 
@@ -379,10 +387,10 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
 
             if (restdays < emergency) {
                 mv.getLocation().setTextColor(Color.RED);
-                location = types.get(index) + ", nur noch " + restdays + " Tage";
+                result = types.get(index) + ", nur noch " + restdays + " Tage";
             }
 
-            mv.getLocation().setText(location);
+            mv.getLocation().setText(result);
         }//tag
 
 

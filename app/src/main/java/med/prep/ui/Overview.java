@@ -196,7 +196,10 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
                 v -> {
 
                     Toast.makeText(getContext(), getString(R.string.report_generation), Toast.LENGTH_SHORT).show();
+                    speak(getString(R.string.report_generation));
+
                     Toast.makeText(getContext(), getString(R.string.action_data_warning), Toast.LENGTH_LONG).show();
+                    speak(getString(R.string.action_data_warning));
 
                     Intent intent = new Intent(getContext(), OverviewReport.class);
                     intent.putExtra("namespace", namespace);
@@ -259,10 +262,8 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
                     }
 
                     Toast.makeText(getContext(), result, Toast.LENGTH_LONG).show();
+                    speak(result);
 
-
-
-                    //expo().beep();
 
                     /* email
                     Intent intent = new Intent(Intent.ACTION_SEND);
@@ -334,12 +335,12 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
             if (Reports.quickMode(getContext())) {
                 expo().setFocus(model.getId(), false);
                 expo().redraw(true);
+                speak(model.getSubject());
 
                 StockUp dialog = new StockUp(expo(), model);
                 dialog.show(getChildFragmentManager(), "");
                 expo().redraw(true);
 
-                speak(model.getSubject());
                 return;
             }
 
