@@ -31,7 +31,13 @@
             app:summary="Schnellmodus"
             app:switchTextOff="Aus"
             app:switchTextOn="An" />
-
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="speak_mode"
+            android:title="Vorlesen"
+            app:summary="Vorlesen"
+            app:switchTextOff="Aus"
+            app:switchTextOn="An" />
 
     </PreferenceCategory>
     <PreferenceCategory android:title="Reports">

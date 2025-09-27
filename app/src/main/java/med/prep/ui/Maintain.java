@@ -68,6 +68,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
 
     private void speak(String subject) {
 
+        if (!Reports.speakMode(getContext())) return;
         tts.speak(subject, TextToSpeech.QUEUE_FLUSH, null, null);
         //Toast.makeText(getContext(), subject, Toast.LENGTH_SHORT).show();
 
@@ -136,7 +137,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
                         return;
                     }
 
-                    //
+                    speak(model.getSubject());
                     StockUp dialog = new StockUp(expo(), model);
                     dialog.show(getChildFragmentManager(), "");
                 }

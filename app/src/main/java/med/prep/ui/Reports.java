@@ -24,6 +24,16 @@ public class Reports extends AppCompatActivity {
 
         return quickmode;
     }
+
+    public static boolean speakMode(Context context) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        boolean speakmode = preferences.getBoolean("speak_mode", false);
+
+        return speakmode;
+    }
+
     public String createHeader(String title) {
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

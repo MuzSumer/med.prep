@@ -71,6 +71,7 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
     }
     private void speak(String subject) {
 
+        if (!Reports.speakMode(getContext())) return;
         tts.speak(subject, TextToSpeech.QUEUE_FLUSH, null, null);
         //Toast.makeText(getContext(), subject, Toast.LENGTH_SHORT).show();
 
