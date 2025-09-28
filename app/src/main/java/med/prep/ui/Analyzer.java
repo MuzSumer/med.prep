@@ -85,6 +85,8 @@ public class Analyzer extends Fragment {
 
             long restdays = Reports.restdays(model, expo.getStore().today());
 
+
+
             average_days = (average_days + restdays)/2;
 
             if (restdays > best_days) { best_days = restdays; }

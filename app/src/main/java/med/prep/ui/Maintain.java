@@ -31,7 +31,6 @@ import java.util.Locale;
 
 import med.prep.R;
 import med.prep.model.DiagramUtil;
-import med.prep.model.dialog.StockUp;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
@@ -138,7 +137,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
                     }
 
                     speak(model.getSubject());
-                    StockUp dialog = new StockUp(expo(), model);
+                    StockUpDialog dialog = new StockUpDialog(expo(), model);
                     dialog.show(getChildFragmentManager(), "");
                 }
         );
@@ -294,7 +293,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
             expo().redraw(true);
             speak(model.getSubject());
 
-            StockUp dialog = new StockUp(expo(), model);
+            StockUpDialog dialog = new StockUpDialog(expo(), model);
             dialog.show(getChildFragmentManager(), "");
 
             return;
@@ -321,7 +320,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
         if (model.getId() == focused.getId()) {
             speak(model.getSubject());
 
-            StockUp dialog = new StockUp(expo(), model);
+            StockUpDialog dialog = new StockUpDialog(expo(), model);
             dialog.show(getChildFragmentManager(), "");
         }
 

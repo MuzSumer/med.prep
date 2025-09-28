@@ -1,4 +1,4 @@
-package med.prep.model.dialog;
+package med.prep.ui;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -18,9 +18,8 @@ import androidx.fragment.app.DialogFragment;
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
 import med.prep.model.meta.UniversalModel;
-import med.prep.ui.Reports;
 
-public class StockUp extends DialogFragment {
+public class StockUpDialog extends DialogFragment {
 
     DiagramExpose diagram;
     UniversalModel model;
@@ -29,7 +28,7 @@ public class StockUp extends DialogFragment {
     EditText add_bestand, add_zubuchen;
 
 
-    public StockUp(DiagramExpose set_diagram, UniversalModel set_model) {
+    public StockUpDialog(DiagramExpose set_diagram, UniversalModel set_model) {
         diagram = set_diagram;
         model = set_model;
     }

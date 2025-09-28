@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "Medical Preparedness"
 include(":app")
- 
