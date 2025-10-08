@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId = "med.prep"
-        minSdk = 33
+        minSdk = 29
         targetSdk = 36
         versionCode = 160
         versionName = "1.6"
