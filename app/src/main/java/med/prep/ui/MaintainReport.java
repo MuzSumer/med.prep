@@ -25,7 +25,7 @@ import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
 import med.prep.model.meta.UniversalModel;
 
-public class MaintainReport extends Reports {
+public class MaintainReport extends ReportsUtil {
 
 
     WebView web;
@@ -106,7 +106,7 @@ public class MaintainReport extends Reports {
         // >>> model
         for (UniversalModel model : expo.getStore().getModels()) {
 
-            long restdays = Reports.restdays(model, expo.getStore().today());
+            long restdays = ReportsUtil.restdays(model, expo.getStore().today());
 
             if (restdays < order) {
                 html = append(html, ltrModel(model, restdays));

@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import med.prep.model.meta.UniversalModel;
 
-public class Reports extends AppCompatActivity {
+public class ReportsUtil extends AppCompatActivity {
 
 
     public static boolean quickMode(Context context) {

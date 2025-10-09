@@ -25,7 +25,7 @@ import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
 import med.prep.model.meta.UniversalModel;
 
-public class OverviewReport extends Reports {
+public class OverviewReport extends ReportsUtil {
 
 
     WebView web;

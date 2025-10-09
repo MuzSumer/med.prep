@@ -25,7 +25,7 @@ import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
 import med.prep.model.meta.UniversalModel;
 
-public class AnalyzerReport extends Reports {
+public class AnalyzerReport extends ReportsUtil {
 
 
     WebView web;
@@ -166,7 +166,7 @@ public class AnalyzerReport extends Reports {
                     String result;
 
 
-                    long restdays = Reports.restdays(model, expo.getStore().today());
+                    long restdays = ReportsUtil.restdays(model, expo.getStore().today());
 
 
                     result = "noch " + restdays + " Tage";

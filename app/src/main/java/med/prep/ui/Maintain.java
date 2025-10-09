@@ -67,7 +67,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
 
     private void speak(String subject) {
 
-        if (!Reports.speakMode(getContext())) return;
+        if (!ReportsUtil.speakMode(getContext())) return;
         tts.speak(subject, TextToSpeech.QUEUE_FLUSH, null, null);
         //Toast.makeText(getContext(), subject, Toast.LENGTH_SHORT).show();
 
@@ -155,7 +155,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
 
                     boolean create = false;
                     for (UniversalModel model : expo().getStore().getModels()) {
-                        long restdays = Reports.restdays(model, expo().getStore().today());
+                        long restdays = ReportsUtil.restdays(model, expo().getStore().today());
 
                         if (restdays < order) {
                             create = true;
@@ -189,7 +189,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
 
                     boolean create = false;
                     for (UniversalModel model : expo().getStore().getModels()) {
-                        long restdays = Reports.restdays(model, expo().getStore().today());
+                        long restdays = ReportsUtil.restdays(model, expo().getStore().today());
 
                         if (restdays < order) {
                             create = true;
@@ -207,9 +207,21 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
                         intent.putExtra(Intent.EXTRA_SUBJECT, "Bedarf");
                         intent.putExtra(Intent.EXTRA_TEXT, body());
 
+                        intent.putExtra(Intent.ACTION_ATTACH_DATA, namespace);
+
                         startActivity(Intent.createChooser(intent, "Send Email"));
 
 
+                        /*
+
+                        TODO attach xml
+
+                        final Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("image/jpg");
+                        final File photoFile = new File(getFilesDir(), "foo.jpg");
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(photoFile));
+                        startActivity(Intent.createChooser(shareIntent, "Share image using"));
+                         */
                     } else {
                         Toast.makeText(getContext(), getString(R.string.report_empty), Toast.LENGTH_SHORT).show();
                     }
@@ -233,7 +245,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
             String result = "";
 
 
-            long restdays = Reports.restdays(model, expo.getStore().today());
+            long restdays = ReportsUtil.restdays(model, expo.getStore().today());
 
 
             if (restdays < order) {
@@ -292,13 +304,11 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
 
 
 
-        if (Reports.quickMode(getContext())) {
+        if (ReportsUtil.quickMode(getContext())) {
             expo().setFocus(id, false);
             expo().redraw(true);
 
-            if (model.getId() != focused.getId()) {
-                speak(model.getSubject());
-            }
+            speak(model.getSubject());
 
             StockUpDialog dialog = new StockUpDialog(expo(), model);
             dialog.show(getChildFragmentManager(), "");
@@ -385,7 +395,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
             int index = 0;
             index = Integer.parseInt(model.getType());
 
-            long restdays = Reports.restdays(model, expo.getStore().today());
+            long restdays = ReportsUtil.restdays(model, expo.getStore().today());
             String result = types.get(index) + ", noch " + restdays + " Tage";
 
             mv.getLocation().setTextColor(Color.GRAY);

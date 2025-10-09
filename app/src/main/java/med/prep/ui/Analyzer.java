@@ -83,7 +83,7 @@ public class Analyzer extends Fragment {
 
         for (UniversalModel model : expo().getStore().getModels()) {
 
-            long restdays = Reports.restdays(model, expo.getStore().today());
+            long restdays = ReportsUtil.restdays(model, expo.getStore().today());
 
 
 

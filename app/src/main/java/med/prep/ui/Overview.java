@@ -15,7 +15,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,8 +25,6 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,7 +70,7 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
     }
     private void speak(String subject) {
 
-        if (!Reports.speakMode(getContext())) return;
+        if (!ReportsUtil.speakMode(getContext())) return;
         tts.speak(subject, TextToSpeech.QUEUE_FLUSH, null, null);
         //Toast.makeText(getContext(), subject, Toast.LENGTH_SHORT).show();
 
@@ -140,7 +137,7 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
 
             String result = "";
 
-            long restdays = Reports.restdays(model, expo.getStore().today());
+            long restdays = ReportsUtil.restdays(model, expo.getStore().today());
 
 
             result = "noch " + restdays + " Tage";
@@ -227,7 +224,7 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
 
                     for (UniversalModel model : expo().getStore().getModels()) {
 
-                        long restdays = Reports.restdays(model, expo().getStore().today());
+                        long restdays = ReportsUtil.restdays(model, expo().getStore().today());
 
                         average_days = (average_days + restdays)/2;
 
@@ -315,7 +312,7 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
             int index = Integer.parseInt(model.getType());
 
 
-            long restdays = Reports.restdays(model, expo.getStore().today());
+            long restdays = ReportsUtil.restdays(model, expo.getStore().today());
             String result = ", noch " + restdays + " Tage";
 
             mv.getTags().setTextColor(Color.GRAY);
@@ -339,7 +336,7 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
         // stock up
         mv.getDate().setOnClickListener(v -> {
 
-            if (Reports.quickMode(getContext())) {
+            if (ReportsUtil.quickMode(getContext())) {
                 expo().setFocus(model.getId(), false);
                 expo().redraw(true);
                 speak(model.getSubject());
@@ -698,7 +695,7 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
 
         speak(model.getSubject());
 
-        if (Reports.quickMode(getContext())) {
+        if (ReportsUtil.quickMode(getContext())) {
 
             expo().setFocus(model.getId(), false);
             expo().redraw(false);

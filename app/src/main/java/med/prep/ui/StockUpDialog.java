@@ -62,8 +62,8 @@ public class StockUpDialog extends DialogFragment {
 
 
 
-            long days = Reports.days(model, diagram.getStore().today());
-            int tagesdosis = Reports.tagesdosis(model);
+            long days = ReportsUtil.days(model, diagram.getStore().today());
+            int tagesdosis = ReportsUtil.tagesdosis(model);
 
             long benutzt = days * tagesdosis;
 
