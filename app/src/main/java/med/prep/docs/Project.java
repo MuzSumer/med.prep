@@ -1,8 +1,14 @@
-package med.prep;
+package med.prep.docs;
 
 public class Project {
 
     /*
+    V1.65
+    ToolTips, logo
+
+
+    V1.61
+    Android 10
     V1.6
     speak
 

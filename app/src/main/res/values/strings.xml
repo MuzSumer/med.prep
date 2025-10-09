@@ -31,7 +31,6 @@
     <string name="record_delete_warning">The item will be removed from your device.</string>
 
     <string name="action_print">print</string>
-    <string name="action_email">send</string>
 
     <string name="report_select">select one</string>
     <string name="report_select_model">select something</string>

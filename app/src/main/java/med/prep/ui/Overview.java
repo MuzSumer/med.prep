@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,8 @@ import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -153,6 +156,10 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
 
 
     private void registerActions(View view) {
+
+        //FloatingActionButton b = view.findViewById(R.id.record_add);
+        //b.setTooltipText("test");
+
         view.findViewById(R.id.record_add).setOnClickListener(
                 v -> {
 

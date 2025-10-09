@@ -24,7 +24,6 @@ public class StockUpDialog extends DialogFragment {
     DiagramExpose diagram;
     UniversalModel model;
 
-
     EditText add_bestand, add_zubuchen;
 
 
@@ -32,6 +31,8 @@ public class StockUpDialog extends DialogFragment {
         diagram = set_diagram;
         model = set_model;
     }
+
+
 
     @NonNull
     @Override
@@ -53,6 +54,8 @@ public class StockUpDialog extends DialogFragment {
         {
             TextView tv = view.findViewById(R.id.dialog_model);
             tv.setText(model.getSubject());
+
+
 
             add_bestand = view.findViewById(R.id.add_bestand);
             add_zubuchen = view.findViewById(R.id.add_zubuchen);

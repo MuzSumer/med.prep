@@ -28,8 +28,8 @@
             <ImageView
                 android:id="@+id/item_action"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:srcCompat="@android:drawable/ic_input_add" />
+                android:layout_height="24dp"
+                app:srcCompat="@drawable/app_progress_notification" />
 
             <ImageView
                 android:id="@+id/item_image"

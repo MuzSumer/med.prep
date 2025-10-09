@@ -288,10 +288,17 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
         String id = view.getContentDescription().toString();
         UniversalModel model = expo().getStore().findModel(id);
 
+        UniversalModel focused = expo.getSelectedModel();
+
+
+
         if (Reports.quickMode(getContext())) {
             expo().setFocus(id, false);
             expo().redraw(true);
-            speak(model.getSubject());
+
+            if (model.getId() != focused.getId()) {
+                speak(model.getSubject());
+            }
 
             StockUpDialog dialog = new StockUpDialog(expo(), model);
             dialog.show(getChildFragmentManager(), "");
@@ -299,7 +306,6 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
             return;
         }
 
-        UniversalModel focused = expo.getSelectedModel();
 
         if (focused == null) {
             expo().setFocus(id, false);
@@ -308,6 +314,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
 
             return;
         }
+
 
         if (model.getId() != focused.getId()) {
             expo().setFocus(id, false);

@@ -9,6 +9,10 @@
     <string name="analyze_emergency">Nachschub umgehend erforderlich</string>
 
 
+    <string name="action_report">Tagesplan</string>
+    <string name="action_analyse">Analyse</string>
+    <string name="action_order">Bestellung Tabelle</string>
+    <string name="action_email">Bestellung E-Mail</string>
 
     <string name="action_data_warning">Vorsicht beim Teilen persönlicher Daten</string>
 
