@@ -11,10 +11,52 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+import med.prep.model.impl.DiagramExpose;
 import med.prep.model.meta.UniversalModel;
 
 public class ReportsUtil extends AppCompatActivity {
 
+
+    public static long order(Context context) {
+        long order = 33;
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+
+        String o = preferences.getString("order", "");
+        if (!o.isEmpty()) {
+            order = Long.parseLong(o);
+        }
+
+        return order;
+    }
+    public static long emergency(Context context) {
+        long emergency = 11;
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+
+        String e = preferences.getString("emergency", "");
+        if (!e.isEmpty()) {
+            emergency = Long.parseLong(e);
+        }
+
+        return emergency;
+    }
+
+    public static String UserName(Context context) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        return preferences.getString("FirstName", "") + " " + preferences.getString("LastName", "");
+    }
+
+    public static String BirthDate(Context context) {
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
+        return preferences.getString("BirthDate", "");
+    }
 
     public static boolean quickMode(Context context) {
 
@@ -69,6 +111,8 @@ public class ReportsUtil extends AppCompatActivity {
 
         return html;
     }
+
+
 
 
     public static long days(UniversalModel model, String today) {
@@ -140,6 +184,18 @@ public class ReportsUtil extends AppCompatActivity {
     }
 
 
+
+    public static long rest(DiagramExpose expo, UniversalModel model) {
+        long days = ReportsUtil.days(model, expo.getStore().today());
+
+        int tagesdosis = ReportsUtil.tagesdosis(model);
+        long benutzt = days * tagesdosis;
+
+        int vorrat = 0;
+        if (!model.getCoordinates().isEmpty()) { vorrat = Integer.parseInt(model.getCoordinates()); }
+
+        return vorrat - benutzt;
+    }
     public static long restdays(UniversalModel model, String today) {
         long restdays = 0;
 
@@ -157,5 +213,23 @@ public class ReportsUtil extends AppCompatActivity {
         restdays = rest/tagesdosis;
 
         return restdays;
+    }
+
+
+
+    public static String analysis(DiagramExpose expo, UniversalModel model, long trigger) {
+
+        String result = "";
+
+
+        long restdays = restdays(model, expo.getStore().today());
+
+        result = ", noch " + restdays + " Tage";
+
+        if (restdays < trigger) {
+            result = ", nur noch " + restdays + " Tage";
+        }
+
+        return result;
     }
 }

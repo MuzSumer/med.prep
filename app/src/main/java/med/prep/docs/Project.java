@@ -4,6 +4,7 @@ public class Project {
 
     /*
     V1.65
+    dynamic diagram
     Android 9
     ToolTips, logo
 

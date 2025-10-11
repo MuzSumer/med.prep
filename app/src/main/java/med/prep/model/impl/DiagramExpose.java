@@ -128,8 +128,6 @@ public class DiagramExpose implements Diagram {
 
 
 
-
-
     public RecyclerView.ViewHolder createViewHolder(View itemView) {
         return new UniversalModelViewHolder(itemView);
     }

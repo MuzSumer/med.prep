@@ -17,17 +17,23 @@ import androidx.fragment.app.DialogFragment;
 
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
+import med.prep.model.impl.DiagramStore;
+import med.prep.model.meta.Store;
 import med.prep.model.meta.UniversalModel;
 
-public class StockUpDialog extends DialogFragment {
+public class StockUpDialog2 extends DialogFragment {
 
+    final static String namespace = "medprep.xml";
+
+    ResponsiveFragment fragment;
     DiagramExpose diagram;
     UniversalModel model;
 
     EditText add_bestand, add_zubuchen;
 
 
-    public StockUpDialog(DiagramExpose set_diagram, UniversalModel set_model) {
+    public StockUpDialog2(ResponsiveFragment set_fragment, DiagramExpose set_diagram, UniversalModel set_model) {
+        fragment = set_fragment;
         diagram = set_diagram;
         model = set_model;
     }
@@ -78,13 +84,19 @@ public class StockUpDialog extends DialogFragment {
             int saldo = Integer.parseInt(add_bestand.getText().toString());
             int zubuchen = Integer.parseInt(add_zubuchen.getText().toString());
 
-            model.setCoordinates(Integer.toString(saldo + zubuchen));
-            model.setDate(diagram.getStore().today());
+            DiagramExpose mp = new DiagramExpose(getContext(), null, null);
+            Store store = new DiagramStore(mp, namespace);
+            mp.createStore(store, namespace, "");
+
+            UniversalModel t = mp.getStore().findModel(model.getId());
+
+            t.setCoordinates(Integer.toString(saldo + zubuchen));
+            t.setDate(diagram.getStore().today());
 
 
-            diagram.getStore().saveLocalModel(diagram, diagram.getFolder());
-            diagram.redraw(true);
+            mp.getStore().saveLocalModel(mp, mp.getFolder());
 
+            fragment.refresh();
         });
 
 

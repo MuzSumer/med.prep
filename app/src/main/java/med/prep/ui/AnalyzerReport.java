@@ -1,7 +1,6 @@
 package med.prep.ui;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.core.view.MenuCompat;
-import androidx.preference.PreferenceManager;
 
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
@@ -37,8 +35,8 @@ public class AnalyzerReport extends ReportsUtil {
     DiagramExpose expo;
 
 
-    int emergency = 11;
-    int order = 37;
+    long emergency = 11;
+    long order = 37;
 
     String fullname;
     String birthdate;
@@ -80,21 +78,16 @@ public class AnalyzerReport extends ReportsUtil {
 
 
     private void loadPreferences() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        order = ReportsUtil.order(getApplicationContext());
+
+        emergency = ReportsUtil.emergency(getApplicationContext());
 
 
-        String e = preferences.getString("emergency", "");
-        if (!e.isEmpty()) {
-            emergency = Integer.parseInt(e);
-        }
 
-        String o = preferences.getString("order", "");
-        if (!o.isEmpty()) {
-            order = Integer.parseInt(o);
-        }
 
-        fullname = preferences.getString("FirstName", "") + " " + preferences.getString("LastName", "");
-        birthdate = preferences.getString("BirthDate", "");
+
+        fullname = ReportsUtil.UserName(getApplicationContext());
+        birthdate = ReportsUtil.BirthDate(getApplicationContext());
 
     }
 

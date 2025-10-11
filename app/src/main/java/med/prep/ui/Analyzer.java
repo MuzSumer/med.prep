@@ -1,6 +1,5 @@
 package med.prep.ui;
 
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
 
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
@@ -26,39 +24,25 @@ public class Analyzer extends Fragment {
     DiagramExpose expo;
     public DiagramExpose expo() { return expo; }
 
-    int emergency = 11;
-    int order = 33;
 
-    String fullname;
-    String birthdate;
 
+    long order = 33;
+    long emergency = 11;
 
     long worst_days = 360;
     long best_days = 0;
     long average_days = 0;
 
-    private void loadPreferences() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-
-        String e = preferences.getString("emergency", "");
-        if (!e.isEmpty()) {
-            emergency = Integer.parseInt(e);
-        }
-
-        String o = preferences.getString("order", "");
-        if (!o.isEmpty()) {
-            order = Integer.parseInt(o);
-        }
-
-        fullname = preferences.getString("FirstName", "") + " " + preferences.getString("LastName", "");
-        birthdate = preferences.getString("BirthDate", "");
-    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.diagram_analyzer, container, false);
+
+
+        order = ReportsUtil.order(getContext());
+        emergency = ReportsUtil.emergency(getContext());
 
 
         expo = new DiagramExpose(getContext(), null, null);
@@ -67,15 +51,13 @@ public class Analyzer extends Fragment {
         expo().createStore(store, namespace, "");
 
 
-        loadPreferences();
-
         TextView best = view.findViewById(R.id.result_best);
         TextView worst = view.findViewById(R.id.result_worst);
         TextView average = view.findViewById(R.id.result_average);
         TextView load = view.findViewById(R.id.result_load);
 
         TextView dload = view.findViewById(R.id.d_load);
-        dload.setText(order + " Tage Vorrat");
+        dload.setText(ReportsUtil.order(getContext()) + " Tage Vorrat");
 
         // *** analysis
 

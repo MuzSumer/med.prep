@@ -3,7 +3,6 @@ package med.prep.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -20,7 +19,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,21 +34,16 @@ import med.prep.model.impl.DiagramStore;
 import med.prep.model.meta.Store;
 import med.prep.model.meta.UniversalModel;
 
-public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
+public class Maintain extends ResponsiveFragment implements TextToSpeech.OnInitListener {
 
-    final static String namespace = "medprep.xml";
+    final static String namespace = "maintain.xml";
 
     DiagramExpose expo;
     public DiagramExpose expo() { return expo; }
 
 
-    int emergency = 11;
-    int order = 37;
-
-    String fullname;
-    String birthdate;
-
-
+    long order = 33;
+    long emergency = 11;
 
     TextToSpeech tts;
     @Override
@@ -74,23 +67,6 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
     }
 
 
-    private void loadPreferences() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-
-
-        String e = preferences.getString("emergency", "");
-        if (!e.isEmpty()) {
-            emergency = Integer.parseInt(e);
-        }
-
-        String o = preferences.getString("order", "");
-        if (!o.isEmpty()) {
-            order = Integer.parseInt(o);
-        }
-
-        fullname = preferences.getString("FirstName", "") + " " + preferences.getString("LastName", "");
-        birthdate = preferences.getString("BirthDate", "");
-    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -103,10 +79,14 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
         Store store = new DiagramStore(expo(), namespace);
         expo().createStore(store, namespace, "");
 
+
+
+        order = ReportsUtil.order(getContext());
+        emergency = ReportsUtil.emergency(getContext());
+
+
+
         registerActions(view);
-
-
-        loadPreferences();
 
         tts = new TextToSpeech(getContext(), this);
 
@@ -118,11 +98,45 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
         expo().getDiagram().setAdapter(adapter);
 
 
+        refresh();
+
 
         return view;
     }
 
+    @Override
+    public void refresh() {
+        expo().getStore().close();
 
+        DiagramExpose mp = new DiagramExpose(getContext(), null, null);
+        Store store = new DiagramStore(mp, "medprep.xml");
+
+        mp.createStore(store, "medprep.xml", "");
+
+        for (UniversalModel model : mp.getStore().getModels()) {
+
+            long restdays = ReportsUtil.restdays(model, expo().getStore().today());
+
+            if (restdays < ReportsUtil.order(getContext())) {
+                UniversalModel m = expo().getStore().createDefaultModel("title", "subject");
+
+                m.setId(model.getId());
+                m.setTitle(model.getTitle());
+                m.setSubject(model.getSubject());
+                m.setContent(model.getContent());
+                m.setSpecs(model.getSpecs());
+                m.setTags(model.getTags());
+                m.setType(model.getType());
+                m.setState(model.getState());
+                m.setSymbol(model.getSymbol());
+                m.setLocation(model.getLocation());
+                m.setCoordinates(model.getCoordinates());
+
+            }
+        }
+        expo().getStore().saveLocalModel(expo(), expo().getFolder());
+        expo().redraw(true);
+    }
 
     private void registerActions(View view) {
         view.findViewById(R.id.record_add).setOnClickListener(
@@ -236,34 +250,19 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
 
     private String body() {
 
-        String body = fullname + ", " + birthdate + "\n\n";
+        String body = ReportsUtil.UserName(getContext()) + "\n\n";
 
 
         for (UniversalModel model : expo().getStore().getModels()) {
 
 
-            String result = "";
+            String result = model.getSubject() + " " + model.getContent();
+            result += ReportsUtil.analysis(expo, model, order);
 
-
-            long restdays = ReportsUtil.restdays(model, expo.getStore().today());
-
-
-            if (restdays < order) {
-                result = "noch " + restdays + " Tage";
-                //days + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
-
-                if (restdays < emergency) {
-                    result = "nur noch " + restdays + " Tage";
-                }
-
-                result = model.getSubject() + " " + model.getContent() + ", " + model.getSpecs() + " Stück";
-                if (body.isEmpty()) {
-                    //body = model.getSubject() + " " + result;
-                    body = result;
-                } else {
-                    //body = body + "\n" + model.getSubject() + " " + result;
-                    body = body + "\n" + result;
-                }
+            if (body.isEmpty()) {
+                body = result;
+            } else {
+                body = body + "\n" + result;
             }
 
 
@@ -310,7 +309,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
 
             speak(model.getSubject());
 
-            StockUpDialog dialog = new StockUpDialog(expo(), model);
+            StockUpDialog2 dialog = new StockUpDialog2(this, expo(), model);
             dialog.show(getChildFragmentManager(), "");
 
             return;
@@ -337,7 +336,7 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
         if (model.getId() == focused.getId()) {
             speak(model.getSubject());
 
-            StockUpDialog dialog = new StockUpDialog(expo(), model);
+            StockUpDialog2 dialog = new StockUpDialog2(this, expo(), model);
             dialog.show(getChildFragmentManager(), "");
         }
 
@@ -364,7 +363,6 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
          */
 
     };
-
 
 
 
@@ -396,17 +394,18 @@ public class Maintain extends Fragment implements TextToSpeech.OnInitListener {
             index = Integer.parseInt(model.getType());
 
             long restdays = ReportsUtil.restdays(model, expo.getStore().today());
-            String result = types.get(index) + ", noch " + restdays + " Tage";
+            String result = types.get(index) + ReportsUtil.analysis(expo, model, emergency);
 
             mv.getLocation().setTextColor(Color.GRAY);
 
             //mv.getLocation().setTextColor(ContextCompat.getColor(getContext(), android.R.color.system_primary_light));
 
+            if (restdays < order) {
+                mv.getLocation().setTextColor(Color.BLUE);
+            }
             if (restdays < emergency) {
                 mv.getLocation().setTextColor(Color.RED);
-                result = types.get(index) + ", nur noch " + restdays + " Tage";
             }
-
             mv.getLocation().setText(result);
         }//tag
 

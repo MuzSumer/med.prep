@@ -3,7 +3,6 @@ package med.prep.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -22,7 +21,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,11 +47,9 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
 
 
 
-    int emergency = 11;
-    int order = 37;
 
-    String fullname;
-    String birthdate;
+    long order = 33;
+    long emergency = 11;
 
 
     TextToSpeech tts;
@@ -76,23 +72,7 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
 
     }
 
-    private void loadPreferences() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-
-        String e = preferences.getString("emergency", "");
-        if (!e.isEmpty()) {
-            emergency = Integer.parseInt(e);
-        }
-
-        String o = preferences.getString("order", "");
-        if (!o.isEmpty()) {
-            order = Integer.parseInt(o);
-        }
-
-        fullname = preferences.getString("FirstName", "") + " " + preferences.getString("LastName", "");
-        birthdate = preferences.getString("BirthDate", "");
-    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -101,6 +81,8 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
         View view = inflater.inflate(R.layout.diagram_overview, container, false);
 
 
+        order = ReportsUtil.order(getContext());
+        emergency = ReportsUtil.emergency(getContext());
 
         expo = new DiagramExpose(getContext(), view.findViewById(R.id.diagram), view.findViewById(R.id.scroll));
 
@@ -109,8 +91,6 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
 
         registerActions(view);
 
-
-        loadPreferences();
 
         tts = new TextToSpeech(getContext(), this);
 
@@ -130,19 +110,17 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
 
     private String body() {
 
-        String body = fullname + ", " + birthdate + "\n\n";
+        String body = ReportsUtil.UserName(getContext()) + "\n\n";
 
         for (UniversalModel model : expo().getStore().getModels()) {
 
 
             String result = "";
 
-            long restdays = ReportsUtil.restdays(model, expo.getStore().today());
+            //long restdays = ReportsUtil.restdays(model, expo.getStore().today());
 
 
-            result = "noch " + restdays + " Tage";
-            //days + " Tage   " + benutzt + "/" + vorrat + " Tabletten"
-
+            result = ReportsUtil.analysis(expo(), model, 360);
 
             body = body + "\n" + model.getSubject() + " " + result;
 
@@ -313,13 +291,15 @@ public class Overview extends Fragment implements TextToSpeech.OnInitListener {
 
 
             long restdays = ReportsUtil.restdays(model, expo.getStore().today());
-            String result = ", noch " + restdays + " Tage";
+            String result = ReportsUtil.analysis(expo(), model, ReportsUtil.order(getContext()));
 
             mv.getTags().setTextColor(Color.GRAY);
             //mv.getTags().setTextColor(getColor(getContext(), android.R.color.system_primary_light));
 
+            if (restdays < order) {
+                mv.getTags().setTextColor(Color.BLUE);
+            }
             if (restdays < emergency) {
-                result = ", nur noch " + restdays + " Tage";
                 mv.getTags().setTextColor(Color.RED);
             }
 

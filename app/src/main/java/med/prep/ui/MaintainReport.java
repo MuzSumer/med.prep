@@ -1,7 +1,6 @@
 package med.prep.ui;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.ParcelFileDescriptor;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.core.view.MenuCompat;
-import androidx.preference.PreferenceManager;
 
 import med.prep.R;
 import med.prep.model.impl.DiagramExpose;
@@ -37,7 +35,7 @@ public class MaintainReport extends ReportsUtil {
     DiagramExpose expo;
 
 
-    int order = 33;
+    long order = 33;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +72,7 @@ public class MaintainReport extends ReportsUtil {
     }
 
     private void loadPreferences() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
-        String o = preferences.getString("order", "");
-        if (!o.isEmpty()) {
-            order = Integer.parseInt(o);
-        }
+        order = ReportsUtil.order(getApplicationContext());
     }
 
 
@@ -183,7 +176,7 @@ public class MaintainReport extends ReportsUtil {
                     // *** title ***
 
                     html += "<tr>";
-                    html += "<th colspan='2' style='text-align:left;font-size:17;color:darkgreen'><br>" + model.getSpecs() + " Stück</th>";
+                    html += "<th colspan='2' style='text-align:left;font-size:17;color:red'><br>" + ReportsUtil.rest(expo, model) + " Stück" + ReportsUtil.analysis(expo, model, order) + "</th>";
                     html += "</tr>";
 
 
